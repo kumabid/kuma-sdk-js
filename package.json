@@ -4,7 +4,7 @@
   "description": "IDEX SDK for Javascript in the browser and Node.js",
   "repository": "git@github.com:idexio/idex-sdk-js.git",
   "license": "MIT",
-  "author": "IDEX <support@idex.io>",
+  "author": "IDEX <support@kuma.bid>",
   "sideEffects": false,
   "type": "commonjs",
   "dep-notes": [
