@@ -11,9 +11,9 @@ env:
   GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
   GIT_AUTHOR_NAME: idex-bot
-  GIT_AUTHOR_EMAIL: monitor@idex.io
+  GIT_AUTHOR_EMAIL: monitor@kuma.bid
   GIT_COMMITTER_NAME: idex-bot
-  GIT_COMMITTER_EMAIL: monitor@idex.io
+  GIT_COMMITTER_EMAIL: monitor@kuma.bid
 
 permissions: write-all
 
