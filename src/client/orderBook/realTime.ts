@@ -20,7 +20,7 @@ import {
   SubscriptionNamePublic,
 } from '#types/enums/index';
 
-import type * as idex from '#index';
+import type * as kuma from '#index';
 import type { KumaMessageEvent } from '#types/webSocket/request/subscriptions';
 import type { ErrorEvent } from 'ws';
 
@@ -51,7 +51,7 @@ export interface OrderBookRealTimeClientOptions {
    * - Will override the {@link sandbox} option when given.
    */
   baseWebSocketURL?: string;
-  marketsResponse?: idex.RestResponseGetMarkets;
+  marketsResponse?: kuma.RestResponseGetMarkets;
 }
 
 /**
@@ -69,7 +69,7 @@ export interface OrderBookRealTimeClientOptions {
  *  OrderBookRealTimeClient,
  *  OrderBookRealTimeClientEvent,
  *  type L2OrderBook
- * } from '@idexio/idex-sdk';
+ * } from '@kumabid/kuma-sdk';
  *
  * // type is just to show it will match the form string-string.
  * // actual type will be typed as string
@@ -112,11 +112,11 @@ export class OrderBookRealTimeClient extends EventEmitter<{
   [OrderBookRealTimeClientEvent.l2]: [market: string];
   [OrderBookRealTimeClientEvent.sync]: [market: string];
 }> {
-  private readonly l1OrderBooks: Map<string, idex.L1OrderBook> = new Map();
+  private readonly l1OrderBooks: Map<string, kuma.L1OrderBook> = new Map();
 
-  private readonly l2OrderBooks: Map<string, idex.L2OrderBook> = new Map();
+  private readonly l2OrderBooks: Map<string, kuma.L2OrderBook> = new Map();
 
-  private readonly l2OrderBookUpdates = new Map<string, idex.L2OrderBook[]>();
+  private readonly l2OrderBookUpdates = new Map<string, kuma.L2OrderBook[]>();
 
   private markets: string[] = [];
 
@@ -133,7 +133,7 @@ export class OrderBookRealTimeClient extends EventEmitter<{
 
   public readonly public: RestPublicClient;
 
-  private marketsResponse: idex.RestResponseGetMarkets | undefined = undefined;
+  private marketsResponse: kuma.RestResponseGetMarkets | undefined = undefined;
 
   private isTickSizesLoaded = false;
 
@@ -182,7 +182,7 @@ export class OrderBookRealTimeClient extends EventEmitter<{
    */
   public async start(
     markets: string[],
-    marketsResponse?: idex.RestResponseGetMarkets,
+    marketsResponse?: kuma.RestResponseGetMarkets,
   ) {
     this.markets = markets;
     if (marketsResponse) {
@@ -266,7 +266,7 @@ export class OrderBookRealTimeClient extends EventEmitter<{
   private async getOrderBooks(
     market: string,
     tickSize?: bigint | undefined,
-  ): Promise<{ l1: idex.L1OrderBook; l2: idex.L2OrderBook }> {
+  ): Promise<{ l1: kuma.L1OrderBook; l2: kuma.L2OrderBook }> {
     const appliedTickSize =
       tickSize || this.tickSizesByMarket.get(market) || BigInt(1);
 

@@ -1,5 +1,5 @@
 import type { RestRequestWithSignature } from '#types/utils';
-import type * as idex from '@idexio/idex-sdk/types';
+import type * as kuma from '@kumabid/kuma-sdk/types';
 
 /**
  * [[include:unexported.md]]
@@ -7,13 +7,13 @@ import type * as idex from '@idexio/idex-sdk/types';
  * @category Base Types
  */
 interface RestRequestCancelOrdersBase
-  extends idex.RestRequestByWallet,
-    idex.DelegatedKeyParams,
-    idex.RestRequestByMarketOptional {
+  extends kuma.RestRequestByWallet,
+    kuma.DelegatedKeyParams,
+    kuma.RestRequestByMarketOptional {
   /**
    * - When specified, cancels multiple orders by orderId or clientOrderId.
-   *   - You may provide an orders {@link idex.KumaOrder.orderId orderId}
-   *   - You may provide an orders {@link idex.KumaOrder.clientOrderId clientOrderId}
+   *   - You may provide an orders {@link kuma.KumaOrder.orderId orderId}
+   *   - You may provide an orders {@link kuma.KumaOrder.clientOrderId clientOrderId}
    *     by prefixing it with `client:`
    *
    * @throws {BAD_REQUEST} If `orderIds` array is empty
@@ -133,7 +133,7 @@ export interface KumaCanceledOrder {
    *
    * @see enum {@link OrderStatus}
    */
-  status: Extract<idex.OrderStatus, 'canceled' | 'notFound'>;
+  status: Extract<kuma.OrderStatus, 'canceled' | 'notFound'>;
 }
 
 /**

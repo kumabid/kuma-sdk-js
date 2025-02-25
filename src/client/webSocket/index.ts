@@ -12,7 +12,7 @@ import {
   type SubscriptionNameAuthenticated as _SubscriptionNameAuthenticated,
 } from '#types/enums/request';
 
-import type * as idex from '#index';
+import type * as kuma from '#index';
 import type { MessageEventType as _MessageEventType } from '#types/enums/response';
 import type {
   WebSocketClientOptions,
@@ -81,9 +81,9 @@ export type WebSocketHandlerMessage = (message: KumaMessageEvent) => unknown;
  * - If you want to make {@link KumaSubscribeTypeAuthenticated authenticated subscriptions}:
  *   - You must provide a valid {@link WebSocketClientOptions.auth auth}
  *     property in the {@link WebSocketClientOptions constructor options} which includes:
- *     - {@link idex.WebSocketClientAuthOptions.apiKey apiKey}
- *     - {@link idex.WebSocketClientAuthOptions.apiSecret apiSecret}
- *     - {@link idex.WebSocketClientAuthOptions.wallet wallet}
+ *     - {@link kuma.WebSocketClientAuthOptions.apiKey apiKey}
+ *     - {@link kuma.WebSocketClientAuthOptions.apiSecret apiSecret}
+ *     - {@link kuma.WebSocketClientAuthOptions.wallet wallet}
  *
  * @example
  * ```typescript
@@ -91,7 +91,7 @@ export type WebSocketHandlerMessage = (message: KumaMessageEvent) => unknown;
  *    WebSocketClient,
  *    SubscriptionNameAuthenticated,
  *    SubscriptionNamePublic
- *   } from '@idexio/idex-sdk';
+ *   } from '@kumabid/kuma-sdk';
  *
  *   const webSocketClientPublicOnly = new WebSocketClient();
  *
@@ -213,7 +213,7 @@ export class WebSocketClient {
    * If `true`, this client will throw an error if it attempts to subscribe to
    * an {@link KumaSubscribeTypeAuthenticated authenticated subscription}.
    *
-   * - This is determined by whether or not the {@link idex.WebSocketClientOptions.auth auth}
+   * - This is determined by whether or not the {@link kuma.WebSocketClientOptions.auth auth}
    *   property was provided during construction.
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/WebSocketClient.html#isPublicOnly)
@@ -275,9 +275,9 @@ export class WebSocketClient {
    * - If you want to make {@link KumaSubscribeTypeAuthenticated authenticated subscriptions}:
    *   - You must provide a valid {@link WebSocketClientOptions.auth auth}
    *     property in the {@link WebSocketClientOptions constructor options} which includes:
-   *     - {@link idex.WebSocketClientAuthOptions.apiKey apiKey}
-   *     - {@link idex.WebSocketClientAuthOptions.apiSecret apiSecret}
-   *     - {@link idex.WebSocketClientAuthOptions.wallet wallet}
+   *     - {@link kuma.WebSocketClientAuthOptions.apiKey apiKey}
+   *     - {@link kuma.WebSocketClientAuthOptions.apiSecret apiSecret}
+   *     - {@link kuma.WebSocketClientAuthOptions.wallet wallet}
    *
    * @example
    * ```typescript
@@ -285,7 +285,7 @@ export class WebSocketClient {
    *    WebSocketClient,
    *    SubscriptionNameAuthenticated,
    *    SubscriptionNamePublic
-   *   } from '@idexio/idex-sdk';
+   *   } from '@kumabid/kuma-sdk';
    *
    *   const webSocketClientPublicOnly = new WebSocketClient();
    *
@@ -350,7 +350,7 @@ export class WebSocketClient {
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/WebSocketClient.html)
    */
-  constructor(options: idex.WebSocketClientOptions = {}) {
+  constructor(options: kuma.WebSocketClientOptions = {}) {
     const sandbox = options.sandbox ?? false;
 
     const baseWebSocketURL = deriveBaseURL({
@@ -599,7 +599,7 @@ export class WebSocketClient {
    *
    * - **Note:** These errors will be coming from the `ws` library itself and provide
    *   its {@link ErrorEvent} errors.
-   * - Errors coming from the Kuma WebSocket client will be present as a {@link idex.KumaErrorEvent KumaErrorEvent}
+   * - Errors coming from the Kuma WebSocket client will be present as a {@link kuma.KumaErrorEvent KumaErrorEvent}
    *   message to the {@link onMessage} handler.
    *
    * ---
@@ -640,7 +640,7 @@ export class WebSocketClient {
    *
    * - Your handler will receive updates when available matching the {@link KumaMessageEvent}
    *   interface.
-   * - Use the {@link idex.MessageEventType MessageEventType} enum to get an enum
+   * - Use the {@link kuma.MessageEventType MessageEventType} enum to get an enum
    *   defining all possible `type` values that can be received on the WebSocket message (see example).
    *
    * ---
@@ -654,7 +654,7 @@ export class WebSocketClient {
    *
    * @example
    * ```typescript
-   *  import { MessageEventType } from '@idexio/idex-sdk';
+   *  import { MessageEventType } from '@kumabid/kuma-sdk';
    *
    *  // ... client setup
    *
@@ -678,7 +678,7 @@ export class WebSocketClient {
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/WebSocketClient.html#onMessage)
-   * @see enum     {@link idex.MessageEventType MessageEventType}
+   * @see enum     {@link kuma.MessageEventType MessageEventType}
    * @see type     {@link KumaMessageEvent}
    *
    * @category Event Handling
@@ -698,18 +698,18 @@ export class WebSocketClient {
   /**
    * Creates new {@link KumaSubscribeTypeAuthenticated authenticated subscriptions} based on the provided parameters.
    *
-   * - Use the {@link idex.SubscriptionNameAuthenticated SubscriptionNameAuthenticated} enum for IDE
+   * - Use the {@link kuma.SubscriptionNameAuthenticated SubscriptionNameAuthenticated} enum for IDE
    *   inline documentation and auto completion (see example)
    *
    * ---
    *
    * **Subscription Update Events:**
    *
-   * - Receives a {@link idex.KumaSubscriptionsListEvent KumaSubscriptionsListEvent} WebSocket response via
-   *   the {@link idex.WebSocketClient.onMessage WebSocketClient.onMessage} handler listing all active
+   * - Receives a {@link kuma.KumaSubscriptionsListEvent KumaSubscriptionsListEvent} WebSocket response via
+   *   the {@link kuma.WebSocketClient.onMessage WebSocketClient.onMessage} handler listing all active
    *   subscriptions.
-   * - Begins receiving {@link idex.KumaSubscriptionEvent KumaSubscriptionEvent}'s for all subscribed
-   *   subscriptions via the {@link idex.WebSocketClient.onMessage WebSocketClient.onMessage} handler.
+   * - Begins receiving {@link kuma.KumaSubscriptionEvent KumaSubscriptionEvent}'s for all subscribed
+   *   subscriptions via the {@link kuma.WebSocketClient.onMessage WebSocketClient.onMessage} handler.
    *
    * ---
    * @param subscriptions
@@ -722,7 +722,7 @@ export class WebSocketClient {
    * ---
    *
    * @throws
-   * >  This method will **throw an error** if you did not provide the {@link idex.WebSocketClientOptionsWithAPIKey.auth auth} option
+   * >  This method will **throw an error** if you did not provide the {@link kuma.WebSocketClientOptionsWithAPIKey.auth auth} option
    *    to the constructor in order to handle authenticated subscriptions.
    *
    * ---
@@ -732,7 +732,7 @@ export class WebSocketClient {
    *  import {
    *    WebSocketClient,
    *    SubscriptionNameAuthenticated,
-   *  } from '@idexio/idex-sdk';
+   *  } from '@kumabid/kuma-sdk';
    *
    *  const client = new WebSocketClient({
    *    auth: {
@@ -788,18 +788,18 @@ export class WebSocketClient {
   /**
    * This method allows subscribing to Kuma's {@link KumaSubscribeTypePublic public subscriptions}.
    *
-   * - Use the {@link idex.SubscriptionNamePublic SubscriptionNamePublic} enum for IDE
+   * - Use the {@link kuma.SubscriptionNamePublic SubscriptionNamePublic} enum for IDE
    *   inline documentation and auto completion (see example)
    *
    * ---
    *
    * **Subscription Update Events:**
    *
-   * - Receives a {@link idex.KumaSubscriptionsListEvent KumaSubscriptionsListEvent} WebSocket response via
-   *   the {@link idex.WebSocketClient.onMessage WebSocketClient.onMessage} handler listing all active
+   * - Receives a {@link kuma.KumaSubscriptionsListEvent KumaSubscriptionsListEvent} WebSocket response via
+   *   the {@link kuma.WebSocketClient.onMessage WebSocketClient.onMessage} handler listing all active
    *   subscriptions.
-   * - Begins receiving {@link idex.KumaSubscriptionEvent KumaSubscriptionEvent}'s for all subscribed
-   *   subscriptions via the {@link idex.WebSocketClient.onMessage WebSocketClient.onMessage} handler.
+   * - Begins receiving {@link kuma.KumaSubscriptionEvent KumaSubscriptionEvent}'s for all subscribed
+   *   subscriptions via the {@link kuma.WebSocketClient.onMessage WebSocketClient.onMessage} handler.
    *
    * ---
    * @param subscriptions
@@ -824,7 +824,7 @@ export class WebSocketClient {
    *    WebSocketClient,
    *    SubscriptionNamePublic,
    *    CandleInterval
-   *  } from '@idexio/idex-sdk';
+   *  } from '@kumabid/kuma-sdk';
    *
    *  const client = new WebSocketClient();
    *
@@ -867,8 +867,8 @@ export class WebSocketClient {
    *
    * **Subscription Update Events:**
    *
-   * - Receives a {@link idex.KumaSubscriptionsListEvent KumaSubscriptionsListEvent} WebSocket response via
-   *   the {@link idex.WebSocketClient.onMessage WebSocketClient.onMessage} handler listing all active
+   * - Receives a {@link kuma.KumaSubscriptionsListEvent KumaSubscriptionsListEvent} WebSocket response via
+   *   the {@link kuma.WebSocketClient.onMessage WebSocketClient.onMessage} handler listing all active
    *   subscriptions.
    *
    * ---
@@ -902,8 +902,8 @@ export class WebSocketClient {
    *
    * **Subscription Update Events:**
    *
-   * - Receives a {@link idex.KumaSubscriptionsListEvent KumaSubscriptionsListEvent} WebSocket response via
-   *   the {@link idex.WebSocketClient.onMessage WebSocketClient.onMessage} handler listing all active
+   * - Receives a {@link kuma.KumaSubscriptionsListEvent KumaSubscriptionsListEvent} WebSocket response via
+   *   the {@link kuma.WebSocketClient.onMessage WebSocketClient.onMessage} handler listing all active
    *   subscriptions.
    *
    * ---

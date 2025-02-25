@@ -55,7 +55,7 @@ export function createDelegatedKeyWalletAndNonce(): readonly [
  *
  * @internal
  */
-export const INTERNAL_SYMBOL = Symbol.for('@idex/internal');
+export const INTERNAL_SYMBOL = Symbol.for('@kuma/internal');
 
 /**
  * Asserts that the provided nonce is a uuid v1 string.

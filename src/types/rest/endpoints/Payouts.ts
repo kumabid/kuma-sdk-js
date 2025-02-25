@@ -23,7 +23,7 @@ export interface KumaPayoutDistribution {
  *
  * @example
  * ```typescript
- * import { PayoutProgram } from '@idexio/idex-sdk';
+ * import { PayoutProgram } from '@kumabid/kuma-sdk';
  *
  * // create client
  *
@@ -52,7 +52,7 @@ export interface RestRequestGetPayouts extends RestRequestByWallet {
    *
    * @example
    * ```typescript
-   * import { PayoutProgram } from '@idexio/idex-sdk';
+   * import { PayoutProgram } from '@kumabid/kuma-sdk';
    *
    * // create client
    *
@@ -73,7 +73,7 @@ export interface RestRequestGetPayouts extends RestRequestByWallet {
  *
  * @example
  * ```typescript
- * import { PayoutProgram } from '@idexio/idex-sdk';
+ * import { PayoutProgram } from '@kumabid/kuma-sdk';
  *
  * // create client
  *
@@ -100,7 +100,7 @@ export interface RestRequestAuthorizePayout extends RestRequestByWallet {
    *
    * @example
    * ```typescript
-   * import { PayoutProgram } from '@idexio/idex-sdk';
+   * import { PayoutProgram } from '@kumabid/kuma-sdk';
    *
    * // create client
    *

@@ -16,7 +16,7 @@ export const StargateV2Config = {
     swapDestinationGasLimit: 350_000,
     localBridgeTarget: StargateV2Target.XCHAIN_XCHAIN,
   },
-  // better way to handle the idex config as it doesnt have a
+  // better way to handle the kuma config as it doesnt have a
   // BridgeTarget assignment?
   mainnet: {
     [StargateV2Target.XCHAIN_XCHAIN]: {

@@ -2,7 +2,7 @@ import { UnreachableCaseError } from '#utils';
 
 import { FillType, MessageEventType } from '#types/enums/response';
 
-import type * as idex from '#types/index';
+import type * as kuma from '#types/index';
 import type { AnyObj } from '#types/utils';
 
 function removeUndefinedFromObj<O extends AnyObj>(obj: O): O {
@@ -12,8 +12,8 @@ function removeUndefinedFromObj<O extends AnyObj>(obj: O): O {
 }
 
 const transformTickersMessage = (
-  short: idex.WebSocketResponseTickerShort,
-): idex.KumaTickerEventData =>
+  short: kuma.WebSocketResponseTickerShort,
+): kuma.KumaTickerEventData =>
   removeUndefinedFromObj({
     market: short.m,
     time: short.t,
@@ -40,8 +40,8 @@ const transformTickersMessage = (
   });
 
 const transformTradesMessage = (
-  short: idex.WebSocketResponseTradeShort,
-): idex.KumaTradeEventData =>
+  short: kuma.WebSocketResponseTradeShort,
+): kuma.KumaTradeEventData =>
   removeUndefinedFromObj({
     market: short.m,
     fillId: short.i,
@@ -54,8 +54,8 @@ const transformTradesMessage = (
   });
 
 const transformLiquidationsMessage = (
-  short: idex.WebSocketResponseLiquidationsShort,
-): idex.KumaLiquidationEventData =>
+  short: kuma.WebSocketResponseLiquidationsShort,
+): kuma.KumaLiquidationEventData =>
   removeUndefinedFromObj({
     market: short.m,
     fillId: short.i,
@@ -67,8 +67,8 @@ const transformLiquidationsMessage = (
   });
 
 const transformCandlesMessage = (
-  short: idex.WebSocketResponseCandleShort,
-): idex.KumaCandleEventData =>
+  short: kuma.WebSocketResponseCandleShort,
+): kuma.KumaCandleEventData =>
   removeUndefinedFromObj({
     market: short.m,
     time: short.t,
@@ -86,8 +86,8 @@ const transformCandlesMessage = (
   });
 
 const transformL1orderbookMessage = (
-  short: idex.WebSocketResponseL1OrderBookShort,
-): idex.KumaOrderBookLevel1EventData =>
+  short: kuma.WebSocketResponseL1OrderBookShort,
+): kuma.KumaOrderBookLevel1EventData =>
   removeUndefinedFromObj({
     market: short.m,
     time: short.t,
@@ -101,8 +101,8 @@ const transformL1orderbookMessage = (
   });
 
 const transformL2orderbookMessage = (
-  short: idex.WebSocketResponseL2OrderBookShort,
-): idex.KumaOrderBookLevel2EventData =>
+  short: kuma.WebSocketResponseL2OrderBookShort,
+): kuma.KumaOrderBookLevel2EventData =>
   removeUndefinedFromObj({
     market: short.m,
     time: short.t,
@@ -114,7 +114,7 @@ const transformL2orderbookMessage = (
     indexPrice: short.ip,
   });
 
-function transformOrderFill(short: idex.WebSocketResponseOrderFillShort) {
+function transformOrderFill(short: kuma.WebSocketResponseOrderFillShort) {
   return removeUndefinedFromObj({
     type: short.y,
     fillId: short.i,
@@ -143,8 +143,8 @@ function transformOrderFill(short: idex.WebSocketResponseOrderFillShort) {
 }
 
 function transformOrdersMessage(
-  short: idex.WebSocketResponseOrderShort,
-): idex.KumaOrderEventData {
+  short: kuma.WebSocketResponseOrderShort,
+): kuma.KumaOrderEventData {
   if (!short.o) {
     return removeUndefinedFromObj({
       market: short.m,
@@ -153,7 +153,7 @@ function transformOrdersMessage(
       side: short.s,
       // should only include a single fill but we map for future compat
       fills: short.F.map(transformOrderFill),
-    } satisfies idex.KumaOrderEventDataSystemFill);
+    } satisfies kuma.KumaOrderEventDataSystemFill);
   }
 
   return removeUndefinedFromObj({
@@ -186,12 +186,12 @@ function transformOrdersMessage(
     delegatedKey: short.dk,
     isLiquidationAcquisitionOnly: short.la,
     ...(short.F && { fills: short.F.map(transformOrderFill) }),
-  } satisfies idex.KumaOrderEventDataGeneral);
+  } satisfies kuma.KumaOrderEventDataGeneral);
 }
 
 const transformDepositsMessage = (
-  short: idex.WebSocketResponseDepositsShort,
-): idex.KumaDepositEventData =>
+  short: kuma.WebSocketResponseDepositsShort,
+): kuma.KumaDepositEventData =>
   removeUndefinedFromObj({
     wallet: short.w,
     depositId: short.i,
@@ -202,8 +202,8 @@ const transformDepositsMessage = (
   });
 
 const transformWithdrawalsMessage = (
-  short: idex.WebSocketResponseWithdrawalsShort,
-): idex.KumaWithdrawalEventData =>
+  short: kuma.WebSocketResponseWithdrawalsShort,
+): kuma.KumaWithdrawalEventData =>
   removeUndefinedFromObj({
     wallet: short.w,
     withdrawalId: short.i,
@@ -215,8 +215,8 @@ const transformWithdrawalsMessage = (
   });
 
 const transformPositionsMessage = (
-  short: idex.WebSocketResponsePositionsShort,
-): idex.KumaPositionEventData =>
+  short: kuma.WebSocketResponsePositionsShort,
+): kuma.KumaPositionEventData =>
   removeUndefinedFromObj({
     wallet: short.w,
     market: short.m,
@@ -236,8 +236,8 @@ const transformPositionsMessage = (
   });
 
 const transformFundingPaymentsMessage = (
-  short: idex.WebSocketResponseFundingPaymentsShort,
-): idex.KumaFundingPaymentEventData =>
+  short: kuma.WebSocketResponseFundingPaymentsShort,
+): kuma.KumaFundingPaymentEventData =>
   removeUndefinedFromObj({
     wallet: short.w,
     market: short.m,
@@ -250,10 +250,10 @@ const transformFundingPaymentsMessage = (
 
 export const transformWebsocketShortResponseMessage = (
   message:
-    | idex.KumaErrorEvent
-    | idex.KumaSubscriptionsListEvent
-    | idex.WebSocketResponseSubscriptionMessageShort,
-): idex.KumaMessageEvent => {
+    | kuma.KumaErrorEvent
+    | kuma.KumaSubscriptionsListEvent
+    | kuma.WebSocketResponseSubscriptionMessageShort,
+): kuma.KumaMessageEvent => {
   if (
     message.type === MessageEventType.error ||
     message.type === MessageEventType.subscriptions
@@ -302,8 +302,8 @@ export const transformWebsocketShortResponseMessage = (
 };
 
 const isWebSocketResponseOrderFillShortGeneral = (
-  short: idex.WebSocketResponseOrderFillShort,
-): short is idex.WebSocketResponseOrderFillShortGeneral =>
+  short: kuma.WebSocketResponseOrderFillShort,
+): short is kuma.WebSocketResponseOrderFillShortGeneral =>
   short.y !== FillType.closure &&
   short.y !== FillType.liquidation &&
   short.y !== FillType.deleverage;
