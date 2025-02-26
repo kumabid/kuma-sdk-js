@@ -8,7 +8,7 @@ import {
   type KumaMessageEvent,
   type KumaTickerEventData,
   type KumaSubscribeType,
-} from '@idexio/idex-sdk';
+} from '@kumabid/kuma-sdk';
 
 const client = new WebSocketClient();
 

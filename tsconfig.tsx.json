@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "@idexio/idex-sdk-ikon": ["./src/index.ts"],
+      "@kumabid/kuma-sdk-ikon": ["./src/index.ts"],
       "#*": ["./src/*"]
     }
   }

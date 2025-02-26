@@ -1,5 +1,5 @@
 import type { RestRequestWithSignature } from '#types/utils';
-import type { KumaWallet, RestRequestByWallet } from '@idexio/idex-sdk/types';
+import type { KumaWallet, RestRequestByWallet } from '@kumabid/kuma-sdk/types';
 
 /**
  * Associate a wallet with the authenticated account.

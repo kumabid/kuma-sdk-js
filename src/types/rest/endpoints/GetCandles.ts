@@ -1,4 +1,4 @@
-import type * as idex from '@idexio/idex-sdk/types';
+import type * as idex from '@kumabid/kuma-sdk/types';
 
 /**
  * - Rest Request: `GET /candles`
@@ -25,7 +25,7 @@ export interface RestRequestGetCandles
    *
    * @example
    * ```typescript
-   * import { RestPublicClient, CandleInterval } from '@idexio/idex-sdk';
+   * import { RestPublicClient, CandleInterval } from '@kumabid/kuma-sdk';
    *
    * const client = new RestPublicClient();
    *

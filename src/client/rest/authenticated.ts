@@ -40,7 +40,7 @@ import type {
  *
  * @example
  * ```typescript
- * import { RestAuthenticatedClient } from '@idexio/idex-sdk';
+ * import { RestAuthenticatedClient } from '@kumabid/kuma-sdk';
  *
  * // Edit the values before for your environment
  * const authenticatedClient = new RestAuthenticatedClient({
@@ -160,7 +160,7 @@ export interface RestAuthenticatedClientOptions {
  *
  * @example
  * ```typescript
- * import { RestAuthenticatedClient } from '@idexio/idex-sdk';
+ * import { RestAuthenticatedClient } from '@kumabid/kuma-sdk';
  *
  * // Edit the values before for your environment
  * const authenticatedClient = new RestAuthenticatedClient({
@@ -208,7 +208,7 @@ export class RestAuthenticatedClient {
    *
    * @example
    * ```typescript
-   * import { RestAuthenticatedClient } from '@idexio/idex-sdk';
+   * import { RestAuthenticatedClient } from '@kumabid/kuma-sdk';
    *
    * // Edit the values before for your environment
    * const client = new RestAuthenticatedClient({
@@ -288,7 +288,7 @@ export class RestAuthenticatedClient {
    *
    * @example
    * ```typescript
-   * import { RestAuthenticatedClient } from '@idexio/idex-sdk';
+   * import { RestAuthenticatedClient } from '@kumabid/kuma-sdk';
    *
    * // Edit the values before for your environment
    * const client = new RestAuthenticatedClient({
@@ -628,7 +628,7 @@ export class RestAuthenticatedClient {
    *
    * @example
    * ```typescript
-   * import { OrderType, OrderSide } from '@idexio/idex-sdk';
+   * import { OrderType, OrderSide } from '@kumabid/kuma-sdk';
    *
    * try {
    *   const order = await client.createOrder({
@@ -893,7 +893,7 @@ export class RestAuthenticatedClient {
    *
    * @example
    * ```typescript
-   * import { PayoutProgram } from '@idexio/idex-sdk';
+   * import { PayoutProgram } from '@kumabid/kuma-sdk';
    *
    * // create client
    *
@@ -932,7 +932,7 @@ export class RestAuthenticatedClient {
    *
    * @example
    * ```typescript
-   * import { PayoutProgram } from '@idexio/idex-sdk';
+   * import { PayoutProgram } from '@kumabid/kuma-sdk';
    *
    * // create client
    *

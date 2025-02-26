@@ -12,7 +12,7 @@ import type {
  *
  * @example
  * ```typescript
- *   import { WebSocketClient } from '@idexio/idex-sdk'
+ *   import { WebSocketClient } from '@kumabid/kuma-sdk'
  *
  *   const client = new WebSocketClient({
  *    // Edit the values before for your environment
@@ -175,7 +175,7 @@ export interface WebSocketClientOptionsBase {
  *
  * @example
  * ```typescript
- *   import { WebSocketClient } from '@idexio/idex-sdk';
+ *   import { WebSocketClient } from '@kumabid/kuma-sdk';
  *
  *   // all options are optional for public only clients
  *   const webSocketClientPublicOnly = new WebSocketClient({
@@ -215,7 +215,7 @@ export interface WebSocketClientOptionsWithFetch
  *
  * @example
  * ```typescript
- *   import { WebSocketClient } from '@idexio/idex-sdk'
+ *   import { WebSocketClient } from '@kumabid/kuma-sdk'
  *
  *   const client = new WebSocketClient({
  *    // Edit the values before for your environment
@@ -262,7 +262,7 @@ export interface WebSocketClientOptionsWithAPIKey
  *
  * @example
  * ```typescript
- *   import { WebSocketClient } from '@idexio/idex-sdk';
+ *   import { WebSocketClient } from '@kumabid/kuma-sdk';
  *
  *   // all options are optional for public only clients
  *   const webSocketClientPublicOnly = new WebSocketClient();
