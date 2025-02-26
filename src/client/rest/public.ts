@@ -70,7 +70,7 @@ export interface RestPublicClientOptions {
  *
  * @example
  * ```typescript
- * import { RestPublicClient } from '@idexio/idex-sdk';
+ * import { RestPublicClient } from '@kumabid/kuma-sdk';
  *
  * // works without any options
  * // const publicClient = new RestPublicClient();
@@ -120,7 +120,7 @@ export class RestPublicClient {
    *
    * @example
    * ```typescript
-   * import { RestPublicClient } from '@idexio/idex-sdk';
+   * import { RestPublicClient } from '@kumabid/kuma-sdk';
    *
    * // works without any options
    * // const publicClient = new RestPublicClient();
@@ -358,7 +358,7 @@ export class RestPublicClient {
    *
    * @example
    * ```typescript
-   * import { RestPublicClient, CandleInterval } from '@idexio/idex-sdk';
+   * import { RestPublicClient, CandleInterval } from '@kumabid/kuma-sdk';
    *
    * const client = new RestPublicClient();
    *

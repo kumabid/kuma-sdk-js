@@ -21,7 +21,7 @@ export interface RestRequestOrderBase
    *
    * @example
    * ```typescript
-   *  import { OrderType } from '@idexio/idex-sdk'
+   *  import { OrderType } from '@kumabid/kuma-sdk'
    *
    *  const response = await client.createOrder({
    *    // whichever order type you are creating

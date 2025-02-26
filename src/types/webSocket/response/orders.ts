@@ -29,7 +29,7 @@ export interface KumaOrderEvent extends KumaSubscriptionEventBase {
    *
    * @example
    * ```typescript
-   *  import { OrderEventType } from '@idexio/idex-sdk';
+   *  import { OrderEventType } from '@kumabid/kuma-sdk';
    *
    *  // ...
    *
@@ -138,7 +138,7 @@ export interface KumaOrderEventDataGeneral
  *
  * @example
  * ```typescript
- *  import { OrderType } from '@idexio/idex-sdk';
+ *  import { OrderType } from '@kumabid/kuma-sdk';
  *
  *  if (!orderEventData.type) {
  *    // orderLong is of type IKumaOrderEventDataSystemFill

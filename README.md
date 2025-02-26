@@ -14,7 +14,7 @@
 
 ![Discord](https://img.shields.io/discord/455246457465733130?label=Discord&style=flat-square)
 ![GitHub](https://img.shields.io/github/license/idexio/idex-sdk-js?style=flat-square)
-![npm](https://img.shields.io/npm/v/@idexio/idex-sdk?style=flat-square)
+![npm](https://img.shields.io/npm/v/@kumabid/kuma-sdk?style=flat-square)
 ![GitHub issues](https://img.shields.io/github/issues/idexio/idex-sdk-js?style=flat-square)
 ![Twitter Follow](https://img.shields.io/twitter/follow/idexio?style=social)
 
@@ -38,13 +38,13 @@
 ## Installation
 
 ```bash
-npm install @idexio/idex-sdk@beta
+npm install @kumabid/kuma-sdk@beta
 ```
 
 ## Getting Started
 
 ```typescript
-import * as idex from '@idexio/idex-sdk';
+import * as idex from '@kumabid/kuma-sdk';
 
 // const publicClient = new idex.RestPublicClient();
 // or, for sandbox API:
@@ -92,7 +92,7 @@ Typechain types and factories for contracts are available by importing them from
 exported from the main export.
 
 ```typescript
-import * as typechain from '@idexio/idex-sdk/typechain';
+import * as typechain from '@kumabid/kuma-sdk/typechain';
 ```
 
 ## License

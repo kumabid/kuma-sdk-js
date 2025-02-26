@@ -91,7 +91,7 @@ export type WebSocketHandlerMessage = (message: KumaMessageEvent) => unknown;
  *    WebSocketClient,
  *    SubscriptionNameAuthenticated,
  *    SubscriptionNamePublic
- *   } from '@idexio/idex-sdk';
+ *   } from '@kumabid/kuma-sdk';
  *
  *   const webSocketClientPublicOnly = new WebSocketClient();
  *
@@ -285,7 +285,7 @@ export class WebSocketClient {
    *    WebSocketClient,
    *    SubscriptionNameAuthenticated,
    *    SubscriptionNamePublic
-   *   } from '@idexio/idex-sdk';
+   *   } from '@kumabid/kuma-sdk';
    *
    *   const webSocketClientPublicOnly = new WebSocketClient();
    *
@@ -654,7 +654,7 @@ export class WebSocketClient {
    *
    * @example
    * ```typescript
-   *  import { MessageEventType } from '@idexio/idex-sdk';
+   *  import { MessageEventType } from '@kumabid/kuma-sdk';
    *
    *  // ... client setup
    *
@@ -732,7 +732,7 @@ export class WebSocketClient {
    *  import {
    *    WebSocketClient,
    *    SubscriptionNameAuthenticated,
-   *  } from '@idexio/idex-sdk';
+   *  } from '@kumabid/kuma-sdk';
    *
    *  const client = new WebSocketClient({
    *    auth: {
@@ -824,7 +824,7 @@ export class WebSocketClient {
    *    WebSocketClient,
    *    SubscriptionNamePublic,
    *    CandleInterval
-   *  } from '@idexio/idex-sdk';
+   *  } from '@kumabid/kuma-sdk';
    *
    *  const client = new WebSocketClient();
    *

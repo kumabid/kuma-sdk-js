@@ -6,7 +6,7 @@ import type * as _types from '#index';
  *
  * @example
  * ```typescript
- * import { RestPublicClient } from '@idexio/idex-sdk';
+ * import { RestPublicClient } from '@kumabid/kuma-sdk';
  *
  * const publicClient = new RestPublicClient();
  *
@@ -96,7 +96,7 @@ export const TimeInForce = Object.freeze({
    *
    * @example
    * ```typescript
-   * import { TimeInForce, OrderType } from '@idexio/idex-sdk';
+   * import { TimeInForce, OrderType } from '@kumabid/kuma-sdk';
    *
    * authenticatedClient.createOrder({
    *   type: OrderType.limit,
@@ -126,7 +126,7 @@ export const TimeInForce = Object.freeze({
    *
    * @example
    * ```typescript
-   * import { TimeInForce, OrderType } from '@idexio/idex-sdk';
+   * import { TimeInForce, OrderType } from '@kumabid/kuma-sdk';
    *
    * authenticatedClient.createOrder({
    *   type: OrderType.limit,
@@ -157,7 +157,7 @@ export const TimeInForce = Object.freeze({
    *
    * @example
    * ```typescript
-   * import { TimeInForce, OrderType } from '@idexio/idex-sdk';
+   * import { TimeInForce, OrderType } from '@kumabid/kuma-sdk';
    *
    * authenticatedClient.createOrder({
    *   type: OrderType.limit,
@@ -190,7 +190,7 @@ export const TimeInForce = Object.freeze({
    *
    * @example
    * ```typescript
-   * import { TimeInForce, OrderType } from '@idexio/idex-sdk';
+   * import { TimeInForce, OrderType } from '@kumabid/kuma-sdk';
    *
    * authenticatedClient.createOrder({
    *   type: OrderType.limit,
@@ -678,7 +678,7 @@ export type OrderBookRealTimeClientEvent =
  *  import {
  *    WebSocketClient,
  *    SubscriptionNameAuthenticated
- *  } from '@idexio/idex-sdk';
+ *  } from '@kumabid/kuma-sdk';
  *
  *  const client = new WebSocketClient({
  *    auth: {
@@ -769,7 +769,7 @@ export type SubscriptionNameAuthenticated =
  *    WebSocketClient,
  *    SubscriptionNamePublic,
  *    CandleInterval
- *  } from '@idexio/idex-sdk';
+ *  } from '@kumabid/kuma-sdk';
  *
  *  const client = new WebSocketClient();
  *
