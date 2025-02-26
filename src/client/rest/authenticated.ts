@@ -27,7 +27,7 @@ import { getEncodedWithdrawalPayloadForBridgeTarget } from '#bridge/bridge';
 import { RestPublicClient } from '#client/rest/public';
 import { BridgeTarget } from '#types/enums/request';
 
-import type * as idex from '#index';
+import type * as kuma from '#index';
 import type { AnyObj, Paginated } from '#types/utils';
 import type {
   AxiosInstance,
@@ -75,7 +75,7 @@ export interface RestAuthenticatedClientOptions {
    * **Note:** This should always be provided except in advanced use case scenarios.
    *
    * - When **provided**, used to create ECDSA signatures for authenticated requests automatically.
-   * - When **not provided**, must provider your own {@link idex.SignTypedData signer} to sign requests
+   * - When **not provided**, must provider your own {@link kuma.SignTypedData signer} to sign requests
    *   that require an ECDSA signature.
    */
   walletPrivateKey?: string;
@@ -100,7 +100,7 @@ export interface RestAuthenticatedClientOptions {
   /**
    * **Optionally** provide the `exchangeContractAddress` as returned by the public clients
    * {@link RestPublicClient.getExchange getExchange} response's
-   * {@link idex.KumaExchange.exchangeContractAddress exchangeContractAddress} property.
+   * {@link kuma.KumaExchange.exchangeContractAddress exchangeContractAddress} property.
    *
    * - If not provided, this will be fetched and cached automatically from the public client before
    *   making the first request which requires it.
@@ -111,7 +111,7 @@ export interface RestAuthenticatedClientOptions {
   /**
    * Optionally provide the `chainId` as returned by the public clients
    * {@link RestPublicClient.getExchange getExchange} response's
-   * {@link idex.KumaExchange.chainId chainId} property.
+   * {@link kuma.KumaExchange.chainId chainId} property.
    *
    * - If not provided, this will be fetched and cached automatically from the public client before
    *   making the first request which requires it.
@@ -122,7 +122,7 @@ export interface RestAuthenticatedClientOptions {
   /**
    * Optionally provide the `stargateBridgeAdapterContractAddress` as returned by the public clients
    * {@link RestPublicClient.getExchange getExchange} response's
-   * {@link idex.KumaExchange.stargateBridgeAdapterContractAddress stargateBridgeAdapterContractAddress}
+   * {@link kuma.KumaExchange.stargateBridgeAdapterContractAddress stargateBridgeAdapterContractAddress}
    * property.
    *
    * - If not provided, this will be fetched and cached automatically from the public client before
@@ -198,12 +198,12 @@ export interface RestAuthenticatedClientOptions {
  */
 export class RestAuthenticatedClient {
   /**
-   * When creating an authenticated client, a {@link idex.RestPublicClient RestPublicClient} is automatically
+   * When creating an authenticated client, a {@link kuma.RestPublicClient RestPublicClient} is automatically
    * created and can be used based on the config given for this client.
    *
    * - Can be utilized to fetch public data instead of creating both clients.
-   * - Used when fetching the {@link idex.KumaExchange.exchangeContractAddress exchangeContractAddress}
-   *   and {@link idex.KumaExchange.chainId chainId} properties from the public client's
+   * - Used when fetching the {@link kuma.KumaExchange.exchangeContractAddress exchangeContractAddress}
+   *   and {@link kuma.KumaExchange.chainId chainId} properties from the public client's
    *   {@link RestPublicClient.getExchange getExchange} method.
    *
    * @example
@@ -225,16 +225,16 @@ export class RestAuthenticatedClient {
    *
    * ---
    *
-   * @see client {@link idex.RestPublicClient RestPublicClient}
+   * @see client {@link kuma.RestPublicClient RestPublicClient}
    *
    * @category Accessors
    */
-  readonly public: idex.RestPublicClient;
+  readonly public: kuma.RestPublicClient;
 
-  #exchange: null | idex.KumaExchange = null;
-  #exchangeProm: null | Promise<idex.KumaExchange> = null;
+  #exchange: null | kuma.KumaExchange = null;
+  #exchangeProm: null | Promise<kuma.KumaExchange> = null;
 
-  readonly #signer: undefined | idex.SignTypedData = undefined;
+  readonly #signer: undefined | kuma.SignTypedData = undefined;
 
   readonly #apiSecret: string;
 
@@ -248,7 +248,7 @@ export class RestAuthenticatedClient {
     autoCreateHmacHeader: boolean;
   } & Partial<
     Pick<
-      idex.KumaExchange,
+      kuma.KumaExchange,
       | 'stargateBridgeAdapterContractAddress'
       | 'exchangeContractAddress'
       | 'chainId'
@@ -407,12 +407,12 @@ export class RestAuthenticatedClient {
    *      This method has two overloads to provide type-safe responses:
    *      <ul>
    *      <li>
-   *        Calling this method with a {@link idex.RestRequestGetMarketMakerRewardsEpochWithWallet.wallet wallet}
-   *        parameter returns {@link idex.MarketMakerRewardsEpochDetailedWithWallet MarketMakerRewardsEpochDetailedWithWallet}
+   *        Calling this method with a {@link kuma.RestRequestGetMarketMakerRewardsEpochWithWallet.wallet wallet}
+   *        parameter returns {@link kuma.MarketMakerRewardsEpochDetailedWithWallet MarketMakerRewardsEpochDetailedWithWallet}
    *      </li>
    *      <li>
-   *        Calling this method without a {@link idex.RestRequestGetMarketMakerRewardsEpochWithWallet.wallet wallet}
-   *        parameter returns {@link idex.MarketMakerRewardsEpochDetailedWithoutWallet MarketMakerRewardsEpochDetailedWithoutWallet}
+   *        Calling this method without a {@link kuma.RestRequestGetMarketMakerRewardsEpochWithWallet.wallet wallet}
+   *        parameter returns {@link kuma.MarketMakerRewardsEpochDetailedWithoutWallet MarketMakerRewardsEpochDetailedWithoutWallet}
    *      </li>
    *    </ul>
    * </p>
@@ -427,32 +427,32 @@ export class RestAuthenticatedClient {
    * epoch configuration as well as wallet epoch performance.</p>
    *
    * > When **providing** a wallet address, the resulting response will
-   * > be {@link idex.MarketMakerRewardsEpochDetailedWithWallet MarketMakerRewardsEpochDetailedWithWallet}
+   * > be {@link kuma.MarketMakerRewardsEpochDetailedWithWallet MarketMakerRewardsEpochDetailedWithWallet}
    */
   public async getMarketMakerRewardsEpoch(
-    params: idex.RestRequestGetMarketMakerRewardsEpochWithWallet,
-  ): Promise<idex.MarketMakerRewardsEpochDetailedWithWallet>;
+    params: kuma.RestRequestGetMarketMakerRewardsEpochWithWallet,
+  ): Promise<kuma.MarketMakerRewardsEpochDetailedWithWallet>;
   /**
    * <h3>Overload 2: Without Wallet</h3>
    *
-   * > When **not** providing a {@link idex.RestRequestGetMarketMakerRewardsEpochWithWallet.wallet wallet},
-   * > the resulting response will be {@link idex.MarketMakerRewardsEpochDetailedWithoutWallet MarketMakerRewardsEpochDetailedWithoutWallet}
+   * > When **not** providing a {@link kuma.RestRequestGetMarketMakerRewardsEpochWithWallet.wallet wallet},
+   * > the resulting response will be {@link kuma.MarketMakerRewardsEpochDetailedWithoutWallet MarketMakerRewardsEpochDetailedWithoutWallet}
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getMarketMakerRewardsEpoch)
-   * @see request   {@link idex.RestRequestGetMarketMakerRewardsEpoch RestRequestGetMarketMakerRewardsEpoch}
-   * @see response  {@link idex.RestResponseGetMarketMakerRewardsEpoch RestResponseGetMarketMakerRewardsEpoch}
-   * @see type      {@link idex.KumaMarketMakerRewardsEpoch KumaMarketMakerRewardsEpoch}
+   * @see request   {@link kuma.RestRequestGetMarketMakerRewardsEpoch RestRequestGetMarketMakerRewardsEpoch}
+   * @see response  {@link kuma.RestResponseGetMarketMakerRewardsEpoch RestResponseGetMarketMakerRewardsEpoch}
+   * @see type      {@link kuma.KumaMarketMakerRewardsEpoch KumaMarketMakerRewardsEpoch}
    * @see related   {@link getMarketMakerRewardsEpochs this.getMarketMakerRewardsEpochs}
    *
    * @category Rewards & Payouts
    */
   public async getMarketMakerRewardsEpoch(
-    params: idex.RestRequestGetMarketMakerRewardsEpochWithoutWallet,
-  ): Promise<idex.MarketMakerRewardsEpochDetailedWithoutWallet>;
+    params: kuma.RestRequestGetMarketMakerRewardsEpochWithoutWallet,
+  ): Promise<kuma.MarketMakerRewardsEpochDetailedWithoutWallet>;
   public async getMarketMakerRewardsEpoch<
-    R extends idex.RestRequestGetMarketMakerRewardsEpoch,
+    R extends kuma.RestRequestGetMarketMakerRewardsEpoch,
   >(params: R) {
-    return this.get<idex.RestResponseGetMarketMakerRewardsEpoch<R>>(
+    return this.get<kuma.RestResponseGetMarketMakerRewardsEpoch<R>>(
       '/marketMakerRewardsV1/epoch',
       params,
     );
@@ -471,17 +471,17 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @see typedoc   [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getMarketMakerRewardsEpochs)
-   * @see request   {@link idex.RestRequestGetMarketMakerRewardsEpochs RestRequestGetMarketMakerRewardsEpochs}
-   * @see response  {@link idex.RestResponseGetMarketMakerRewardsEpochs RestResponseGetMarketMakerRewardsEpochs}
-   * @see type      {@link idex.KumaMarketMakerRewardsEpochSummary KumaMarketMakerRewardsEpochSummary}
+   * @see request   {@link kuma.RestRequestGetMarketMakerRewardsEpochs RestRequestGetMarketMakerRewardsEpochs}
+   * @see response  {@link kuma.RestResponseGetMarketMakerRewardsEpochs RestResponseGetMarketMakerRewardsEpochs}
+   * @see type      {@link kuma.KumaMarketMakerRewardsEpochSummary KumaMarketMakerRewardsEpochSummary}
    * @see related   {@link getMarketMakerRewardsEpoch client.getMarketMakerRewardsEpoch}
    *
    * @category Rewards & Payouts
    */
   public async getMarketMakerRewardsEpochs(
-    params: idex.RestRequestGetMarketMakerRewardsEpochs = {},
+    params: kuma.RestRequestGetMarketMakerRewardsEpochs = {},
   ) {
-    return this.get<idex.RestResponseGetMarketMakerRewardsEpochs>(
+    return this.get<kuma.RestResponseGetMarketMakerRewardsEpochs>(
       '/marketMakerRewardsV1/epochs',
       params,
     );
@@ -502,7 +502,7 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @returns
-   * - Returns the {@link idex.KumaWallet KumaWallet} which was associated by the request.
+   * - Returns the {@link kuma.KumaWallet KumaWallet} which was associated by the request.
    *
    * ---
    *
@@ -519,22 +519,22 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#associateWallet)
-   * @see request  {@link idex.RestRequestAssociateWallet RestRequestAssociateWallet}
-   * @see response {@link idex.RestResponseAssociateWallet RestResponseAssociateWallet}
-   * @see type     {@link idex.KumaWallet KumaWallet}
+   * @see request  {@link kuma.RestRequestAssociateWallet RestRequestAssociateWallet}
+   * @see response {@link kuma.RestResponseAssociateWallet RestResponseAssociateWallet}
+   * @see type     {@link kuma.KumaWallet KumaWallet}
    *
    * @category Wallets & Positions
    */
   public async associateWallet(
-    params: idex.RestRequestAssociateWallet,
-    signer: undefined | idex.SignTypedData = this.#signer,
+    params: kuma.RestRequestAssociateWallet,
+    signer: undefined | kuma.SignTypedData = this.#signer,
   ) {
     ensureSigner(signer);
 
     const { chainId, exchangeContractAddress } =
       await this.getContractAndChainId();
 
-    return this.post<idex.RestResponseAssociateWallet>('/wallets', {
+    return this.post<kuma.RestResponseAssociateWallet>('/wallets', {
       parameters: params,
       signature: await signer(
         ...getWalletAssociationSignatureTypedData(
@@ -560,19 +560,19 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @returns
-   *  - An array of {@link idex.KumaWallet KumaWallet} objects representing all associated wallets.
+   *  - An array of {@link kuma.KumaWallet KumaWallet} objects representing all associated wallets.
    *
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getWallets)
-   * @see request  {@link idex.RestRequestGetWallets RestRequestGetWallets}
-   * @see response {@link idex.RestResponseGetWallets RestResponseGetWallets}
-   * @see type     {@link idex.KumaWallet KumaWallet}
+   * @see request  {@link kuma.RestRequestGetWallets RestRequestGetWallets}
+   * @see response {@link kuma.RestResponseGetWallets RestResponseGetWallets}
+   * @see type     {@link kuma.KumaWallet KumaWallet}
    *
    * @category Wallets & Positions
    */
-  public async getWallets(params: idex.RestRequestGetWallets) {
-    return this.get<idex.RestResponseGetWallets>('/wallets', params);
+  public async getWallets(params: kuma.RestRequestGetWallets) {
+    return this.get<kuma.RestResponseGetWallets>('/wallets', params);
   }
 
   /**
@@ -588,28 +588,28 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @returns
-   *  - An array of {@link idex.KumaPosition KumaPosition} objects representing all matching positions based
+   *  - An array of {@link kuma.KumaPosition KumaPosition} objects representing all matching positions based
    *    on your requested params.
    *
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getPositions)
-   * @see request  {@link idex.RestRequestGetPositions RestRequestGetPositions}
-   * @see response {@link idex.RestResponseGetPositions RestResponseGetPositions}
-   * @see type     {@link idex.KumaPosition KumaPosition}
+   * @see request  {@link kuma.RestRequestGetPositions RestRequestGetPositions}
+   * @see response {@link kuma.RestResponseGetPositions RestResponseGetPositions}
+   * @see type     {@link kuma.KumaPosition KumaPosition}
    *
    * @category Wallets & Positions
    */
-  public async getPositions(params: idex.RestRequestGetPositions) {
-    return this.get<idex.RestResponseGetPositions>('/positions', params);
+  public async getPositions(params: kuma.RestRequestGetPositions) {
+    return this.get<kuma.RestResponseGetPositions>('/positions', params);
   }
 
   /**
    * Create and submit an order to the matching engine.
    *
-   * - It is recommended to use the {@link idex.OrderType OrderType} enum when creating
+   * - It is recommended to use the {@link kuma.OrderType OrderType} enum when creating
    *   your requests. This provides inline documentation and ensures accuracy of the values.
-   * - Check out the {@link idex.RestRequestOrder RestRequestOrder} type for an overview
+   * - Check out the {@link kuma.RestRequestOrder RestRequestOrder} type for an overview
    *   of the various parameters needed for different order types.
    *
    * ---
@@ -622,7 +622,7 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @returns
-   *  - Returns the {@link idex.KumaOrder KumaOrder} which was created by the request.
+   *  - Returns the {@link kuma.KumaOrder KumaOrder} which was created by the request.
    *
    * ---
    *
@@ -659,22 +659,22 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#createOrder)
-   * @see request  {@link idex.RestRequestOrder RestRequestOrder}
-   * @see response {@link idex.RestResponseGetOrder RestResponseGetOrder}
-   * @see type     {@link idex.KumaOrder KumaOrder}
+   * @see request  {@link kuma.RestRequestOrder RestRequestOrder}
+   * @see response {@link kuma.RestResponseGetOrder RestResponseGetOrder}
+   * @see type     {@link kuma.KumaOrder KumaOrder}
    *
    * @category Orders
    */
-  public async createOrder<T extends idex.OrderType>(
-    params: idex.RestRequestOrder & { type: T },
-    signer: undefined | idex.SignTypedData = this.#signer,
+  public async createOrder<T extends kuma.OrderType>(
+    params: kuma.RestRequestOrder & { type: T },
+    signer: undefined | kuma.SignTypedData = this.#signer,
   ) {
     ensureSigner(signer);
 
     const { chainId, exchangeContractAddress } =
       await this.getContractAndChainId();
 
-    return this.post<idex.RestResponseGetOrder>('/orders', {
+    return this.post<kuma.RestResponseGetOrder>('/orders', {
       parameters: params,
       signature: await signer(
         ...getOrderSignatureTypedData(
@@ -690,9 +690,9 @@ export class RestAuthenticatedClient {
   /**
    * Cancel multiple matching orders using one of the following methods:
    *
-   * - By {@link idex.RestRequestCancelOrdersByWallet.wallet wallet} (params: {@link idex.RestRequestCancelOrdersByWallet RestRequestCancelOrdersByWallet})
-   * - By {@link idex.RestRequestCancelOrdersByMarket.wallet wallet} & {@link idex.RestRequestCancelOrdersByMarket.market market} (params: {@link idex.RestRequestCancelOrdersByMarket RestRequestCancelOrdersByMarket})
-   * - By {@link idex.RestRequestCancelOrdersByMarket.wallet wallet} & {@link idex.RestRequestCancelOrdersByOrderIds.orderIds orderIds} (params: {@link idex.RestRequestCancelOrdersByOrderIds RestRequestCancelOrdersByOrderIds})
+   * - By {@link kuma.RestRequestCancelOrdersByWallet.wallet wallet} (params: {@link kuma.RestRequestCancelOrdersByWallet RestRequestCancelOrdersByWallet})
+   * - By {@link kuma.RestRequestCancelOrdersByMarket.wallet wallet} & {@link kuma.RestRequestCancelOrdersByMarket.market market} (params: {@link kuma.RestRequestCancelOrdersByMarket RestRequestCancelOrdersByMarket})
+   * - By {@link kuma.RestRequestCancelOrdersByMarket.wallet wallet} & {@link kuma.RestRequestCancelOrdersByOrderIds.orderIds orderIds} (params: {@link kuma.RestRequestCancelOrdersByOrderIds RestRequestCancelOrdersByOrderIds})
    *
    * ---
    * **Endpoint Parameters**
@@ -704,7 +704,7 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @returns
-   * - Returns an array of cancelled orders matching {@link idex.KumaCanceledOrder KumaCanceledOrder}
+   * - Returns an array of cancelled orders matching {@link kuma.KumaCanceledOrder KumaCanceledOrder}
    *
    * ---
    *
@@ -727,31 +727,31 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#cancelOrders)
-   * @see request  {@link idex.RestRequestCancelOrders RestRequestCancelOrders}
-   * @see response {@link idex.RestResponseCancelOrders RestResponseCancelOrders}
-   * @see type     {@link idex.KumaCanceledOrder KumaCanceledOrder}
+   * @see request  {@link kuma.RestRequestCancelOrders RestRequestCancelOrders}
+   * @see response {@link kuma.RestResponseCancelOrders RestResponseCancelOrders}
+   * @see type     {@link kuma.KumaCanceledOrder KumaCanceledOrder}
    * @see related  {@link cancelOrder client.cancelOrder}
    *
    * @category Orders
    */
   public async cancelOrders(
-    params: idex.RestRequestCancelOrders,
-    signer: idex.SignTypedData | undefined = this.#signer,
+    params: kuma.RestRequestCancelOrders,
+    signer: kuma.SignTypedData | undefined = this.#signer,
   ) {
     return this.makeCancelOrdersRequest('/orders', params, signer);
   }
 
   private async makeCancelOrdersRequest(
     endpoint: string,
-    params: idex.RestRequestCancelOrders,
-    signer: idex.SignTypedData | undefined = this.#signer,
+    params: kuma.RestRequestCancelOrders,
+    signer: kuma.SignTypedData | undefined = this.#signer,
   ) {
     ensureSigner(signer);
 
     const { chainId, exchangeContractAddress } =
       await this.getContractAndChainId();
 
-    return this.delete<idex.RestResponseCancelOrders>(endpoint, {
+    return this.delete<kuma.RestResponseCancelOrders>(endpoint, {
       parameters: params,
       signature: await signer(
         ...getOrderCancellationSignatureTypedData(
@@ -765,10 +765,10 @@ export class RestAuthenticatedClient {
   }
 
   /**
-   * Returns an order matching your {@link idex.RestRequestGetOrder.orderId orderId} request parameter.
+   * Returns an order matching your {@link kuma.RestRequestGetOrder.orderId orderId} request parameter.
    *
-   * - Can be an order's {@link idex.KumaOrder.orderId orderId}
-   * - To get an order by its {@link idex.KumaOrder.clientOrderId clientOrderId},
+   * - Can be an order's {@link kuma.KumaOrder.orderId orderId}
+   * - To get an order by its {@link kuma.KumaOrder.clientOrderId clientOrderId},
    *   you should prefix the value with `client:`.
    *
    * ---
@@ -781,19 +781,19 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getOrder)
-   * @see request  {@link idex.RestRequestGetOrder RestRequestGetOrder}
-   * @see response {@link idex.RestResponseGetOrder RestResponseGetOrder}
-   * @see type     {@link idex.KumaOrder KumaOrder}
+   * @see request  {@link kuma.RestRequestGetOrder RestRequestGetOrder}
+   * @see response {@link kuma.RestResponseGetOrder RestResponseGetOrder}
+   * @see type     {@link kuma.KumaOrder KumaOrder}
    * @see related  {@link getOrders client.getOrders}
    *
    * @category Orders
    */
-  public async getOrder(params: idex.RestRequestGetOrder) {
-    return this.get<idex.RestResponseGetOrder>('/orders', params);
+  public async getOrder(params: kuma.RestRequestGetOrder) {
+    return this.get<kuma.RestResponseGetOrder>('/orders', params);
   }
 
   /**
-   * Returns information about open and past {@link idex.KumaOrder orders}.
+   * Returns information about open and past {@link kuma.KumaOrder orders}.
    *
    * ---
    * **Endpoint Parameters**
@@ -802,26 +802,26 @@ export class RestAuthenticatedClient {
    * > - **Endpoint Security:**    [User Data](https://api-docs-v1.kuma.bid/#endpointSecurityUserData)
    * > - **API Key Scope:**        [Read](https://api-docs-v1.kuma.bid/#api-keys)
    * > - **Pagination:**
-   * > {@link idex.RestRequestPaginationWithFromId.start start},
-   * > {@link idex.RestRequestPaginationWithFromId.end end},
-   * > {@link idex.RestRequestPaginationWithFromId.limit limit},
-   * > {@link idex.RestRequestPaginationWithFromId.fromId fromId}
+   * > {@link kuma.RestRequestPaginationWithFromId.start start},
+   * > {@link kuma.RestRequestPaginationWithFromId.end end},
+   * > {@link kuma.RestRequestPaginationWithFromId.limit limit},
+   * > {@link kuma.RestRequestPaginationWithFromId.fromId fromId}
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getOrders)
-   * @see request  {@link idex.RestRequestGetOrders RestRequestGetOrders}
-   * @see response {@link idex.RestResponseGetOrders RestResponseGetOrders}
-   * @see type     {@link idex.KumaOrder KumaOrder}
+   * @see request  {@link kuma.RestRequestGetOrders RestRequestGetOrders}
+   * @see response {@link kuma.RestResponseGetOrders RestResponseGetOrders}
+   * @see type     {@link kuma.KumaOrder KumaOrder}
    * @see related  {@link getOrder client.getOrder}
    *
    * @category Orders
    */
-  public async getOrders(params: idex.RestRequestGetOrders) {
-    return this.get<idex.RestResponseGetOrders>('/orders', params);
+  public async getOrders(params: kuma.RestRequestGetOrders) {
+    return this.get<kuma.RestResponseGetOrders>('/orders', params);
   }
 
   /**
-   * Get a single fill from the API by your requests {@link idex.RestRequestGetFill.fillId fillId}
+   * Get a single fill from the API by your requests {@link kuma.RestRequestGetFill.fillId fillId}
    * parameter.
    *
    * ---
@@ -834,15 +834,15 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getFill)
-   * @see request  {@link idex.RestRequestGetFill RestRequestGetFill}
-   * @see response {@link idex.RestResponseGetFill RestResponseGetFill}
-   * @see type     {@link idex.KumaFill KumaFill}
+   * @see request  {@link kuma.RestRequestGetFill RestRequestGetFill}
+   * @see response {@link kuma.RestResponseGetFill RestResponseGetFill}
+   * @see type     {@link kuma.KumaFill KumaFill}
    * @see related  {@link getFills client.getFills}
    *
    * @category Fills & Historical
    */
-  public async getFill(params: idex.RestRequestGetFill) {
-    return this.get<idex.RestResponseGetFill>('/fills', params);
+  public async getFill(params: kuma.RestRequestGetFill) {
+    return this.get<kuma.RestResponseGetFill>('/fills', params);
   }
 
   /**
@@ -855,22 +855,22 @@ export class RestAuthenticatedClient {
    * > - **Endpoint Security:**    [User Data](https://api-docs-v1.kuma.bid/#endpointSecurityUserData)
    * > - **API Key Scope:**        [Read](https://api-docs-v1.kuma.bid/#api-keys)
    * > - **Pagination:**
-   * > {@link idex.RestRequestPaginationWithFromId.start start},
-   * > {@link idex.RestRequestPaginationWithFromId.end end},
-   * > {@link idex.RestRequestPaginationWithFromId.limit limit},
-   * > {@link idex.RestRequestPaginationWithFromId.fromId fromId}
+   * > {@link kuma.RestRequestPaginationWithFromId.start start},
+   * > {@link kuma.RestRequestPaginationWithFromId.end end},
+   * > {@link kuma.RestRequestPaginationWithFromId.limit limit},
+   * > {@link kuma.RestRequestPaginationWithFromId.fromId fromId}
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getFills)
-   * @see request  {@link idex.RestRequestGetFills RestRequestGetFills}
-   * @see response {@link idex.RestResponseGetFills RestResponseGetFills}
-   * @see type     {@link idex.KumaFill KumaFill}
+   * @see request  {@link kuma.RestRequestGetFills RestRequestGetFills}
+   * @see response {@link kuma.RestResponseGetFills RestResponseGetFills}
+   * @see type     {@link kuma.KumaFill KumaFill}
    * @see related  {@link getFill client.getFill}
    *
    * @category Fills & Historical
    */
-  public async getFills(params: idex.RestRequestGetFills) {
-    return this.get<idex.RestResponseGetFills>('/fills', params);
+  public async getFills(params: kuma.RestRequestGetFills) {
+    return this.get<kuma.RestResponseGetFills>('/fills', params);
   }
 
   /**
@@ -879,7 +879,7 @@ export class RestAuthenticatedClient {
    *
    * - Includes the data required to authorize a payout using the `distribute`
    *   function of the escrow contract.
-   * - Throws an error if the {@link idex.KumaPayoutProgram.quantityOwed quantityOwed}
+   * - Throws an error if the {@link kuma.KumaPayoutProgram.quantityOwed quantityOwed}
    *   is `0`
    *
    * ---
@@ -907,14 +907,14 @@ export class RestAuthenticatedClient {
    *
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#authorizePayout)
-   * @see request  {@link idex.RestRequestAuthorizePayout RestRequestAuthorizePayout}
-   * @see response {@link idex.RestResponseAuthorizePayout RestResponseAuthorizePayout}
-   * @see type     {@link idex.KumaPayoutProgramAuthorization KumaPayoutProgramAuthorization}
+   * @see request  {@link kuma.RestRequestAuthorizePayout RestRequestAuthorizePayout}
+   * @see response {@link kuma.RestResponseAuthorizePayout RestResponseAuthorizePayout}
+   * @see type     {@link kuma.KumaPayoutProgramAuthorization KumaPayoutProgramAuthorization}
    *
    * @category Rewards & Payouts
    */
-  public async authorizePayout(params: idex.RestRequestAuthorizePayout) {
-    return this.post<idex.RestResponseAuthorizePayout>('/payouts', params);
+  public async authorizePayout(params: kuma.RestRequestAuthorizePayout) {
+    return this.post<kuma.RestResponseAuthorizePayout>('/payouts', params);
   }
 
   /**
@@ -949,14 +949,14 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getPayouts)
-   * @see request  {@link idex.RestRequestGetPayouts RestRequestGetPayouts}
-   * @see response {@link idex.RestResponseGetPayouts RestResponseGetPayouts}
-   * @see type     {@link idex.KumaPayoutProgram KumaPayoutProgram}
+   * @see request  {@link kuma.RestRequestGetPayouts RestRequestGetPayouts}
+   * @see response {@link kuma.RestResponseGetPayouts RestResponseGetPayouts}
+   * @see type     {@link kuma.KumaPayoutProgram KumaPayoutProgram}
    *
    * @category Rewards & Payouts
    */
-  public async getPayouts(params: idex.RestRequestGetPayouts) {
-    return this.get<idex.RestResponseGetPayouts>('/payouts', params);
+  public async getPayouts(params: kuma.RestRequestGetPayouts) {
+    return this.get<kuma.RestResponseGetPayouts>('/payouts', params);
   }
 
   /**
@@ -972,20 +972,20 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @returns
-   * - Returns a single {@link idex.KumaDeposit KumaDeposit} object matching your parameters.
+   * - Returns a single {@link kuma.KumaDeposit KumaDeposit} object matching your parameters.
    *
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getDeposit)
-   * @see request  {@link idex.RestRequestGetDeposit RestRequestGetDeposit}
-   * @see response {@link idex.RestResponseGetDeposit RestResponseGetDeposit}
-   * @see type     {@link idex.KumaDeposit KumaDeposit}
+   * @see request  {@link kuma.RestRequestGetDeposit RestRequestGetDeposit}
+   * @see response {@link kuma.RestResponseGetDeposit RestResponseGetDeposit}
+   * @see type     {@link kuma.KumaDeposit KumaDeposit}
    * @see related  {@link getDeposits client.getDeposits}
    *
    * @category Deposits & Withdrawals
    */
-  public async getDeposit(params: idex.RestRequestGetDeposit) {
-    return this.get<idex.RestResponseGetDeposit>('/deposits', params);
+  public async getDeposit(params: kuma.RestRequestGetDeposit) {
+    return this.get<kuma.RestResponseGetDeposit>('/deposits', params);
   }
 
   /**
@@ -998,32 +998,32 @@ export class RestAuthenticatedClient {
    * > - **Endpoint Security:**    [User Data](https://api-docs-v1.kuma.bid/#endpointSecurityUserData)
    * > - **API Key Scope:**        [Read](https://api-docs-v1.kuma.bid/#api-keys)
    * > - **Pagination:**
-   * > {@link idex.RestRequestPaginationWithFromId.start start},
-   * > {@link idex.RestRequestPaginationWithFromId.end end},
-   * > {@link idex.RestRequestPaginationWithFromId.limit limit},
-   * > {@link idex.RestRequestPaginationWithFromId.fromId fromId}
+   * > {@link kuma.RestRequestPaginationWithFromId.start start},
+   * > {@link kuma.RestRequestPaginationWithFromId.end end},
+   * > {@link kuma.RestRequestPaginationWithFromId.limit limit},
+   * > {@link kuma.RestRequestPaginationWithFromId.fromId fromId}
    * ---
    *
    * @returns
-   * - Returns an array of {@link idex.KumaDeposit KumaDeposit} objects matching your parameters.
+   * - Returns an array of {@link kuma.KumaDeposit KumaDeposit} objects matching your parameters.
    *
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getDeposits)
-   * @see request  {@link idex.RestRequestGetDeposits RestRequestGetDeposits}
-   * @see response {@link idex.RestResponseGetDeposits RestResponseGetDeposits}
-   * @see type     {@link idex.KumaDeposit KumaDeposit}
+   * @see request  {@link kuma.RestRequestGetDeposits RestRequestGetDeposits}
+   * @see response {@link kuma.RestResponseGetDeposits RestResponseGetDeposits}
+   * @see type     {@link kuma.KumaDeposit KumaDeposit}
    * @see related  {@link getDeposit client.getDeposit}
    *
    * @category Deposits & Withdrawals
    */
-  public async getDeposits(params: idex.RestRequestGetDeposits) {
-    return this.get<idex.RestResponseGetDeposits>('/deposits', params);
+  public async getDeposits(params: kuma.RestRequestGetDeposits) {
+    return this.get<kuma.RestResponseGetDeposits>('/deposits', params);
   }
 
   /**
    * A convenience method that helps capture the appropriate value for the
-   * {@link withdraw} method's {@link idex.RestRequestWithdrawFundsBase.maximumGasFee maximumGasFee}
+   * {@link withdraw} method's {@link kuma.RestRequestWithdrawFundsBase.maximumGasFee maximumGasFee}
    * parameter.
    *
    * - Calls `publicClient.getGasFees` and adds the defined `maximumSlippagePercent` to it.
@@ -1037,7 +1037,7 @@ export class RestAuthenticatedClient {
    * - A value indicating the max gas fee that should be allowed (in USD) based on the
    *   core gas fee with your `maximumSlippagePercent` added.  This value should always
    *   be validated by your application before calling {@link withdraw} method with this
-   *   as your {@link idex.RestRequestWithdrawFundsBase.maximumGasFee maximumGasFee}
+   *   as your {@link kuma.RestRequestWithdrawFundsBase.maximumGasFee maximumGasFee}
    *   parameter.
    *
    * ---
@@ -1086,7 +1086,7 @@ export class RestAuthenticatedClient {
      *
      * @see enum {@link BridgeTarget}
      */
-    bridgeTarget: idex.BridgeTarget;
+    bridgeTarget: kuma.BridgeTarget;
     /**
      *  Maximum slippage percent in pips percent format (ex `0.10000000` for 10%)
      *
@@ -1138,7 +1138,7 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @returns
-   * - Returns an {@link idex.KumaWithdrawal KumaWithdrawal} object providing the details of the
+   * - Returns an {@link kuma.KumaWithdrawal KumaWithdrawal} object providing the details of the
    *   withdrawal.
    *
    * ---
@@ -1171,16 +1171,16 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#withdraw)
-   * @see request  {@link idex.RestRequestWithdrawFunds RestRequestWithdrawFunds}
-   * @see response {@link idex.RestResponseWithdrawFunds RestResponseWithdrawFunds}
-   * @see type     {@link idex.KumaWithdrawal KumaWithdrawal}
+   * @see request  {@link kuma.RestRequestWithdrawFunds RestRequestWithdrawFunds}
+   * @see response {@link kuma.RestResponseWithdrawFunds RestResponseWithdrawFunds}
+   * @see type     {@link kuma.KumaWithdrawal KumaWithdrawal}
    * @see related  {@link calculateWithdrawalMaximumGasFee}
    *
    * @category Deposits & Withdrawals
    */
   public async withdraw(
-    $params: idex.RestRequestWithdrawFundsSDK | idex.RestRequestWithdrawFunds,
-    signer: undefined | idex.SignTypedData = this.#signer,
+    $params: kuma.RestRequestWithdrawFundsSDK | kuma.RestRequestWithdrawFunds,
+    signer: undefined | kuma.SignTypedData = this.#signer,
   ) {
     ensureSigner(signer);
 
@@ -1190,7 +1190,7 @@ export class RestAuthenticatedClient {
       stargateBridgeAdapterContractAddress,
     } = await this.getContractAndChainId();
 
-    let params: idex.RestRequestWithdrawFunds;
+    let params: kuma.RestRequestWithdrawFunds;
 
     if ($params.bridgeTarget) {
       const { bridgeTarget, ...rest } = $params;
@@ -1213,7 +1213,7 @@ export class RestAuthenticatedClient {
       params = $params;
     }
 
-    return this.post<idex.RestResponseWithdrawFunds>('/withdrawals', {
+    return this.post<kuma.RestResponseWithdrawFunds>('/withdrawals', {
       parameters: params,
       signature: await signer(
         ...getWithdrawalSignatureTypedData(
@@ -1239,20 +1239,20 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @returns
-   * - Returns an {@link idex.KumaWithdrawal KumaWithdrawal} object matching your request.
+   * - Returns an {@link kuma.KumaWithdrawal KumaWithdrawal} object matching your request.
    *
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getWithdrawal)
-   * @see request  {@link idex.RestRequestGetWithdrawal RestRequestGetWithdrawal}
-   * @see response {@link idex.RestResponseGetWithdrawal RestResponseGetWithdrawal}
-   * @see type     {@link idex.KumaWithdrawal KumaWithdrawal}
+   * @see request  {@link kuma.RestRequestGetWithdrawal RestRequestGetWithdrawal}
+   * @see response {@link kuma.RestResponseGetWithdrawal RestResponseGetWithdrawal}
+   * @see type     {@link kuma.KumaWithdrawal KumaWithdrawal}
    * @see related  {@link getWithdrawals client.getWithdrawals}
    *
    * @category Deposits & Withdrawals
    */
-  public async getWithdrawal(params: idex.RestRequestGetWithdrawal) {
-    return this.get<idex.RestResponseGetWithdrawal>('/withdrawals', params);
+  public async getWithdrawal(params: kuma.RestRequestGetWithdrawal) {
+    return this.get<kuma.RestResponseGetWithdrawal>('/withdrawals', params);
   }
 
   /**
@@ -1265,31 +1265,31 @@ export class RestAuthenticatedClient {
    * > - **Endpoint Security:**    [User Data](https://api-docs-v1.kuma.bid/#endpointSecurityUserData)
    * > - **API Key Scope:**        [Read](https://api-docs-v1.kuma.bid/#api-keys)
    * > - **Pagination:**
-   * > {@link idex.RestRequestPaginationWithFromId.start start},
-   * > {@link idex.RestRequestPaginationWithFromId.end end},
-   * > {@link idex.RestRequestPaginationWithFromId.limit limit},
-   * > {@link idex.RestRequestPaginationWithFromId.fromId fromId}
+   * > {@link kuma.RestRequestPaginationWithFromId.start start},
+   * > {@link kuma.RestRequestPaginationWithFromId.end end},
+   * > {@link kuma.RestRequestPaginationWithFromId.limit limit},
+   * > {@link kuma.RestRequestPaginationWithFromId.fromId fromId}
    * ---
    *
    * @returns
-   * - Returns an array of {@link idex.KumaWithdrawal KumaWithdrawal} objects matching your request.
+   * - Returns an array of {@link kuma.KumaWithdrawal KumaWithdrawal} objects matching your request.
    *
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getWithdrawals)
-   * @see request  {@link idex.RestRequestGetWithdrawals RestRequestGetWithdrawals}
-   * @see response {@link idex.RestResponseGetWithdrawals RestResponseGetWithdrawals}
-   * @see type     {@link idex.KumaWithdrawal KumaWithdrawal}
+   * @see request  {@link kuma.RestRequestGetWithdrawals RestRequestGetWithdrawals}
+   * @see response {@link kuma.RestResponseGetWithdrawals RestResponseGetWithdrawals}
+   * @see type     {@link kuma.KumaWithdrawal KumaWithdrawal}
    * @see related  {@link getWithdrawal client.getWithdrawal}
    *
    * @category Deposits & Withdrawals
    */
-  public async getWithdrawals(params: idex.RestRequestGetWithdrawals) {
-    return this.get<idex.RestResponseGetWithdrawals>('/withdrawals', params);
+  public async getWithdrawals(params: kuma.RestRequestGetWithdrawals) {
+    return this.get<kuma.RestResponseGetWithdrawals>('/withdrawals', params);
   }
 
   /**
-   * Get Funding Payments for wallet matching {@link idex.KumaFundingPayment KumaFundingPayment}
+   * Get Funding Payments for wallet matching {@link kuma.KumaFundingPayment KumaFundingPayment}
    *
    * ---
    * **Endpoint Parameters**
@@ -1298,20 +1298,20 @@ export class RestAuthenticatedClient {
    * > - **Endpoint Security:**    [User Data](https://api-docs-v1.kuma.bid/#endpointSecurityUserData)
    * > - **API Key Scope:**        [Read](https://api-docs-v1.kuma.bid/#api-keys)
    * > - **Pagination:**
-   * > {@link idex.RestRequestPaginationWithFromId.start start},
-   * > {@link idex.RestRequestPaginationWithFromId.end end},
-   * > {@link idex.RestRequestPaginationWithFromId.limit limit}
+   * > {@link kuma.RestRequestPaginationWithFromId.start start},
+   * > {@link kuma.RestRequestPaginationWithFromId.end end},
+   * > {@link kuma.RestRequestPaginationWithFromId.limit limit}
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getFundingPayments)
-   * @see request  {@link idex.RestRequestGetFundingPayments RestRequestGetFundingPayments}
-   * @see response {@link idex.RestResponseGetFundingPayments RestResponseGetFundingPayments}
-   * @see type     {@link idex.KumaFundingPayment KumaFundingPayment}
+   * @see request  {@link kuma.RestRequestGetFundingPayments RestRequestGetFundingPayments}
+   * @see response {@link kuma.RestResponseGetFundingPayments RestResponseGetFundingPayments}
+   * @see type     {@link kuma.KumaFundingPayment KumaFundingPayment}
    *
    * @category Fills & Historical
    */
-  public async getFundingPayments<R = idex.RestResponseGetFundingPayments>(
-    params: idex.RestRequestGetFundingPayments,
+  public async getFundingPayments<R = kuma.RestResponseGetFundingPayments>(
+    params: kuma.RestRequestGetFundingPayments,
   ) {
     return this.get<R>('/fundingPayments', params);
   }
@@ -1329,17 +1329,17 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @returns
-   * - Returns an {@link idex.KumaInitialMarginFractionOverride KumaInitialMarginFractionOverride}
+   * - Returns an {@link kuma.KumaInitialMarginFractionOverride KumaInitialMarginFractionOverride}
    *   object providing the details of the new  setting.
 
    *
    * @category Wallets & Positions
    */
   public async setInitialMarginFractionOverride<
-    R = idex.RestResponseSetInitialMarginFractionOverride,
+    R = kuma.RestResponseSetInitialMarginFractionOverride,
   >(
-    params: idex.RestRequestSetInitialMarginFractionOverride,
-    signer: idex.SignTypedData | undefined = this.#signer,
+    params: kuma.RestRequestSetInitialMarginFractionOverride,
+    signer: kuma.SignTypedData | undefined = this.#signer,
   ) {
     ensureSigner(signer);
 
@@ -1372,20 +1372,20 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @returns
-   * - Returns an {@link idex.KumaInitialMarginFractionOverride KumaInitialMarginFractionOverride}
+   * - Returns an {@link kuma.KumaInitialMarginFractionOverride KumaInitialMarginFractionOverride}
    *   object providing the details of the setting.
 
    *
    * @category Wallets & Positions
    */
   public async getInitialMarginFractionOverride<
-    R = idex.RestResponseGetInitialMarginFractionOverride,
-  >(params: idex.RestRequestGetInitialMarginFractionOverride) {
+    R = kuma.RestResponseGetInitialMarginFractionOverride,
+  >(params: kuma.RestRequestGetInitialMarginFractionOverride) {
     return this.get<R>('/initialMarginFractionOverride', params);
   }
 
   /**
-   * Get Historical PnL for the wallet / market matching {@link idex.KumaHistoricalProfitLoss KumaHistoricalProfitLoss}
+   * Get Historical PnL for the wallet / market matching {@link kuma.KumaHistoricalProfitLoss KumaHistoricalProfitLoss}
    *
    * ---
    * **Endpoint Parameters**
@@ -1394,20 +1394,20 @@ export class RestAuthenticatedClient {
    * > - **Endpoint Security:**    [User Data](https://api-docs-v1.kuma.bid/#endpointSecurityUserData)
    * > - **API Key Scope:**        [Read](https://api-docs-v1.kuma.bid/#api-keys)
    * > - **Pagination:**
-   * > {@link idex.RestRequestPaginationWithFromId.start start},
-   * > {@link idex.RestRequestPaginationWithFromId.end end},
-   * > {@link idex.RestRequestPaginationWithFromId.limit limit}
+   * > {@link kuma.RestRequestPaginationWithFromId.start start},
+   * > {@link kuma.RestRequestPaginationWithFromId.end end},
+   * > {@link kuma.RestRequestPaginationWithFromId.limit limit}
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getHistoricalPnL)
-   * @see request  {@link idex.RestRequestGetHistoricalPnL RestRequestGetHistoricalPnL}
-   * @see response {@link idex.RestResponseGetHistoricalPnL RestResponseGetHistoricalPnL}
-   * @see type     {@link idex.KumaHistoricalProfitLoss KumaHistoricalProfitLoss}
+   * @see request  {@link kuma.RestRequestGetHistoricalPnL RestRequestGetHistoricalPnL}
+   * @see response {@link kuma.RestResponseGetHistoricalPnL RestResponseGetHistoricalPnL}
+   * @see type     {@link kuma.KumaHistoricalProfitLoss KumaHistoricalProfitLoss}
    *
    * @category Fills & Historical
    */
-  public async getHistoricalPnL(params: idex.RestRequestGetHistoricalPnL) {
-    return this.get<idex.RestResponseGetHistoricalPnL>(
+  public async getHistoricalPnL(params: kuma.RestRequestGetHistoricalPnL) {
+    return this.get<kuma.RestResponseGetHistoricalPnL>(
       '/historicalPnL',
       params,
     );
@@ -1415,7 +1415,7 @@ export class RestAuthenticatedClient {
 
   /**
    * Returns a single-use authentication token as a string for access
-   * to {@link idex.SubscriptionNameAuthenticated authenticated subscriptions}
+   * to {@link kuma.SubscriptionNameAuthenticated authenticated subscriptions}
    * in the WebSocket API.
    *
    * ---
@@ -1428,24 +1428,24 @@ export class RestAuthenticatedClient {
    * ---
    *
    * @returns
-   * - Returns the {@link idex.KumaWebSocketToken.token KumaWebSocketToken.token} string
+   * - Returns the {@link kuma.KumaWebSocketToken.token KumaWebSocketToken.token} string
    *   directly which you can use to authenticate with the WebSocket server.
    *
    * ---
    *
    * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestAuthenticatedClient.html#getWsToken)
-   * @see request  {@link idex.RestRequestGetAuthenticationToken RestRequestGetAuthenticationToken}
-   * @see response {@link idex.RestResponseGetAuthenticationToken RestResponseGetAuthenticationToken}
+   * @see request  {@link kuma.RestRequestGetAuthenticationToken RestRequestGetAuthenticationToken}
+   * @see response {@link kuma.RestResponseGetAuthenticationToken RestResponseGetAuthenticationToken}
    *
    * @category WebSocket
    */
-  public async getWsToken(params: idex.RestRequestGetAuthenticationToken) {
+  public async getWsToken(params: kuma.RestRequestGetAuthenticationToken) {
     if (!params.nonce || !params.wallet) {
       throw new Error('Invalid request, nonce and wallet are required');
     }
 
     return (
-      await this.get<idex.RestResponseGetAuthenticationToken>(
+      await this.get<kuma.RestResponseGetAuthenticationToken>(
         '/wsToken',
         params,
       )
@@ -1466,8 +1466,8 @@ export class RestAuthenticatedClient {
      * orders. Do not provide the public IDs of the stop loss orders themselves.
      */
     cancelConditionalStopLossOrders: async (
-      params: idex.RestRequestCancelOrders,
-      signer: idex.SignTypedData | undefined = this.#signer,
+      params: kuma.RestRequestCancelOrders,
+      signer: kuma.SignTypedData | undefined = this.#signer,
     ) => {
       return this.makeCancelOrdersRequest(
         '/internal/orders/conditionalStopLossOrders',
@@ -1481,8 +1481,8 @@ export class RestAuthenticatedClient {
      * orders. Do not provide the public IDs of the take profit orders themselves.
      */
     cancelConditionalTakeProfitOrders: async (
-      params: idex.RestRequestCancelOrders,
-      signer: idex.SignTypedData | undefined = this.#signer,
+      params: kuma.RestRequestCancelOrders,
+      signer: kuma.SignTypedData | undefined = this.#signer,
     ) => {
       return this.makeCancelOrdersRequest(
         '/internal/orders/conditionalTakeProfitOrders',
@@ -1497,7 +1497,7 @@ export class RestAuthenticatedClient {
       >
     ) => {
       const result = await this.getFundingPayments<
-        Paginated<idex.RestResponseGetFundingPayments>
+        Paginated<kuma.RestResponseGetFundingPayments>
       >(
         {
           ...params,
@@ -1511,19 +1511,19 @@ export class RestAuthenticatedClient {
 
     placeConditionalTpSlOrder: async <
       T extends
-        | typeof idex.OrderType.takeProfitMarket
-        | typeof idex.OrderType.stopLossMarket,
+        | typeof kuma.OrderType.takeProfitMarket
+        | typeof kuma.OrderType.stopLossMarket,
     >(
-      takeProfitOrStopLossOrder: idex.RestRequestOrder & { type: T },
+      takeProfitOrStopLossOrder: kuma.RestRequestOrder & { type: T },
       conditionalParentOrderId: string,
-      signer: undefined | idex.SignTypedData = this.#signer,
-    ): Promise<idex.RestResponseGetOrder & { type: T }> => {
+      signer: undefined | kuma.SignTypedData = this.#signer,
+    ): Promise<kuma.RestResponseGetOrder & { type: T }> => {
       ensureSigner(signer);
 
       const { chainId, exchangeContractAddress } =
         await this.getContractAndChainId();
 
-      return this.post<idex.RestResponseGetOrder & { type: T }>(
+      return this.post<kuma.RestResponseGetOrder & { type: T }>(
         '/internal/orders/conditionalTpSlOrders',
         {
           order: {
@@ -1539,30 +1539,30 @@ export class RestAuthenticatedClient {
           },
           conditionalParentOrderPublicId: conditionalParentOrderId,
         } satisfies {
-          order: idex.RestRequestCreateOrderSigned;
+          order: kuma.RestRequestCreateOrderSigned;
           conditionalParentOrderPublicId: string;
         },
       );
     },
 
-    placeOrderWithConditionalTpSlOrders: async <T extends idex.OrderType>(
+    placeOrderWithConditionalTpSlOrders: async <T extends kuma.OrderType>(
       params: {
-        order: idex.RestRequestOrder & { type: T };
-        conditionalTakeProfitOrder?: idex.RestRequestOrder & {
-          type: typeof idex.OrderType.takeProfitMarket;
+        order: kuma.RestRequestOrder & { type: T };
+        conditionalTakeProfitOrder?: kuma.RestRequestOrder & {
+          type: typeof kuma.OrderType.takeProfitMarket;
         };
-        conditionalStopLossOrder?: idex.RestRequestOrder & {
-          type: typeof idex.OrderType.stopLossMarket;
+        conditionalStopLossOrder?: kuma.RestRequestOrder & {
+          type: typeof kuma.OrderType.stopLossMarket;
         };
       },
-      signer: undefined | idex.SignTypedData = this.#signer,
+      signer: undefined | kuma.SignTypedData = this.#signer,
     ): Promise<{
-      order: idex.RestResponseGetOrder & { type: T };
-      conditionalTakeProfitOrder?: idex.RestResponseGetOrder & {
-        type: typeof idex.OrderType.takeProfitMarket;
+      order: kuma.RestResponseGetOrder & { type: T };
+      conditionalTakeProfitOrder?: kuma.RestResponseGetOrder & {
+        type: typeof kuma.OrderType.takeProfitMarket;
       };
-      conditionalStopLossOrder?: idex.RestResponseGetOrder & {
-        type: typeof idex.OrderType.stopLossMarket;
+      conditionalStopLossOrder?: kuma.RestResponseGetOrder & {
+        type: typeof kuma.OrderType.stopLossMarket;
       };
     }> => {
       ensureSigner(signer);
@@ -1570,7 +1570,7 @@ export class RestAuthenticatedClient {
       const { chainId, exchangeContractAddress } =
         await this.getContractAndChainId();
 
-      const signOrder = (order: idex.RestRequestOrder): Promise<string> =>
+      const signOrder = (order: kuma.RestRequestOrder): Promise<string> =>
         signer(
           ...getOrderSignatureTypedData(
             order,
@@ -1581,12 +1581,12 @@ export class RestAuthenticatedClient {
         );
 
       return this.post<{
-        order: idex.RestResponseGetOrder & { type: T };
-        conditionalTakeProfitOrder?: idex.RestResponseGetOrder & {
-          type: typeof idex.OrderType.takeProfitMarket;
+        order: kuma.RestResponseGetOrder & { type: T };
+        conditionalTakeProfitOrder?: kuma.RestResponseGetOrder & {
+          type: typeof kuma.OrderType.takeProfitMarket;
         };
-        conditionalStopLossOrder?: idex.RestResponseGetOrder & {
-          type: typeof idex.OrderType.stopLossMarket;
+        conditionalStopLossOrder?: kuma.RestResponseGetOrder & {
+          type: typeof kuma.OrderType.stopLossMarket;
         };
       }>('/internal/orders/orderWithConditionalTpSlOrders', {
         order: {
@@ -1608,9 +1608,9 @@ export class RestAuthenticatedClient {
             }
           : undefined,
       } satisfies {
-        order: idex.RestRequestCreateOrderSigned;
-        conditionalTakeProfitOrder?: idex.RestRequestCreateOrderSigned;
-        conditionalStopLossOrder?: idex.RestRequestCreateOrderSigned;
+        order: kuma.RestRequestCreateOrderSigned;
+        conditionalTakeProfitOrder?: kuma.RestRequestCreateOrderSigned;
+        conditionalStopLossOrder?: kuma.RestRequestCreateOrderSigned;
       });
     },
   } as const);
@@ -1841,8 +1841,8 @@ export class RestAuthenticatedClient {
  *   definition so the manual define case is for internal purposes only.
  */
 function ensureSigner(
-  signer: idex.SignTypedData | undefined,
-): asserts signer is idex.SignTypedData {
+  signer: kuma.SignTypedData | undefined,
+): asserts signer is kuma.SignTypedData {
   if (!signer) {
     throw new Error(
       'A "signer" function is required but was not provided during RestAuthenticatedClient constructor or when calling the method',

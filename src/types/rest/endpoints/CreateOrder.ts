@@ -1,4 +1,4 @@
-import type * as idex from '#index';
+import type * as kuma from '#index';
 import type { RestRequestWithSignature } from '#types/utils';
 
 /**
@@ -12,11 +12,11 @@ import type { RestRequestWithSignature } from '#types/utils';
  * @see related {@link RestRequestOrderBaseWithTriggerPrice}
  */
 export interface RestRequestOrderBase
-  extends idex.RestRequestByWallet,
-    idex.DelegatedKeyParams,
-    idex.RestRequestByMarket {
+  extends kuma.RestRequestByWallet,
+    kuma.DelegatedKeyParams,
+    kuma.RestRequestByMarket {
   /**
-   * - When specifying, using the {@link idex.OrderType OrderType} enum is recommended for
+   * - When specifying, using the {@link kuma.OrderType OrderType} enum is recommended for
    *   inline docs and convenience.
    *
    * @example
@@ -31,16 +31,16 @@ export interface RestRequestOrderBase
    * ```
    *
    * @see docs [API Documentation: Order Types](https://api-docs-v1.kuma.bid/#order-types)
-   * @see enum {@link idex.OrderType OrderType}
+   * @see enum {@link kuma.OrderType OrderType}
    */
-  readonly type: idex.OrderType;
+  readonly type: kuma.OrderType;
   /**
-   * - When specifying, using the {@link idex.OrderSide OrderSide} enum is recommended for
+   * - When specifying, using the {@link kuma.OrderSide OrderSide} enum is recommended for
    *   inline docs and convenience.
    *
-   * @see enum {@link idex.OrderSide OrderSide}
+   * @see enum {@link kuma.OrderSide OrderSide}
    */
-  readonly side: idex.OrderSide;
+  readonly side: kuma.OrderSide;
   /**
    * Order quantity in base terms
    */
@@ -55,48 +55,48 @@ export interface RestRequestOrderBase
    */
   readonly reduceOnly?: boolean;
   /**
-   * - When specifying, using the {@link idex.TimeInForce TimeInForce} enum is recommended for inline docs and convenience.
-   * - {@link isLiquidationAcquisitionOnly} limit orders must have `timeInForce` set to {@link idex.TimeInForce.gtx TimeInForce.gtx}
-   * - Defaults to {@link idex.TimeInForce.gtc TimeInForce.gtc}
+   * - When specifying, using the {@link kuma.TimeInForce TimeInForce} enum is recommended for inline docs and convenience.
+   * - {@link isLiquidationAcquisitionOnly} limit orders must have `timeInForce` set to {@link kuma.TimeInForce.gtx TimeInForce.gtx}
+   * - Defaults to {@link kuma.TimeInForce.gtc TimeInForce.gtc}
    *
-   * @see enum {@link idex.TimeInForce TimeInForce}
+   * @see enum {@link kuma.TimeInForce TimeInForce}
    *
    * @defaultValue
    * ```typescript
    * TimeInForce.gtc
    * ```
    */
-  readonly timeInForce?: idex.TimeInForce;
+  readonly timeInForce?: kuma.TimeInForce;
   /**
    * Self-trade prevention policy, see enum links
    *
-   * - When specifying, using the {@link idex.SelfTradePrevention SelfTradePrevention} enum is
+   * - When specifying, using the {@link kuma.SelfTradePrevention SelfTradePrevention} enum is
    *   recommended for inline docs and convenience.
-   * - **MUST** be {@link idex.SelfTradePrevention.cn SelfTradePrevention.cn} if
-   *   {@link idex.TimeInForce.fok TimeInForce.fok} is specified for the {@link timeInForce} property.
-   * - For {@link isLiquidationAcquisitionOnly} {@link idex.OrderType.limit OrderType.limit} orders,
-   *   `selfTradePrevention` must be omitted or its default value of {@link idex.SelfTradePrevention.dc SelfTradePrevention.dc}.
+   * - **MUST** be {@link kuma.SelfTradePrevention.cn SelfTradePrevention.cn} if
+   *   {@link kuma.TimeInForce.fok TimeInForce.fok} is specified for the {@link timeInForce} property.
+   * - For {@link isLiquidationAcquisitionOnly} {@link kuma.OrderType.limit OrderType.limit} orders,
+   *   `selfTradePrevention` must be omitted or its default value of {@link kuma.SelfTradePrevention.dc SelfTradePrevention.dc}.
    *
-   * @see enum {@link idex.SelfTradePrevention SelfTradePrevention}
+   * @see enum {@link kuma.SelfTradePrevention SelfTradePrevention}
    *
    * @defaultValue
    * ```typescript
    * SelfTradePrevention.dc
    * ```
    */
-  readonly selfTradePrevention?: idex.SelfTradePrevention;
+  readonly selfTradePrevention?: kuma.SelfTradePrevention;
   /**
    * **Internal:** Not yet available in production APIs.
    *
-   * - Only applicable to stop {@link idex.OrderType order types}:
-   *   - {@link idex.OrderType.stopLossMarket stopLossMarket}
-   *   - {@link idex.OrderType.stopLossLimit stopLossLimit}
-   *   - {@link idex.OrderType.trailingStopMarket trailingStopMarket}
-   * - Indicates an {@link idex.KumaOrder.orderId orderId} of an open {@link idex.OrderType.limit limit} order
+   * - Only applicable to stop {@link kuma.OrderType order types}:
+   *   - {@link kuma.OrderType.stopLossMarket stopLossMarket}
+   *   - {@link kuma.OrderType.stopLossLimit stopLossLimit}
+   *   - {@link kuma.OrderType.trailingStopMarket trailingStopMarket}
+   * - Indicates an {@link kuma.KumaOrder.orderId orderId} of an open {@link kuma.OrderType.limit limit} order
    *   by the same wallet in the same market that must be filled before the stop becomes active.
    * - Canceling the conditional order also cancels the stop order.
    *
-   * @see enum {@link idex.OrderType OrderType}
+   * @see enum {@link kuma.OrderType OrderType}
    *
    * @alpha
    * @internal
@@ -105,11 +105,11 @@ export interface RestRequestOrderBase
   /**
    * **Internal:** Not yet available in production APIs.
    *
-   * - Only applicable to {@link idex.OrderType.trailingStopMarket trailingStopMarket} order types.
+   * - Only applicable to {@link kuma.OrderType.trailingStopMarket trailingStopMarket} order types.
    * - bounded from `0.1%` to `5%`
    *
    * @see type {@link RestRequestOrderTypeTrailingStopMarket}
-   * @see enum {@link idex.OrderType OrderType}
+   * @see enum {@link kuma.OrderType OrderType}
    *
    * @alpha
    * @internal
@@ -119,34 +119,34 @@ export interface RestRequestOrderBase
    * Only allowed for certain order types mentioned below, omitted otherwise.
    *
    * - Stop loss or take profit price for order types:
-   *   - {@link idex.OrderType.stopLossMarket stopLossMarket}
-   *   - {@link idex.OrderType.stopLossLimit stopLossLimit}
-   *   - {@link idex.OrderType.takeProfitMarket takeProfitMarket}
-   *   - {@link idex.OrderType.takeProfitLimit takeProfitLimit}
+   *   - {@link kuma.OrderType.stopLossMarket stopLossMarket}
+   *   - {@link kuma.OrderType.stopLossLimit stopLossLimit}
+   *   - {@link kuma.OrderType.takeProfitMarket takeProfitMarket}
+   *   - {@link kuma.OrderType.takeProfitLimit takeProfitLimit}
    *
    * - Activation price for order types:
-   *   - {@link idex.OrderType.trailingStopMarket trailingStopMarket}
+   *   - {@link kuma.OrderType.trailingStopMarket trailingStopMarket}
    *
-   * @see enum {@link idex.OrderType OrderType}
+   * @see enum {@link kuma.OrderType OrderType}
    */
   readonly triggerPrice?: string;
   /**
    * Price type for the {@link triggerPrice}
    *
-   * - When specifying, using the {@link idex.TriggerType TriggerType} enum is recommended
+   * - When specifying, using the {@link kuma.TriggerType TriggerType} enum is recommended
    *   for inline docs and convenience.
    * - Required when {@link triggerPrice} is defined.
    *
-   * @see enum {@link idex.TriggerType TriggerType}
+   * @see enum {@link kuma.TriggerType TriggerType}
    */
-  readonly triggerType?: idex.TriggerType;
+  readonly triggerType?: kuma.TriggerType;
   /**
    * Order price in quote terms
    *
-   * - Required for all {@link idex.OrderType.limit limit} order types.
-   * - Omitted for all {@link idex.OrderType.market market}  order types.
+   * - Required for all {@link kuma.OrderType.limit limit} order types.
+   * - Omitted for all {@link kuma.OrderType.market market}  order types.
    *
-   * @see enum {@link idex.OrderType OrderType}
+   * @see enum {@link kuma.OrderType OrderType}
    */
   readonly price?: string | undefined;
   /**
@@ -154,15 +154,15 @@ export interface RestRequestOrderBase
    * channel order not to be executed against the order book.
    *
    * - Wallet placing the order **MUST BE WHITELISTED.** Contact the Kuma team for more details.
-   * - This parameter is only allowed to be `true` on {@link idex.OrderType.market market} and
-   *   {@link idex.OrderType.limit limit} order types.
-   * - In the case of `limit` orders, {@link timeInForce} must be {@link idex.TimeInForce.gtc TimeInForce.gtc}
+   * - This parameter is only allowed to be `true` on {@link kuma.OrderType.market market} and
+   *   {@link kuma.OrderType.limit limit} order types.
+   * - In the case of `limit` orders, {@link timeInForce} must be {@link kuma.TimeInForce.gtc TimeInForce.gtc}
    *   indicating that side channel orders never take liquidity.
    * - {@link reduceOnly} and {@link selfTradePrevention} parameters may be omitted or set to their
    *   default values only.
    *
-   * @see enum {@link idex.OrderType OrderType}
-   * @see enum {@link idex.TimeInForce TimeInForce}
+   * @see enum {@link kuma.OrderType OrderType}
+   * @see enum {@link kuma.TimeInForce TimeInForce}
    */
   readonly isLiquidationAcquisitionOnly?: boolean | undefined;
 }
@@ -180,7 +180,7 @@ interface RestRequestOrderBaseWithTriggerPrice extends RestRequestOrderBase {
   /**
    * @inheritDoc
    */
-  readonly triggerType: idex.TriggerType;
+  readonly triggerType: kuma.TriggerType;
 }
 
 /**
@@ -201,7 +201,7 @@ export interface RestRequestOrderTypeLimit
   /**
    * @inheritDoc
    */
-  readonly type: typeof idex.OrderType.limit;
+  readonly type: typeof kuma.OrderType.limit;
   /**
    * @inheritDoc
    */
@@ -223,7 +223,7 @@ export interface RestRequestOrderTypeLimitLPP
   /**
    * @inheritDoc
    */
-  readonly type: typeof idex.OrderType.limit;
+  readonly type: typeof kuma.OrderType.limit;
   /**
    * @inheritDoc
    */
@@ -231,13 +231,13 @@ export interface RestRequestOrderTypeLimitLPP
   /**
    * @inheritDoc
    */
-  readonly timeInForce: typeof idex.TimeInForce.gtx;
+  readonly timeInForce: typeof kuma.TimeInForce.gtx;
   /**
    * @inheritDoc
    */
   readonly price: string;
   reduceOnly?: false;
-  selfTradePrevention?: typeof idex.SelfTradePrevention.dc;
+  selfTradePrevention?: typeof kuma.SelfTradePrevention.dc;
   callbackRate?: undefined;
   conditionalOrderId?: undefined;
 }
@@ -250,7 +250,7 @@ export interface RestRequestOrderTypeMarket
   /**
    * @inheritDoc
    */
-  readonly type: typeof idex.OrderType.market;
+  readonly type: typeof kuma.OrderType.market;
   price?: undefined;
   timeInForce?: undefined;
   callbackRate?: undefined;
@@ -270,7 +270,7 @@ export interface RestRequestOrderTypeMarketLPP
   /**
    * @inheritDoc
    */
-  readonly type: typeof idex.OrderType.market;
+  readonly type: typeof kuma.OrderType.market;
   /**
    * @inheritDoc
    */
@@ -278,7 +278,7 @@ export interface RestRequestOrderTypeMarketLPP
   price?: undefined;
   timeInForce?: undefined;
   reduceOnly?: false;
-  selfTradePrevention?: typeof idex.SelfTradePrevention.dc;
+  selfTradePrevention?: typeof kuma.SelfTradePrevention.dc;
   callbackRate?: undefined;
   conditionalOrderId?: undefined;
 }
@@ -288,7 +288,7 @@ export interface RestRequestOrderTypeMarketLPP
  */
 export interface RestRequestOrderTypeStopLossMarket
   extends RestRequestOrderBaseWithTriggerPrice {
-  readonly type: typeof idex.OrderType.stopLossMarket;
+  readonly type: typeof kuma.OrderType.stopLossMarket;
   price?: undefined;
   timeInForce?: undefined;
 
@@ -297,19 +297,19 @@ export interface RestRequestOrderTypeStopLossMarket
 }
 
 /**
- * Order request parameters for when the {@link idex.OrderType type} is a {@link idex.OrderType.stopLossLimit stopLossLimit} order.
+ * Order request parameters for when the {@link kuma.OrderType type} is a {@link kuma.OrderType.stopLossLimit stopLossLimit} order.
  *
  * @category Kuma - Create Order
  *
- * @see related {@link idex.OrderType.stopLossLimit OrderType.stopLossLimit}
- * @see enum {@link idex.OrderType OrderType}
+ * @see related {@link kuma.OrderType.stopLossLimit OrderType.stopLossLimit}
+ * @see enum {@link kuma.OrderType OrderType}
  */
 export interface RestRequestOrderTypeStopLossLimit
   extends RestRequestOrderBaseWithTriggerPrice {
   /**
    * @inheritDoc
    */
-  readonly type: typeof idex.OrderType.stopLossLimit;
+  readonly type: typeof kuma.OrderType.stopLossLimit;
   /**
    * @inheritDoc
    */
@@ -326,7 +326,7 @@ export interface RestRequestOrderTypeTakeProfitMarket
   /**
    * @inheritDoc
    */
-  readonly type: typeof idex.OrderType.takeProfitMarket;
+  readonly type: typeof kuma.OrderType.takeProfitMarket;
   price?: undefined;
   timeInForce?: undefined;
   callbackRate?: undefined;
@@ -342,7 +342,7 @@ export interface RestRequestOrderTypeTakeProfitLimit
   /**
    * @inheritDoc
    */
-  readonly type: typeof idex.OrderType.takeProfitLimit;
+  readonly type: typeof kuma.OrderType.takeProfitLimit;
   /**
    * @inheritDoc
    */
@@ -360,7 +360,7 @@ export interface RestRequestOrderTypeTrailingStopMarket
   /**
    * @inheritDoc
    */
-  readonly type: typeof idex.OrderType.trailingStopMarket;
+  readonly type: typeof kuma.OrderType.trailingStopMarket;
   /**
    * @inheritDoc
    */
@@ -375,28 +375,28 @@ export interface RestRequestOrderTypeTrailingStopMarket
  * request. Below is a summary of the various interfaces to match to achieve different orders.
  *
  * - {@link RestRequestOrderTypeLimit}
- *   - parameter {@link RestRequestOrderBase.type type} is {@link idex.OrderType.limit OrderType.limit}
+ *   - parameter {@link RestRequestOrderBase.type type} is {@link kuma.OrderType.limit OrderType.limit}
  * - {@link RestRequestOrderTypeMarket}
- *   - parameter {@link RestRequestOrderBase.type type} is {@link idex.OrderType.market OrderType.market}
+ *   - parameter {@link RestRequestOrderBase.type type} is {@link kuma.OrderType.market OrderType.market}
  * - {@link RestRequestOrderTypeStopLossMarket}
- *   - parameter {@link RestRequestOrderBase.type type} is {@link idex.OrderType.stopLossMarket OrderType.stopLossMarket}
+ *   - parameter {@link RestRequestOrderBase.type type} is {@link kuma.OrderType.stopLossMarket OrderType.stopLossMarket}
  * - {@link RestRequestOrderTypeStopLossLimit}
- *   - parameter {@link RestRequestOrderBase.type type} is {@link idex.OrderType.stopLossLimit OrderType.stopLossLimit}
+ *   - parameter {@link RestRequestOrderBase.type type} is {@link kuma.OrderType.stopLossLimit OrderType.stopLossLimit}
  * - {@link RestRequestOrderTypeTakeProfitMarket}
- *   - parameter {@link RestRequestOrderBase.type type} is {@link idex.OrderType.takeProfitMarket OrderType.takeProfitMarket}
+ *   - parameter {@link RestRequestOrderBase.type type} is {@link kuma.OrderType.takeProfitMarket OrderType.takeProfitMarket}
  * - {@link RestRequestOrderTypeTakeProfitLimit}
- *   - parameter {@link RestRequestOrderBase.type type} is {@link idex.OrderType.takeProfitLimit OrderType.takeProfitLimit}
+ *   - parameter {@link RestRequestOrderBase.type type} is {@link kuma.OrderType.takeProfitLimit OrderType.takeProfitLimit}
  * - {@link RestRequestOrderTypeTrailingStopMarket}
- *   - parameter {@link RestRequestOrderBase.type type} is {@link idex.OrderType.trailingStopMarket OrderType.trailingStopMarket}
+ *   - parameter {@link RestRequestOrderBase.type type} is {@link kuma.OrderType.trailingStopMarket OrderType.trailingStopMarket}
  *
  * Protected Request Order Types:
  *
  * - {@link RestRequestOrderTypeLimitLPP}
  *   - parameter {@link RestRequestOrderBase.isLiquidationAcquisitionOnly isLiquidationAcquisitionOnly} set to `true`
- *   - parameter {@link RestRequestOrderBase.type type} is {@link idex.OrderType.limit OrderType.limit}
+ *   - parameter {@link RestRequestOrderBase.type type} is {@link kuma.OrderType.limit OrderType.limit}
  * - {@link RestRequestOrderTypeMarketLPP}
  *   - parameter {@link RestRequestOrderBase.isLiquidationAcquisitionOnly isLiquidationAcquisitionOnly} set to `true`
- *   - parameter {@link RestRequestOrderBase.type type} is {@link idex.OrderType.market OrderType.market} order
+ *   - parameter {@link RestRequestOrderBase.type type} is {@link kuma.OrderType.market OrderType.market} order
  *
  * @category Kuma - Create Order
  */
@@ -414,7 +414,7 @@ export type RestRequestOrder =
 /**
  * Extract an order by its {@link RestRequestOrderBase.type type} parameter.
  */
-export type RestRequestOrderOfType<T extends idex.OrderType> = Extract<
+export type RestRequestOrderOfType<T extends kuma.OrderType> = Extract<
   RestRequestOrder,
   { type: T }
 >;

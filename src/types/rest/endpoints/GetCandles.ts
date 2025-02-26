@@ -1,4 +1,4 @@
-import type * as idex from '@kumabid/kuma-sdk/types';
+import type * as kuma from '@kumabid/kuma-sdk/types';
 
 /**
  * - Rest Request: `GET /candles`
@@ -15,12 +15,12 @@ import type * as idex from '@kumabid/kuma-sdk/types';
  * @category Kuma - Get Candles
  */
 export interface RestRequestGetCandles
-  extends idex.RestRequestPagination,
-    idex.RestRequestByMarket {
+  extends kuma.RestRequestPagination,
+    kuma.RestRequestByMarket {
   /**
    * Time interval for data
    *
-   * - Use the {@link idex.CandleInterval CandleInterval} enum to get auto completion
+   * - Use the {@link kuma.CandleInterval CandleInterval} enum to get auto completion
    *   and inline documentation on the enumerations.
    *
    * @example
@@ -39,9 +39,9 @@ export interface RestRequestGetCandles
    *
    * ---
    *
-   * @see enum {@link idex.CandleInterval CandleInterval}
+   * @see enum {@link kuma.CandleInterval CandleInterval}
    */
-  interval: idex.CandleInterval;
+  interval: kuma.CandleInterval;
   /**
    * - Max results to return from 1-1000.
    *

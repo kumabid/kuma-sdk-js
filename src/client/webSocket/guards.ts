@@ -17,7 +17,7 @@ import {
  *
  * A type guard that checks if a given value is a subscription object which represents
  * an authenticated subscription. These subscriptions require the `wallet` property
- * (local to idex-sdk only) and require that the `WebSocketClient` was created
+ * (local to kuma-sdk only) and require that the `WebSocketClient` was created
  * with the `websocketAuthTokenFetch` function provided.
  */
 export function isWebSocketAuthenticatedSubscription(

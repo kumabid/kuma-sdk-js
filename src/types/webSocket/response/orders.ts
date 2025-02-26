@@ -1,4 +1,4 @@
-import type * as idex from '#index';
+import type * as kuma from '#index';
 import type {
   MessageEventType,
   OrderSubType,
@@ -64,7 +64,7 @@ export interface KumaOrderEventDataBase
   /**
    * - When `undefined`, indicates the message is a `liquidation` or `deleverage`
    *   where `fills` will include a single  {@link KumaOrderFillEventData.type} of
-   *   {@link idex.FillTypeSystem FillTypeSystem}.
+   *   {@link kuma.FillTypeSystem FillTypeSystem}.
    */
   readonly type?: OrderType;
   /**
@@ -80,7 +80,7 @@ export interface KumaOrderEventDataBase
 }
 
 /**
- * {@link idex.KumaOrderFillEventDataSystem KumaOrderFillEventDataSystem} updates do not
+ * {@link kuma.KumaOrderFillEventDataSystem KumaOrderFillEventDataSystem} updates do not
  * include many of the standard order update properties
  *
  * - Note that these types include a single {@link KumaOrderFillEventDataSystem}.
@@ -118,9 +118,9 @@ export interface KumaOrderEventDataGeneral
   /**
    * order book update sequence number, only included if update type triggers an order book update
    *
-   * @see related {@link idex.KumaOrderBook.sequence}
+   * @see related {@link kuma.KumaOrderBook.sequence}
    */
-  sequence?: idex.KumaOrderBook['sequence'];
+  sequence?: kuma.KumaOrderBook['sequence'];
   readonly fills?: KumaOrderFillEventData[];
 }
 
@@ -130,8 +130,8 @@ export interface KumaOrderEventDataGeneral
  *
  * - In addition to the order types received when getting orders from the REST API, WebSocket update events
  *   may also provide the following `undefined` type indicating a {@link KumaOrderEventDataSystemFill}
- *   where the `fills` property will include a {@link idex.FillTypeSystem FillTypeSystem} fill matching
- *   {@link idex.KumaOrderFillEventDataSystem KumaOrderFillEventDataSystem}
+ *   where the `fills` property will include a {@link kuma.FillTypeSystem FillTypeSystem} fill matching
+ *   {@link kuma.KumaOrderFillEventDataSystem KumaOrderFillEventDataSystem}
  * - It is best to narrow on the `type` property between these types and all the
  *   others as shown in the example below.
  *   - This is made easiest by using the {@link OrderType} enum as shown.
@@ -202,7 +202,7 @@ export interface WebSocketResponseOrderShortBase {
    * @see related {@link KumaOrder.fills}
    * @see inflated {@link KumaOrderEventDataGeneral.fills}
    */
-  F?: idex.WebSocketResponseOrderFillShort[];
+  F?: kuma.WebSocketResponseOrderFillShort[];
   /**
    * @see related {@link KumaOrder.delegatedKey}
    * @see inflated {@link KumaOrderEventDataGeneral.delegatedKey}
@@ -222,7 +222,7 @@ export interface WebSocketResponseOrderShortSystem
    * @inheritDoc
    */
   readonly o?: undefined;
-  readonly F: idex.WebSocketResponseOrderFillShort[];
+  readonly F: kuma.WebSocketResponseOrderFillShort[];
 }
 
 /**
@@ -256,13 +256,13 @@ export interface WebSocketResponseOrderShortGeneral
    */
   T: KumaOrderEventDataGeneral['time'];
   /**
-   * @see enum {@link idex.OrderStateChange}
+   * @see enum {@link kuma.OrderStateChange}
    * @see inflated {@link KumaOrderEventDataGeneral.update}
    */
   x: KumaOrderEventDataGeneral['update'];
   /**
    * @see related {@link KumaOrder.status}
-   * @see enum {@link idex.OrderStatus}
+   * @see enum {@link kuma.OrderStatus}
    * @see inflated {@link KumaOrderEventDataGeneral.status}
    */
   X: KumaOrderEventDataGeneral['status'];

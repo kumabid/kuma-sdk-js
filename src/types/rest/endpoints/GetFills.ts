@@ -1,4 +1,4 @@
-import type * as idex from '#index';
+import type * as kuma from '#index';
 
 /**
  * Request parameters required to retrieve a single {@link KumaFill}.
@@ -8,7 +8,7 @@ import type * as idex from '#index';
  *
  * @category Kuma - Get Fills
  */
-export interface RestRequestGetFill extends idex.RestRequestByWallet {
+export interface RestRequestGetFill extends kuma.RestRequestByWallet {
   /**
    * The `fillId` of the fill to retrieve.
    *
@@ -26,9 +26,9 @@ export interface RestRequestGetFill extends idex.RestRequestByWallet {
  * @category Kuma - Get Fills
  */
 export interface RestRequestGetFills
-  extends idex.RestRequestByWallet,
-    idex.RestRequestByMarketOptional,
-    idex.RestRequestPaginationWithFromId {}
+  extends kuma.RestRequestByWallet,
+    kuma.RestRequestByMarketOptional,
+    kuma.RestRequestPaginationWithFromId {}
 
 /**
  * @category Kuma - Get Fills
@@ -54,9 +54,9 @@ export interface KumaFill {
   /**
    * Orders side, `buy` or `sell`
    *
-   * @see enum {@link idex.OrderSide OrderSide}
+   * @see enum {@link kuma.OrderSide OrderSide}
    */
-  side: idex.OrderSide;
+  side: kuma.OrderSide;
 
   /**
    * Internal ID of fill
@@ -89,9 +89,9 @@ export interface KumaFill {
    *
    * - omitted for `liquidation` actions
    *
-   * @see enum {@link idex.OrderSide OrderSide}
+   * @see enum {@link kuma.OrderSide OrderSide}
    */
-  makerSide?: idex.OrderSide;
+  makerSide?: kuma.OrderSide;
   /**
    * Fill sequence number
    *
@@ -108,15 +108,15 @@ export interface KumaFill {
   /**
    * Whether the fill increases or decreases the notional value of the position, open or close
    *
-   * @see enum {@link idex.FillAction FillAction}
+   * @see enum {@link kuma.FillAction FillAction}
    */
-  action: idex.FillAction;
+  action: kuma.FillAction;
   /**
    * Resulting position side
    *
-   * @see enum {@link idex.PositionSide PositionSide}
+   * @see enum {@link kuma.PositionSide PositionSide}
    */
-  position: idex.PositionSide;
+  position: kuma.PositionSide;
   /**
    * Index price of the market at transaction time, for internal use
    */
@@ -127,15 +127,15 @@ export interface KumaFill {
    *
    * - omitted for liquidation actions
    *
-   * @see enum {@link idex.LiquidityProvider LiquidityProvider}
+   * @see enum {@link kuma.LiquidityProvider LiquidityProvider}
    */
-  liquidity?: idex.LiquidityProvider;
+  liquidity?: kuma.LiquidityProvider;
   /**
    * Fill `type`
    *
-   * @see enum {@link idex.FillType FillType}
+   * @see enum {@link kuma.FillType FillType}
    */
-  type: idex.FillType;
+  type: kuma.FillType;
   /**
    * Transaction id of the trade settlement transaction or `null` if not yet assigned
    */
@@ -143,9 +143,9 @@ export interface KumaFill {
   /**
    * Status of the trade settlement transaction
    *
-   * @see enum {@link idex.ChainTransactionStatus ChainTransactionStatus}
+   * @see enum {@link kuma.ChainTransactionStatus ChainTransactionStatus}
    */
-  txStatus: idex.ChainTransactionStatus;
+  txStatus: kuma.ChainTransactionStatus;
 
   /**
    * When `true`, the order is a liquidation acquisition only fill.

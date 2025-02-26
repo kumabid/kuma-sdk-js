@@ -37,7 +37,7 @@ const config = {
   sidebarLinks: {
     'Kuma Home': 'https://kuma.bid',
     'Kuma API Docs': 'https://api-docs-v1.kuma.bid',
-    'SDK GitHub': 'https://github.com/idexio/idex-sdk-js',
+    'SDK GitHub': 'https://github.com/kumabid/kuma-sdk-js',
     'Exchange Sandbox': 'https://exchange-sandbox.kuma.bid',
   },
   visibilityFilters: {
