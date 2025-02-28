@@ -29,12 +29,6 @@ export interface KumaExchange {
    */
   exchangeContractAddress: string;
   /**
-   * [Stargate](https://stargateprotocol.gitbook.io/) bridge adapter contract address
-   *
-   * - Used to define the `stargateBridgeAdapterAddress` properties in withdrawals
-   */
-  stargateBridgeAdapterContractAddress: string;
-  /**
    * [XCHAIN](https://xchain.io/) chain identifier
    */
   chainId: number;
@@ -42,6 +36,16 @@ export interface KumaExchange {
    * Address of the quote asset (USDC) on [XCHAIN](https://xchain.io/)
    */
   quoteTokenAddress: string;
+  /**
+   * Address of the Kuma OFT adapter contract address for USDC.e on Berachain
+   */
+  kumaOFTAdapterContractAddress: string;
+  /**
+   * [Stargate](https://stargateprotocol.gitbook.io/) bridge adapter contract address
+   *
+   * - Used to define the `stargateBridgeAdapterAddress` properties in withdrawals
+   */
+  stargateBridgeAdapterContractAddress: string;
   /** Total open interest across all markets in USD */
   totalOpenInterest: string;
   /** Total exchange trading volume for the trailing 24 hours in USD */
