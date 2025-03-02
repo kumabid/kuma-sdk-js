@@ -33,7 +33,7 @@ export type IndexPriceStructOutput = [
   price: bigint,
 ] & { baseAssetSymbol: string; timestampInMs: bigint; price: bigint };
 
-export interface IDEXIndexAndOraclePriceAdapterInterface extends Interface {
+export interface KumaIndexAndOraclePriceAdapterInterface extends Interface {
   getFunction(
     nameOrSignature:
       | 'EIP_712_TYPE_HASH_INDEX_PRICE'
@@ -164,11 +164,11 @@ export interface IDEXIndexAndOraclePriceAdapterInterface extends Interface {
   ): Result;
 }
 
-export interface IDEXIndexAndOraclePriceAdapter extends BaseContract {
-  connect(runner?: ContractRunner | null): IDEXIndexAndOraclePriceAdapter;
+export interface KumaIndexAndOraclePriceAdapter extends BaseContract {
+  connect(runner?: ContractRunner | null): KumaIndexAndOraclePriceAdapter;
   waitForDeployment(): Promise<this>;
 
-  interface: IDEXIndexAndOraclePriceAdapterInterface;
+  interface: KumaIndexAndOraclePriceAdapterInterface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,

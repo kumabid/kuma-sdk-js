@@ -11,7 +11,7 @@ import {
   sanitizeSearchParams,
 } from '#utils';
 
-import type * as idex from '#index';
+import type * as kuma from '#index';
 import type { AnyObj } from '#types/utils';
 import type {
   AxiosInstance,
@@ -22,15 +22,15 @@ import type {
 /**
  * Public REST API client options
  *
- * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/interfaces/RestPublicClientOptions.html)
+ * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/interfaces/RestPublicClientOptions.html)
  * @see client   {@link RestPublicClient}
  *
  * @category API Clients
  */
 export interface RestPublicClientOptions {
   /**
-   * - If `true`, the client will point to [IDEX Sandbox API](https;//api-docs-v4.idex.io/#sandbox)
-   * - If not provided or `false`, will point to the IDEX Production API.
+   * - If `true`, the client will point to [Kuma Sandbox API](https;//api-docs-v1.kuma.bid/#sandbox)
+   * - If not provided or `false`, will point to the Kuma Production API.
    *
    * @defaultValue
    * ```typescript
@@ -60,17 +60,17 @@ export interface RestPublicClientOptions {
 }
 
 /**
- * The {@link RestPublicClient} is used to make public requests to the IDEX API.  It does not require
+ * The {@link RestPublicClient} is used to make public requests to the Kuma API.  It does not require
  * any special options to access.
  *
  * - An {@link RestPublicClientOptions.apiKey apiKey} can be provided
  *   to increase rate limits.
  * - Optionally, a {@link RestPublicClientOptions.sandbox sandbox} option can
- *   be set to `true` in order to point to the IDEX Sandbox API.
+ *   be set to `true` in order to point to the Kuma Sandbox API.
  *
  * @example
  * ```typescript
- * import { RestPublicClient } from '@idexio/idex-sdk';
+ * import { RestPublicClient } from '@kumabid/kuma-sdk';
  *
  * // works without any options
  * // const publicClient = new RestPublicClient();
@@ -89,38 +89,38 @@ export interface RestPublicClientOptions {
  *
  * ---
  *
- * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html)
+ * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html)
  * @see options  {@link RestPublicClientOptions}
  *
  * @category API Clients
- * @category IDEX - Get Time
- * @category IDEX - Get Ping
- * @category IDEX - Get Exchange
- * @category IDEX - Get Gas Fees
- * @category IDEX - Get Markets
- * @category IDEX - Get Tickers
- * @category IDEX - Get Candles
- * @category IDEX - Get Trades
- * @category IDEX - Get OrderBook
- * @category IDEX - Get Liquidations
- * @category IDEX - Get Funding Rates
+ * @category Kuma - Get Time
+ * @category Kuma - Get Ping
+ * @category Kuma - Get Exchange
+ * @category Kuma - Get Gas Fees
+ * @category Kuma - Get Markets
+ * @category Kuma - Get Tickers
+ * @category Kuma - Get Candles
+ * @category Kuma - Get Trades
+ * @category Kuma - Get OrderBook
+ * @category Kuma - Get Liquidations
+ * @category Kuma - Get Funding Rates
  */
 export class RestPublicClient {
   /**
-   * The {@link RestPublicClient} is used to make public requests to the IDEX API.  It does not require
+   * The {@link RestPublicClient} is used to make public requests to the Kuma API.  It does not require
    * any special options to access.
    *
    * - An {@link RestPublicClientOptions.apiKey apiKey} can be provided
    *   to increase rate limits.
    * - Optionally, a {@link RestPublicClientOptions.sandbox sandbox} option can
-   *   be set to `true` in order to point to the IDEX Sandbox API.
+   *   be set to `true` in order to point to the Kuma Sandbox API.
    *
    * @param options
    *  Options for configuring the RestPublicClient
    *
    * @example
    * ```typescript
-   * import { RestPublicClient } from '@idexio/idex-sdk';
+   * import { RestPublicClient } from '@kumabid/kuma-sdk';
    *
    * // works without any options
    * // const publicClient = new RestPublicClient();
@@ -139,7 +139,7 @@ export class RestPublicClient {
    *
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html)
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html)
    * @see options  {@link RestPublicClientOptions}
    *
    * @category Constructor
@@ -198,18 +198,18 @@ export class RestPublicClient {
    * ---
    * **Endpoint Parameters**
    *
-   * > - **HTTP Request**:      `GET /v4/ping`
-   * > - **Endpoint Security:** [Public](https://api-docs-v4.idex.io/#endpointSecurityPublic)
-   * > - **API Key Scope:**     [None](https://api-docs-v4.idex.io/#api-keys)
+   * > - **HTTP Request**:      `GET /v1/ping`
+   * > - **Endpoint Security:** [Public](https://api-docs-v1.kuma.bid/#endpointSecurityPublic)
+   * > - **API Key Scope:**     [None](https://api-docs-v1.kuma.bid/#api-keys)
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html#ping)
-   * @see response {@link idex.RestResponseGetPing RestResponseGetPing}
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html#ping)
+   * @see response {@link kuma.RestResponseGetPing RestResponseGetPing}
    *
    * @category Utility
    */
   public async ping() {
-    return this.get<idex.RestResponseGetPing>('/ping');
+    return this.get<kuma.RestResponseGetPing>('/ping');
   }
 
   /**
@@ -218,20 +218,20 @@ export class RestPublicClient {
    * ---
    * **Endpoint Parameters**
    *
-   * > - **HTTP Request**:      `GET /v4/time`
-   * > - **Endpoint Security:** [Public](https://api-docs-v4.idex.io/#endpointSecurityPublic)
-   * > - **API Key Scope:**     [None](https://api-docs-v4.idex.io/#api-keys)
+   * > - **HTTP Request**:      `GET /v1/time`
+   * > - **Endpoint Security:** [Public](https://api-docs-v1.kuma.bid/#endpointSecurityPublic)
+   * > - **API Key Scope:**     [None](https://api-docs-v1.kuma.bid/#api-keys)
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html#getServerTime)
-   * @see response {@link idex.RestResponseGetTime RestResponseGetTime}
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html#getServerTime)
+   * @see response {@link kuma.RestResponseGetTime RestResponseGetTime}
    *
    * @returns An object with the current server time in `UTC`
    *
    * @category Utility
    */
   public async getServerTime() {
-    return this.get<idex.RestResponseGetTime>('/time');
+    return this.get<kuma.RestResponseGetTime>('/time');
   }
 
   /**
@@ -243,24 +243,24 @@ export class RestPublicClient {
    * ---
    * **Endpoint Parameters**
    *
-   * > - **HTTP Request**:      `GET /v4/exchange`
-   * > - **Endpoint Security:** [Public](https://api-docs-v4.idex.io/#endpointSecurityPublic)
-   * > - **API Key Scope:**     [None](https://api-docs-v4.idex.io/#api-keys)
+   * > - **HTTP Request**:      `GET /v1/exchange`
+   * > - **Endpoint Security:** [Public](https://api-docs-v1.kuma.bid/#endpointSecurityPublic)
+   * > - **API Key Scope:**     [None](https://api-docs-v1.kuma.bid/#api-keys)
    * ---
    *
    * @returns
-   * > An object matching {@link idex.IDEXExchange IDEXExchange} providing properties relating
+   * > An object matching {@link kuma.KumaExchange KumaExchange} providing properties relating
    * to the exchange.
    *
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html#getExchange)
-   * @see response {@link idex.RestResponseGetExchange RestResponseGetExchange}
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html#getExchange)
+   * @see response {@link kuma.RestResponseGetExchange RestResponseGetExchange}
    *
    * @category Exchange Data
    */
   public async getExchange() {
-    return this.get<idex.RestResponseGetExchange>('/exchange');
+    return this.get<kuma.RestResponseGetExchange>('/exchange');
   }
 
   /**
@@ -269,19 +269,19 @@ export class RestPublicClient {
    * ---
    * **Endpoint Parameters**
    *
-   * > - **HTTP Request**:      `GET /v4/gasFees`
-   * > - **Endpoint Security:** [Public](https://api-docs-v4.idex.io/#endpointSecurityPublic)
-   * > - **API Key Scope:**     [None](https://api-docs-v4.idex.io/#api-keys)
+   * > - **HTTP Request**:      `GET /v1/gasFees`
+   * > - **Endpoint Security:** [Public](https://api-docs-v1.kuma.bid/#endpointSecurityPublic)
+   * > - **API Key Scope:**     [None](https://api-docs-v1.kuma.bid/#api-keys)
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html#getGasFees)
-   * @see response {@link idex.RestResponseGetGasFees RestResponseGetGasFees}
-   * @see type     {@link idex.IDEXGasFees IDEXGasFees}
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html#getGasFees)
+   * @see response {@link kuma.RestResponseGetGasFees RestResponseGetGasFees}
+   * @see type     {@link kuma.KumaGasFees KumaGasFees}
    *
    * @category Exchange Data
    */
   public async getGasFees() {
-    return this.get<idex.RestResponseGetGasFees>('/gasFees');
+    return this.get<kuma.RestResponseGetGasFees>('/gasFees');
   }
 
   /**
@@ -293,20 +293,20 @@ export class RestPublicClient {
    * ---
    * **Endpoint Parameters**
    *
-   * > - **HTTP Request**:      `GET /v4/markets`
-   * > - **Endpoint Security:** [Public](https://api-docs-v4.idex.io/#endpointSecurityPublic)
-   * > - **API Key Scope:**     [None](https://api-docs-v4.idex.io/#api-keys)
+   * > - **HTTP Request**:      `GET /v1/markets`
+   * > - **Endpoint Security:** [Public](https://api-docs-v1.kuma.bid/#endpointSecurityPublic)
+   * > - **API Key Scope:**     [None](https://api-docs-v1.kuma.bid/#api-keys)
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html#getMarkets)
-   * @see request  {@link idex.RestRequestGetMarkets RestRequestGetMarkets}
-   * @see response {@link idex.RestResponseGetMarkets RestResponseGetMarkets}
-   * @see type     {@link idex.IDEXMarket IDEXMarket}
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html#getMarkets)
+   * @see request  {@link kuma.RestRequestGetMarkets RestRequestGetMarkets}
+   * @see response {@link kuma.RestResponseGetMarkets RestResponseGetMarkets}
+   * @see type     {@link kuma.KumaMarket KumaMarket}
    *
    * @category Exchange Data
    */
-  public async getMarkets(params?: idex.RestRequestGetMarkets) {
-    return this.get<idex.RestResponseGetMarkets>('/markets', params);
+  public async getMarkets(params?: kuma.RestRequestGetMarkets) {
+    return this.get<kuma.RestResponseGetMarkets>('/markets', params);
   }
 
   // Market Data Endpoints
@@ -320,26 +320,26 @@ export class RestPublicClient {
    * ---
    * **Endpoint Parameters**
    *
-   * > - **HTTP Request**:      `GET /v4/tickers`
-   * > - **Endpoint Security:** [Public](https://api-docs-v4.idex.io/#endpointSecurityPublic)
-   * > - **API Key Scope:**     [None](https://api-docs-v4.idex.io/#api-keys)
+   * > - **HTTP Request**:      `GET /v1/tickers`
+   * > - **Endpoint Security:** [Public](https://api-docs-v1.kuma.bid/#endpointSecurityPublic)
+   * > - **API Key Scope:**     [None](https://api-docs-v1.kuma.bid/#api-keys)
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html#getTickers)
-   * @see request  {@link idex.RestRequestGetTickers RestRequestGetTickers}
-   * @see response {@link idex.RestResponseGetTickers RestResponseGetTickers}
-   * @see type     {@link idex.IDEXTicker IDEXTicker}
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html#getTickers)
+   * @see request  {@link kuma.RestRequestGetTickers RestRequestGetTickers}
+   * @see response {@link kuma.RestResponseGetTickers RestResponseGetTickers}
+   * @see type     {@link kuma.KumaTicker KumaTicker}
    *
    * @category Exchange Data
    */
-  public async getTickers(params?: idex.RestRequestGetTickers) {
-    return this.get<idex.RestResponseGetTickers>('/tickers', params);
+  public async getTickers(params?: kuma.RestRequestGetTickers) {
+    return this.get<kuma.RestResponseGetTickers>('/tickers', params);
   }
 
   /**
    * Returns candle (OHLCV) data for a market
    *
-   * - For autocompletion and inline documentation, use the {@link idex.CandleInterval CandleInterval} enum
+   * - For autocompletion and inline documentation, use the {@link kuma.CandleInterval CandleInterval} enum
    *   when specifying the `interval` property (see example)
    * - **TIP:** Automatic candle updates are avilable via the WebSocket API candles subscription,
    *   which is both faster and more efficient than polling this endpoint!
@@ -347,18 +347,18 @@ export class RestPublicClient {
    * ---
    * **Endpoint Parameters**
    *
-   * > - **HTTP Request**:      `GET /v4/candles`
-   * > - **Endpoint Security:** [Public](https://api-docs-v4.idex.io/#endpointSecurityPublic)
-   * > - **API Key Scope:**     [None](https://api-docs-v4.idex.io/#api-keys)
+   * > - **HTTP Request**:      `GET /v1/candles`
+   * > - **Endpoint Security:** [Public](https://api-docs-v1.kuma.bid/#endpointSecurityPublic)
+   * > - **API Key Scope:**     [None](https://api-docs-v1.kuma.bid/#api-keys)
    * > - **Pagination:**
-   * > {@link idex.RestRequestPagination.start start},
-   * > {@link idex.RestRequestPagination.end end},
-   * > {@link idex.RestRequestPagination.limit limit}
+   * > {@link kuma.RestRequestPagination.start start},
+   * > {@link kuma.RestRequestPagination.end end},
+   * > {@link kuma.RestRequestPagination.limit limit}
    * ---
    *
    * @example
    * ```typescript
-   * import { RestPublicClient, CandleInterval } from '@idexio/idex-sdk';
+   * import { RestPublicClient, CandleInterval } from '@kumabid/kuma-sdk';
    *
    * const client = new RestPublicClient();
    *
@@ -372,15 +372,15 @@ export class RestPublicClient {
    *
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html#getCandles)
-   * @see request  {@link idex.RestRequestGetCandles RestRequestGetCandles}
-   * @see response {@link idex.RestResponseGetCandles RestResponseGetCandles}
-   * @see type     {@link idex.IDEXCandle IDEXCandle}
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html#getCandles)
+   * @see request  {@link kuma.RestRequestGetCandles RestRequestGetCandles}
+   * @see response {@link kuma.RestResponseGetCandles RestResponseGetCandles}
+   * @see type     {@link kuma.KumaCandle KumaCandle}
    *
    * @category Exchange Data
    */
-  public async getCandles(params: idex.RestRequestGetCandles) {
-    return this.get<idex.RestResponseGetCandles>('/candles', params);
+  public async getCandles(params: kuma.RestRequestGetCandles) {
+    return this.get<kuma.RestResponseGetCandles>('/candles', params);
   }
 
   /**
@@ -388,32 +388,32 @@ export class RestPublicClient {
    *
    * - **TIP:** Automatic trades updates are available via the WebSocket API trades subscription,
    *   which is both faster and more efficient than polling this endpoint!
-   * - **TIP:** There is also a call on the authenticated client {@link idex.RestAuthenticatedClient.getFills RestAuthenticatedClient.getFills}
-   *   which includes the {@link idex.IDEXFill IDEXFill} properties, if required.
+   * - **TIP:** There is also a call on the authenticated client {@link kuma.RestAuthenticatedClient.getFills RestAuthenticatedClient.getFills}
+   *   which includes the {@link kuma.KumaFill KumaFill} properties, if required.
    *
    * ---
    * **Endpoint Parameters**
    *
-   * > - **HTTP Request**:      `GET /v4/trades`
-   * > - **Endpoint Security:** [Public](https://api-docs-v4.idex.io/#endpointSecurityPublic)
-   * > - **API Key Scope:**     [None](https://api-docs-v4.idex.io/#api-keys)
+   * > - **HTTP Request**:      `GET /v1/trades`
+   * > - **Endpoint Security:** [Public](https://api-docs-v1.kuma.bid/#endpointSecurityPublic)
+   * > - **API Key Scope:**     [None](https://api-docs-v1.kuma.bid/#api-keys)
    * > - **Pagination:**
-   * > {@link idex.RestRequestPaginationWithFromId.start start},
-   * > {@link idex.RestRequestPaginationWithFromId.end end},
-   * > {@link idex.RestRequestPaginationWithFromId.limit limit},
-   * > {@link idex.RestRequestPaginationWithFromId.fromId fromId}
+   * > {@link kuma.RestRequestPaginationWithFromId.start start},
+   * > {@link kuma.RestRequestPaginationWithFromId.end end},
+   * > {@link kuma.RestRequestPaginationWithFromId.limit limit},
+   * > {@link kuma.RestRequestPaginationWithFromId.fromId fromId}
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html#getTrades)
-   * @see request  {@link idex.RestRequestGetTrades RestRequestGetTrades}
-   * @see response {@link idex.RestResponseGetTrades RestResponseGetTrades}
-   * @see type     {@link idex.IDEXTrade IDEXTrade}
-   * @see related  {@link idex.RestAuthenticatedClient.getFills RestAuthenticatedClient.getFills}
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html#getTrades)
+   * @see request  {@link kuma.RestRequestGetTrades RestRequestGetTrades}
+   * @see response {@link kuma.RestResponseGetTrades RestResponseGetTrades}
+   * @see type     {@link kuma.KumaTrade KumaTrade}
+   * @see related  {@link kuma.RestAuthenticatedClient.getFills RestAuthenticatedClient.getFills}
    *
    * @category Exchange Data
    */
-  public async getTrades(params: idex.RestRequestGetTrades) {
-    return this.get<idex.RestResponseGetTrades>('/trades', params);
+  public async getTrades(params: kuma.RestRequestGetTrades) {
+    return this.get<kuma.RestResponseGetTrades>('/trades', params);
   }
 
   /**
@@ -422,25 +422,25 @@ export class RestPublicClient {
    * ---
    * **Endpoint Parameters**
    *
-   * > - **HTTP Request**:      `GET /v4/orderbook`
-   * > - **Endpoint Security:** [Public](https://api-docs-v4.idex.io/#endpointSecurityPublic)
-   * > - **API Key Scope:**     [None](https://api-docs-v4.idex.io/#api-keys)
+   * > - **HTTP Request**:      `GET /v1/orderbook`
+   * > - **Endpoint Security:** [Public](https://api-docs-v1.kuma.bid/#endpointSecurityPublic)
+   * > - **API Key Scope:**     [None](https://api-docs-v1.kuma.bid/#api-keys)
    * > - **Pagination:**
-   * > {@link idex.RestRequestPagination.limit limit},
+   * > {@link kuma.RestRequestPagination.limit limit},
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html#getOrderBookLevel1)
-   * @see request  {@link idex.RestRequestGetOrderBookLevel1 RestRequestGetOrderBookLevel1}
-   * @see response {@link idex.RestResponseGetOrderBookLevel1 RestResponseGetOrderBookLevel1}
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html#getOrderBookLevel1)
+   * @see request  {@link kuma.RestRequestGetOrderBookLevel1 RestRequestGetOrderBookLevel1}
+   * @see response {@link kuma.RestResponseGetOrderBookLevel1 RestResponseGetOrderBookLevel1}
    * @see related  {@link getOrderBookLevel2 client.getOrderBookLevel2}
    *
    * @category Exchange Data
    */
-  public async getOrderBookLevel1(params: idex.RestRequestGetOrderBookLevel1) {
-    return this.get<idex.RestResponseGetOrderBookLevel1>('/orderbook', {
+  public async getOrderBookLevel1(params: kuma.RestRequestGetOrderBookLevel1) {
+    return this.get<kuma.RestResponseGetOrderBookLevel1>('/orderbook', {
       ...params,
       level: 1,
-    } satisfies idex.RestRequestGetOrderBookLevel1);
+    } satisfies kuma.RestRequestGetOrderBookLevel1);
   }
 
   /**
@@ -449,25 +449,25 @@ export class RestPublicClient {
    * ---
    * **Endpoint Parameters**
    *
-   * > - **HTTP Request**:      `GET /v4/orderbook`
-   * > - **Endpoint Security:** [Public](https://api-docs-v4.idex.io/#endpointSecurityPublic)
-   * > - **API Key Scope:**     [None](https://api-docs-v4.idex.io/#api-keys)
+   * > - **HTTP Request**:      `GET /v1/orderbook`
+   * > - **Endpoint Security:** [Public](https://api-docs-v1.kuma.bid/#endpointSecurityPublic)
+   * > - **API Key Scope:**     [None](https://api-docs-v1.kuma.bid/#api-keys)
    * > - **Pagination:**
-   * > {@link idex.RestRequestPagination.limit limit},
+   * > {@link kuma.RestRequestPagination.limit limit},
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html#getOrderBookLevel2)
-   * @see request  {@link idex.RestRequestGetOrderBookLevel2 RestRequestGetOrderBookLevel2}
-   * @see response {@link idex.RestResponseGetOrderBookLevel2 RestResponseGetOrderBookLevel2}
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html#getOrderBookLevel2)
+   * @see request  {@link kuma.RestRequestGetOrderBookLevel2 RestRequestGetOrderBookLevel2}
+   * @see response {@link kuma.RestResponseGetOrderBookLevel2 RestResponseGetOrderBookLevel2}
    * @see related  {@link getOrderBookLevel1 client.getOrderBookLevel1}
    *
    * @category Exchange Data
    */
-  public async getOrderBookLevel2(params: idex.RestRequestGetOrderBookLevel2) {
-    return this.get<idex.RestResponseGetOrderBookLevel2>('/orderbook', {
+  public async getOrderBookLevel2(params: kuma.RestRequestGetOrderBookLevel2) {
+    return this.get<kuma.RestResponseGetOrderBookLevel2>('/orderbook', {
       ...params,
       level: 2,
-    } satisfies idex.RestRequestGetOrderBookLevel2);
+    } satisfies kuma.RestRequestGetOrderBookLevel2);
   }
 
   /**
@@ -476,25 +476,25 @@ export class RestPublicClient {
    * ---
    * **Endpoint Parameters**
    *
-   * > - **HTTP Request**:      `GET /v4/liquidations`
-   * > - **Endpoint Security:** [Public](https://api-docs-v4.idex.io/#endpointSecurityPublic)
-   * > - **API Key Scope:**     [None](https://api-docs-v4.idex.io/#api-keys)
+   * > - **HTTP Request**:      `GET /v1/liquidations`
+   * > - **Endpoint Security:** [Public](https://api-docs-v1.kuma.bid/#endpointSecurityPublic)
+   * > - **API Key Scope:**     [None](https://api-docs-v1.kuma.bid/#api-keys)
    * > - **Pagination:**
-   * > {@link idex.RestRequestPaginationWithFromId.start start},
-   * > {@link idex.RestRequestPaginationWithFromId.end end},
-   * > {@link idex.RestRequestPaginationWithFromId.limit limit},
-   * > {@link idex.RestRequestPaginationWithFromId.fromId fromId}
+   * > {@link kuma.RestRequestPaginationWithFromId.start start},
+   * > {@link kuma.RestRequestPaginationWithFromId.end end},
+   * > {@link kuma.RestRequestPaginationWithFromId.limit limit},
+   * > {@link kuma.RestRequestPaginationWithFromId.fromId fromId}
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html#getLiquidations)
-   * @see request  {@link idex.RestRequestGetLiquidations RestRequestGetLiquidations}
-   * @see response {@link idex.RestResponseGetLiquidations RestResponseGetLiquidations}
-   * @see type     {@link idex.IDEXLiquidation IDEXLiquidation}
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html#getLiquidations)
+   * @see request  {@link kuma.RestRequestGetLiquidations RestRequestGetLiquidations}
+   * @see response {@link kuma.RestResponseGetLiquidations RestResponseGetLiquidations}
+   * @see type     {@link kuma.KumaLiquidation KumaLiquidation}
    *
    * @category Exchange Data
    */
-  public async getLiquidations(params: idex.RestRequestGetLiquidations) {
-    return this.get<idex.RestResponseGetLiquidations>('/liquidations', params);
+  public async getLiquidations(params: kuma.RestRequestGetLiquidations) {
+    return this.get<kuma.RestResponseGetLiquidations>('/liquidations', params);
   }
 
   /**
@@ -503,24 +503,24 @@ export class RestPublicClient {
    * ---
    * **Endpoint Parameters**
    *
-   * > - **HTTP Request**:      `GET /v4/fundingRates`
-   * > - **Endpoint Security:** [Public](https://api-docs-v4.idex.io/#endpointSecurityPublic)
-   * > - **API Key Scope:**     [None](https://api-docs-v4.idex.io/#api-keys)
+   * > - **HTTP Request**:      `GET /v1/fundingRates`
+   * > - **Endpoint Security:** [Public](https://api-docs-v1.kuma.bid/#endpointSecurityPublic)
+   * > - **API Key Scope:**     [None](https://api-docs-v1.kuma.bid/#api-keys)
    * > - **Pagination:**
-   * > {@link idex.RestRequestPaginationWithFromId.start start},
-   * > {@link idex.RestRequestPaginationWithFromId.end end},
-   * > {@link idex.RestRequestPaginationWithFromId.limit limit}
+   * > {@link kuma.RestRequestPaginationWithFromId.start start},
+   * > {@link kuma.RestRequestPaginationWithFromId.end end},
+   * > {@link kuma.RestRequestPaginationWithFromId.limit limit}
    * ---
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/RestPublicClient.html#getFundingRates)
-   * @see request  {@link idex.RestRequestGetFundingRates RestRequestGetFundingRates}
-   * @see response {@link idex.RestResponseGetFundingRates RestResponseGetFundingRates}
-   * @see type     {@link idex.IDEXFundingRate IDEXFundingRate}
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/RestPublicClient.html#getFundingRates)
+   * @see request  {@link kuma.RestRequestGetFundingRates RestRequestGetFundingRates}
+   * @see response {@link kuma.RestResponseGetFundingRates RestResponseGetFundingRates}
+   * @see type     {@link kuma.KumaFundingRate KumaFundingRate}
    *
    * @category Exchange Data
    */
-  public async getFundingRates(params: idex.RestRequestGetFundingRates) {
-    return this.get<idex.RestResponseGetFundingRates>('/fundingRates', params);
+  public async getFundingRates(params: kuma.RestRequestGetFundingRates) {
+    return this.get<kuma.RestResponseGetFundingRates>('/fundingRates', params);
   }
 
   /**
@@ -568,8 +568,8 @@ export class RestPublicClient {
       url: endpoint,
     } satisfies AxiosRequestConfig;
 
-    if (this.#realtime && !request.headers['IDEX-Web-Client']) {
-      request.headers['IDEX-Web-Client'] = 'realtime-sdk';
+    if (this.#realtime && !request.headers['KUMA-Web-Client']) {
+      request.headers['KUMA-Web-Client'] = 'realtime-sdk';
     }
 
     return this.axios<R>(request);
@@ -582,7 +582,7 @@ export class RestPublicClient {
 
 const EXCHANGE_RESPONSE_CACHE_DURATION_MS = 300_000;
 
-let cachedExchangeResponse: idex.RestResponseGetExchange | undefined;
+let cachedExchangeResponse: kuma.RestResponseGetExchange | undefined;
 let exchangeResponseCachedAt = 0;
 
 export async function getExchangeAddressAndChainFromApi(

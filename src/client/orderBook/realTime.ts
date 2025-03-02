@@ -20,14 +20,14 @@ import {
   SubscriptionNamePublic,
 } from '#types/enums/index';
 
-import type * as idex from '#index';
-import type { IDEXMessageEvent } from '#types/webSocket/request/subscriptions';
+import type * as kuma from '#index';
+import type { KumaMessageEvent } from '#types/webSocket/request/subscriptions';
 import type { ErrorEvent } from 'ws';
 
 /**
  * Orderbook Client Options
  *
- * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/OrderBookRealTimeClient.html)
+ * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/OrderBookRealTimeClient.html)
  */
 export interface OrderBookRealTimeClientOptions {
   /**
@@ -39,25 +39,25 @@ export interface OrderBookRealTimeClientOptions {
    */
   sandbox?: boolean;
   /**
-   * Optionally provide a custom url to use when making IDEX REST API requests.
+   * Optionally provide a custom url to use when making Kuma REST API requests.
    *
    * - Will override the {@link sandbox} option when given.
    */
   baseRestApiURL?: string;
   /**
    * Optionally provide a custom WebSocket API URL to use when connecting to
-   * the IDEX WebSocket API.
+   * the Kuma WebSocket API.
    *
    * - Will override the {@link sandbox} option when given.
    */
   baseWebSocketURL?: string;
-  marketsResponse?: idex.RestResponseGetMarkets;
+  marketsResponse?: kuma.RestResponseGetMarkets;
 }
 
 /**
  * Orderbook API client
  *
- * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/OrderBookRealTimeClient.html)
+ * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/OrderBookRealTimeClient.html)
  * @see options  {@link OrderBookRealTimeClientOptions}
  * @see events   {@link OrderBookRealTimeClientEvent}
  *
@@ -69,14 +69,14 @@ export interface OrderBookRealTimeClientOptions {
  *  OrderBookRealTimeClient,
  *  OrderBookRealTimeClientEvent,
  *  type L2OrderBook
- * } from '@idexio/idex-sdk';
+ * } from '@kumabid/kuma-sdk';
  *
  * // type is just to show it will match the form string-string.
  * // actual type will be typed as string
  * type MarketSymbol = `${string}-${string}`;
  *
  * const LIMIT = 10;
- * const MARKETS: MarketSymbol[] = ['IDEX-USD'];
+ * const MARKETS: MarketSymbol[] = ['Kuma-USD'];
  *
  * const client = new OrderBookRealTimeClient({
  *   sandbox: true,
@@ -112,11 +112,11 @@ export class OrderBookRealTimeClient extends EventEmitter<{
   [OrderBookRealTimeClientEvent.l2]: [market: string];
   [OrderBookRealTimeClientEvent.sync]: [market: string];
 }> {
-  private readonly l1OrderBooks: Map<string, idex.L1OrderBook> = new Map();
+  private readonly l1OrderBooks: Map<string, kuma.L1OrderBook> = new Map();
 
-  private readonly l2OrderBooks: Map<string, idex.L2OrderBook> = new Map();
+  private readonly l2OrderBooks: Map<string, kuma.L2OrderBook> = new Map();
 
-  private readonly l2OrderBookUpdates = new Map<string, idex.L2OrderBook[]>();
+  private readonly l2OrderBookUpdates = new Map<string, kuma.L2OrderBook[]>();
 
   private markets: string[] = [];
 
@@ -133,7 +133,7 @@ export class OrderBookRealTimeClient extends EventEmitter<{
 
   public readonly public: RestPublicClient;
 
-  private marketsResponse: idex.RestResponseGetMarkets | undefined = undefined;
+  private marketsResponse: kuma.RestResponseGetMarkets | undefined = undefined;
 
   private isTickSizesLoaded = false;
 
@@ -146,7 +146,7 @@ export class OrderBookRealTimeClient extends EventEmitter<{
   private webSocketResponseListenerConfigured = false;
 
   /**
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/OrderBookRealTimeClient.html)
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/OrderBookRealTimeClient.html)
    *
    * @category Constructor
    */
@@ -176,13 +176,13 @@ export class OrderBookRealTimeClient extends EventEmitter<{
   /**
    * Loads initial state from REST API and begin listening to orderbook updates.
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/OrderBookRealTimeClient.html#start)
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/OrderBookRealTimeClient.html#start)
    *
    * @category Connection Management
    */
   public async start(
     markets: string[],
-    marketsResponse?: idex.RestResponseGetMarkets,
+    marketsResponse?: kuma.RestResponseGetMarkets,
   ) {
     this.markets = markets;
     if (marketsResponse) {
@@ -197,7 +197,7 @@ export class OrderBookRealTimeClient extends EventEmitter<{
    * Stop the order book client, and reset internal state.
    * Call this when you are no longer using the client, to release memory and network resources.
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/OrderBookRealTimeClient.html#stop)
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/OrderBookRealTimeClient.html#stop)
    *
    * @category Connection Management
    */
@@ -226,7 +226,7 @@ export class OrderBookRealTimeClient extends EventEmitter<{
    * @param tickSize
    *   Minimum price movement expressed in pips (10^-8), defaults to market setting
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/OrderBookRealTimeClient.html#getOrderBookL1)
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/OrderBookRealTimeClient.html#getOrderBookL1)
    * @see response {@link RestResponseGetOrderBookLevel1}
    *
    * @category Requests
@@ -247,7 +247,7 @@ export class OrderBookRealTimeClient extends EventEmitter<{
    * @param tickSize
    *   Minimum price movement expressed in pips (10^-8), defaults to market setting
    *
-   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/classes/OrderBookRealTimeClient.html#getOrderBookL2)
+   * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/classes/OrderBookRealTimeClient.html#getOrderBookL2)
    * @see response {@link RestResponseGetOrderBookLevel2}
    *
    * @category Requests
@@ -266,7 +266,7 @@ export class OrderBookRealTimeClient extends EventEmitter<{
   private async getOrderBooks(
     market: string,
     tickSize?: bigint | undefined,
-  ): Promise<{ l1: idex.L1OrderBook; l2: idex.L2OrderBook }> {
+  ): Promise<{ l1: kuma.L1OrderBook; l2: kuma.L2OrderBook }> {
     const appliedTickSize =
       tickSize || this.tickSizesByMarket.get(market) || BigInt(1);
 
@@ -476,7 +476,7 @@ export class OrderBookRealTimeClient extends EventEmitter<{
     );
   }
 
-  private async webSocketHandleResponse(response: IDEXMessageEvent) {
+  private async webSocketHandleResponse(response: KumaMessageEvent) {
     if (response.type === MessageEventType.l2orderbook) {
       // accumulate L2 updates to be applied
       const updatesToApply =

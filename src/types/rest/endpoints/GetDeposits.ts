@@ -1,14 +1,14 @@
-import type * as idex from '#index';
+import type * as kuma from '#index';
 
 /**
  * Get Deposit Request
  *
- * @see request  {@link idex.RestAuthenticatedClient.getDeposit RestAuthenticatedClient.getDeposit}
+ * @see request  {@link kuma.RestAuthenticatedClient.getDeposit RestAuthenticatedClient.getDeposit}
  * @see related  {@link RestRequestGetDeposits}
  *
- * @category IDEX - Get Deposits
+ * @category Kuma - Get Deposits
  */
-export interface RestRequestGetDeposit extends idex.RestRequestByWallet {
+export interface RestRequestGetDeposit extends kuma.RestRequestByWallet {
   /**
    * Single `depositId` to return
    */
@@ -16,32 +16,32 @@ export interface RestRequestGetDeposit extends idex.RestRequestByWallet {
 }
 
 /**
- * Get {@link IDEXDeposit Deposits}
+ * Get {@link KumaDeposit Deposits}
  *
- * @see typedoc  [Reference Documentation](https://sdk-js-docs-v4.idex.io/interfaces/RestRequestGetDeposits.html)
- * @see request  {@link idex.RestAuthenticatedClient.getDeposits RestAuthenticatedClient.getDeposits}
+ * @see typedoc  [Reference Documentation](https://sdk-js-docs-v1.kuma.bid/interfaces/RestRequestGetDeposits.html)
+ * @see request  {@link kuma.RestAuthenticatedClient.getDeposits RestAuthenticatedClient.getDeposits}
  * @see related  {@link RestRequestGetDeposit}
  *
- * @category IDEX - Get Deposits
+ * @category Kuma - Get Deposits
  */
 export interface RestRequestGetDeposits
-  extends idex.RestRequestByWallet,
-    idex.RestRequestPaginationWithFromId {
+  extends kuma.RestRequestByWallet,
+    kuma.RestRequestPaginationWithFromId {
   depositId?: undefined;
 }
 
 /**
  * An object which represents a single deposit on the exchange.
  *
- * @see request  {@link idex.RestAuthenticatedClient.getDeposit RestAuthenticatedClient.getDeposit}
- * @see request  {@link idex.RestAuthenticatedClient.getDeposits RestAuthenticatedClient.getDeposits}
+ * @see request  {@link kuma.RestAuthenticatedClient.getDeposit RestAuthenticatedClient.getDeposit}
+ * @see request  {@link kuma.RestAuthenticatedClient.getDeposits RestAuthenticatedClient.getDeposits}
  *
- * @category IDEX - Get Deposits
- * @category IDEX Interfaces
+ * @category Kuma - Get Deposits
+ * @category Kuma Interfaces
  */
-export interface IDEXDeposit {
+export interface KumaDeposit {
   /**
-   * IDEX-issued deposit identifier
+   * Kuma-issued deposit identifier
    */
   depositId: string;
   /**
@@ -55,12 +55,12 @@ export interface IDEXDeposit {
   /**
    * Bridge and source chain of the deposit
    *
-   * - Use the {@link idex.BridgeTarget BridgeTarget} enum to narrow
+   * - Use the {@link kuma.BridgeTarget BridgeTarget} enum to narrow
    *   all possible values when needed.
    *
-   * @see enum {@link idex.BridgeTarget BridgeTarget}
+   * @see enum {@link kuma.BridgeTarget BridgeTarget}
    */
-  bridgeSource: idex.DepositSource;
+  bridgeSource: kuma.DepositSource;
   /**
    * Timestamp of crediting the deposited funds on the exchange
    */
@@ -79,23 +79,23 @@ export interface IDEXDeposit {
 /**
  * Returns of a single deposit by the `depositId` provided.
  *
- * @see type    {@link IDEXDeposit}
+ * @see type    {@link KumaDeposit}
  * @see request {@link RestRequestGetDeposit}
  * @see related {@link RestResponseGetDeposits}
  * @see related {@link RestRequestGetDeposits}
  *
- * @category IDEX - Get Deposits
+ * @category Kuma - Get Deposits
  */
-export type RestResponseGetDeposit = IDEXDeposit;
+export type RestResponseGetDeposit = KumaDeposit;
 
 /**
  * Returns deposits according to the request parameters.
  *
- * @see type    {@link IDEXDeposit}
+ * @see type    {@link KumaDeposit}
  * @see request {@link RestRequestGetDeposits}
  * @see related {@link RestResponseGetDeposit}
  * @see related {@link RestRequestGetDeposit}
  *
- * @category IDEX - Get Deposits
+ * @category Kuma - Get Deposits
  */
-export type RestResponseGetDeposits = IDEXDeposit[];
+export type RestResponseGetDeposits = KumaDeposit[];

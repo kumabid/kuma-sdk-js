@@ -1,7 +1,7 @@
 import {
-  type IDEXSubscribeTypeAuthenticated,
-  type IDEXSubscribeTypePublic,
-  type IDEXSubscribeType,
+  type KumaSubscribeTypeAuthenticated,
+  type KumaSubscribeTypePublic,
+  type KumaSubscribeType,
   type WebSocketClientOptionsPublicOnly,
   type WebSocketClientOptionsWithAPIKey,
   type WebSocketClientOptionsWithFetch,
@@ -17,16 +17,16 @@ import {
  *
  * A type guard that checks if a given value is a subscription object which represents
  * an authenticated subscription. These subscriptions require the `wallet` property
- * (local to idex-sdk only) and require that the `WebSocketClient` was created
+ * (local to kuma-sdk only) and require that the `WebSocketClient` was created
  * with the `websocketAuthTokenFetch` function provided.
  */
 export function isWebSocketAuthenticatedSubscription(
   subscription:
-    | IDEXSubscribeType
+    | KumaSubscribeType
     | WebSocketSubscriptionShortNameAuthenticated
     | WebSocketSubscriptionShortNamePublic,
   walletAuthAvailable: boolean = false,
-): subscription is IDEXSubscribeTypeAuthenticated {
+): subscription is KumaSubscribeTypeAuthenticated {
   const name =
     typeof subscription === 'string' ? subscription : subscription?.name;
 
@@ -41,10 +41,10 @@ export function isWebSocketAuthenticatedSubscription(
 
 export function isWebSocketPublicSubscription(
   subscription:
-    | IDEXSubscribeType
+    | KumaSubscribeType
     | WebSocketSubscriptionShortNamePublic
     | WebSocketSubscriptionShortNameAuthenticated,
-): subscription is IDEXSubscribeTypePublic {
+): subscription is KumaSubscribeTypePublic {
   const name =
     typeof subscription === 'string' ? subscription : subscription?.name;
 

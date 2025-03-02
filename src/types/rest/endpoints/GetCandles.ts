@@ -1,4 +1,4 @@
-import type * as idex from '@idexio/idex-sdk/types';
+import type * as kuma from '@kumabid/kuma-sdk/types';
 
 /**
  * - Rest Request: `GET /candles`
@@ -10,22 +10,22 @@ import type * as idex from '@idexio/idex-sdk/types';
  * GET candles request interface
  *
  * @see response {@link RestResponseGetCandles}
- * @see type {@link IDEXCandle}
+ * @see type {@link KumaCandle}
  *
- * @category IDEX - Get Candles
+ * @category Kuma - Get Candles
  */
 export interface RestRequestGetCandles
-  extends idex.RestRequestPagination,
-    idex.RestRequestByMarket {
+  extends kuma.RestRequestPagination,
+    kuma.RestRequestByMarket {
   /**
    * Time interval for data
    *
-   * - Use the {@link idex.CandleInterval CandleInterval} enum to get auto completion
+   * - Use the {@link kuma.CandleInterval CandleInterval} enum to get auto completion
    *   and inline documentation on the enumerations.
    *
    * @example
    * ```typescript
-   * import { RestPublicClient, CandleInterval } from '@idexio/idex-sdk';
+   * import { RestPublicClient, CandleInterval } from '@kumabid/kuma-sdk';
    *
    * const client = new RestPublicClient();
    *
@@ -39,9 +39,9 @@ export interface RestRequestGetCandles
    *
    * ---
    *
-   * @see enum {@link idex.CandleInterval CandleInterval}
+   * @see enum {@link kuma.CandleInterval CandleInterval}
    */
-  interval: idex.CandleInterval;
+  interval: kuma.CandleInterval;
   /**
    * - Max results to return from 1-1000.
    *
@@ -65,10 +65,10 @@ export interface RestRequestGetCandles
  * @see request {@link RestRequestGetCandles}
  * @see response {@link RestResponseGetCandles}
  *
- * @category IDEX - Get Candles
- * @category IDEX Interfaces
+ * @category Kuma - Get Candles
+ * @category Kuma Interfaces
  */
-export interface IDEXCandle {
+export interface KumaCandle {
   /**
    * Time of the start of the interval
    */
@@ -112,9 +112,9 @@ export interface IDEXCandle {
  *
  * - Candles only include values from `fills`: not `liquidations` or `ADLs`.
  *
- * @see type {@link IDEXCandle}
+ * @see type {@link KumaCandle}
  * @see request {@link RestRequestGetCandles}
  *
- * @category IDEX - Get Candles
+ * @category Kuma - Get Candles
  */
-export type RestResponseGetCandles = IDEXCandle[];
+export type RestResponseGetCandles = KumaCandle[];

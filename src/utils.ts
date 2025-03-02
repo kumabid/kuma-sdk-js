@@ -51,11 +51,11 @@ export function createDelegatedKeyWalletAndNonce(): readonly [
 }
 
 /**
- * - For use internally at IDEX and may be removed or changed anywhere it is implemented without warning.
+ * - For use internally at Kuma and may be removed or changed anywhere it is implemented without warning.
  *
  * @internal
  */
-export const INTERNAL_SYMBOL = Symbol.for('@idex/internal');
+export const INTERNAL_SYMBOL = Symbol.for('@kuma/internal');
 
 /**
  * Asserts that the provided nonce is a uuid v1 string.
@@ -120,7 +120,7 @@ export function deriveBaseURL(options: {
 
   const baseURL =
     overrideBaseURL ??
-    constants.URLS[sandbox ? 'sandbox' : 'production'].v4[api];
+    constants.URLS[sandbox ? 'sandbox' : 'production'].v1[api];
 
   if (!baseURL) {
     throw new Error(
