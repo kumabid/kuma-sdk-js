@@ -28,8 +28,8 @@ export const StargateV2Config = {
       evmChainId: 94524,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#xchain
       layerZeroEndpointId: 30291,
-      // TODO Not yet in Stargate V2 docs
-      stargateOFTAddress: '0x17d65bF79E77B6Ab21d8a0afed3bC8657d8Ee0B2',
+      // KumaOFTUSDC
+      stargateOFTAddress: '0xD56768A659D4c7e2a0a18b6D96F1f74Ce3566b97',
       tokenDecimals: 6,
     },
     [StargateV2Target.STARGATE_BERACHAIN]: {
@@ -41,10 +41,11 @@ export const StargateV2Config = {
       evmChainId: 80094,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#bera
       layerZeroEndpointId: 30362,
-      // TODO Not yet in Stargate V2 docs
-      stargateOFTAddress: '0xAF54BE5B6eEc24d6BFACf1cce4eaF680A8239398',
+      // KumaOFTAdapterUSDC
+      stargateOFTAddress: '0x7145855835924a9dFa80f42749E1FF96Eed26BC1',
       // TODO Not yet in LZ docs
       tokenDecimals: 6,
+      usdcAddress: '0x549943e04f40284185054145c6E4e9568C1D3241',
     },
   } as const,
   testnet: {
@@ -57,7 +58,7 @@ export const StargateV2Config = {
       evmChainId: 64002,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#xchain-testnet
       layerZeroEndpointId: 40282,
-      // TODO Not a Stargate contract
+      // KumaOFTUSDC
       stargateOFTAddress: '0x54a04EfABCBd81A0488E4a9Ad22264E04A48329B',
       tokenDecimals: 6,
     },
@@ -70,10 +71,10 @@ export const StargateV2Config = {
       evmChainId: 80000,
       // TODO Not yet in LZ docs
       layerZeroEndpointId: 40346,
-      // TODO Not a Stargate contract
+      // KumaOFTAdapterUSDC
       stargateOFTAddress: '0xb1487b8C46e68e15ed3B01cC5AA4A1E6aFEfd6d4',
-      // TODO Not yet in LZ docs
       tokenDecimals: 6,
+      usdcAddress: '0x015fd589F4f1A33ce4487E12714e1B15129c9329',
     },
   } as const,
 } as const;
