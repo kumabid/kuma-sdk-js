@@ -98,7 +98,7 @@
     "build": "npm-run-all clean build:tsc build:abis",
     "build:abis": "cp -rf abis dist/abis/",
     "build:tsc": "yarn exec tsc",
-    "build:typechain": "typechain --target ethers-v6 --out-dir src/contracts 'ABI/*.json'",
+    "build:typechain": "typechain --target ethers-v6 --out-dir src/typechain-types 'abis/*.json'",
     "clean": "rimraf dist",
     "clean:docs": "rimraf docs",
     "lint": "eslint --cache 'src/**/*.ts'",
