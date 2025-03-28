@@ -47,6 +47,36 @@ export const StargateV2Config = {
       tokenDecimals: 6,
       usdcAddress: '0x549943e04f40284185054145c6E4e9568C1D3241',
     },
+    [StargateV2Target.STARGATE_ARBITRUM]: {
+      target: StargateV2Target.STARGATE_ARBITRUM,
+      isSupported: true,
+      get isBridgeTarget() {
+        return isValidBridgeTarget(this.target);
+      },
+      // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#arbitrum
+      evmChainId: 42161,
+      // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/mainnet-contracts#arbitrum
+      layerZeroEndpointId: 30110,
+      stargateOFTAddress: '0xe8CDF27AcD73a434D661C84887215F7598e7d0d3',
+      // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/v2-supported-networks-and-assets#arbitrum
+      tokenDecimals: 6,
+      usdcAddress: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+    },
+    [StargateV2Target.STARGATE_ETHEREUM]: {
+      target: StargateV2Target.STARGATE_ETHEREUM,
+      isSupported: true,
+      get isBridgeTarget() {
+        return isValidBridgeTarget(this.target);
+      },
+      // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#ethereum
+      evmChainId: 1,
+      // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/mainnet-contracts#ethereum
+      layerZeroEndpointId: 30101,
+      stargateOFTAddress: '0xc026395860Db2d07ee33e05fE50ed7bD583189C7',
+      // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/v2-supported-networks-and-assets#ethereum
+      tokenDecimals: 6,
+      usdcAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+    },
   } as const,
   testnet: {
     [StargateV2Target.XCHAIN_XCHAIN]: {
@@ -76,6 +106,34 @@ export const StargateV2Config = {
       tokenDecimals: 6,
       usdcAddress: '0x015fd589F4f1A33ce4487E12714e1B15129c9329',
     },
+    [StargateV2Target.STARGATE_ARBITRUM]: {
+      target: StargateV2Target.STARGATE_ARBITRUM,
+      isSupported: true,
+      get isBridgeTarget() {
+        return isValidBridgeTarget(this.target);
+      },
+      // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#arbitrum-sepolia
+      evmChainId: 421614,
+      // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/testnet-contracts#arbitrum-sepolia-testnet
+      layerZeroEndpointId: 40231,
+      stargateOFTAddress: '0x3253a335E7bFfB4790Aa4C25C4250d206E9b9773',
+      tokenDecimals: 6,
+      usdcAddress: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+    },
+    [StargateV2Target.STARGATE_ETHEREUM]: {
+      target: StargateV2Target.STARGATE_ETHEREUM,
+      isSupported: true,
+      get isBridgeTarget() {
+        return isValidBridgeTarget(this.target);
+      },
+      // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#sepolia
+      evmChainId: 11155111,
+      // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/testnet-contracts#sepolia
+      layerZeroEndpointId: 40161,
+      stargateOFTAddress: '0x4985b8fcEA3659FD801a5b857dA1D00e985863F0',
+      tokenDecimals: 6,
+      usdcAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',
+    },
   } as const,
 } as const;
 
@@ -84,11 +142,23 @@ export const StargateV2ConfigByLayerZeroEndpointId = {
     [StargateV2Config.mainnet[StargateV2Target.STARGATE_BERACHAIN]
       .layerZeroEndpointId]:
       StargateV2Config.mainnet[StargateV2Target.STARGATE_BERACHAIN],
+    [StargateV2Config.mainnet[StargateV2Target.STARGATE_ARBITRUM]
+      .layerZeroEndpointId]:
+      StargateV2Config.mainnet[StargateV2Target.STARGATE_ARBITRUM],
+    [StargateV2Config.mainnet[StargateV2Target.STARGATE_ETHEREUM]
+      .layerZeroEndpointId]:
+      StargateV2Config.mainnet[StargateV2Target.STARGATE_ETHEREUM],
   },
   testnet: {
     [StargateV2Config.testnet[StargateV2Target.STARGATE_BERACHAIN]
       .layerZeroEndpointId]:
       StargateV2Config.testnet[StargateV2Target.STARGATE_BERACHAIN],
+    [StargateV2Config.testnet[StargateV2Target.STARGATE_ARBITRUM]
+      .layerZeroEndpointId]:
+      StargateV2Config.testnet[StargateV2Target.STARGATE_ARBITRUM],
+    [StargateV2Config.testnet[StargateV2Target.STARGATE_ETHEREUM]
+      .layerZeroEndpointId]:
+      StargateV2Config.testnet[StargateV2Target.STARGATE_ETHEREUM],
   },
 };
 

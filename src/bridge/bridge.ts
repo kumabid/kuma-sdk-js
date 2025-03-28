@@ -4,7 +4,8 @@ import { ethers } from 'ethers';
 import { assetUnitsToDecimal, decimalToPip, multiplyPips } from '#pipmath';
 
 import { getExchangeAddressAndChainFromApi } from '#client/rest/public';
-import { ExchangeLayerZeroAdapter__factory } from '#typechain-types/factories/ExchangeLayerZeroAdapter__factory';
+import { ExchangeLayerZeroAdapter_v2__factory } from '#typechain-types/factories/ExchangeLayerZeroAdapter_v2__factory';
+import { KumaStargateForwarder_v1__factory } from '#typechain-types/factories/KumaStargateForwarder_v1__factory';
 import { IOFT__factory } from '#typechain-types/index';
 import { StargateV2Target } from '#types/enums/request';
 
@@ -150,7 +151,7 @@ export function getEncodedWithdrawalPayloadForBridgeTarget(
 export async function depositViaStargateV2(
   sourceStargateTarget: StargateV2Target,
   parameters: {
-    exchangeStargateV2AdapterAddress?: string;
+    exchangeLayerZeroAdapterAddress?: string;
     minimumWithdrawQuantityMultiplierInPips: bigint;
     quantityInAssetUnits: bigint;
     wallet: string;
@@ -224,7 +225,7 @@ export async function depositViaStargateV2(
 export async function estimateStargateV2DepositGasFeeAndQuantityDeliveredInAssetUnits(
   sourceStargateTarget: StargateV2Target,
   parameters: {
-    exchangeStargateV2AdapterAddress?: string;
+    exchangeLayerZeroAdapterAddress?: string;
     minimumWithdrawQuantityMultiplierInPips: bigint;
     quantityInAssetUnits: bigint;
     wallet: string;
@@ -256,7 +257,7 @@ export async function estimateStargateV2DepositGasFeeAndQuantityDeliveredInAsset
 async function getStargateV2DepositSendParamAndSourceConfig(
   sourceStargateTarget: StargateV2Target,
   parameters: {
-    exchangeStargateV2AdapterAddress?: string;
+    exchangeLayerZeroAdapterAddress?: string;
     minimumWithdrawQuantityMultiplierInPips: bigint;
     quantityInAssetUnits: bigint;
     wallet: string;
@@ -279,11 +280,11 @@ async function getStargateV2DepositSendParamAndSourceConfig(
   }
 
   const [{ stargateBridgeAdapterContractAddress }] =
-    parameters.exchangeStargateV2AdapterAddress ?
+    parameters.exchangeLayerZeroAdapterAddress ?
       [
         {
           stargateBridgeAdapterContractAddress:
-            parameters.exchangeStargateV2AdapterAddress,
+            parameters.exchangeLayerZeroAdapterAddress,
         },
       ]
     : await getExchangeAddressAndChainFromApi();
@@ -312,20 +313,27 @@ async function getStargateV2DepositSendParamAndSourceConfig(
  */
 export async function estimateStargateV2WithdrawQuantity(
   parameters: {
-    exchangeStargateV2AdapterAddress: string;
+    exchangeLayerZeroAdapterAddress: string;
+    stargateForwarderAddress: string;
     payload: string;
     quantityInDecimal: string;
     wallet: string;
   },
-  provider: ethers.Provider,
+  xchainProvider: ethers.Provider,
+  berachainProvider: ethers.Provider,
+  sandbox: boolean,
 ): Promise<{
   estimatedWithdrawQuantityInDecimal: string;
   minimumWithdrawQuantityInDecimal: string;
   willSucceed: boolean;
 }> {
-  const exchangeStargateAdapter = ExchangeLayerZeroAdapter__factory.connect(
-    parameters.exchangeStargateV2AdapterAddress,
-    provider,
+  const { layerZeroEndpointId: targetEndpointId } = decodeStargateV2Payload(
+    parameters.payload,
+  );
+
+  const exchangeStargateAdapter = ExchangeLayerZeroAdapter_v2__factory.connect(
+    parameters.exchangeLayerZeroAdapterAddress,
+    xchainProvider,
   );
 
   const [
@@ -333,20 +341,47 @@ export async function estimateStargateV2WithdrawQuantity(
     minimumWithdrawQuantityInAssetUnits,
     poolDecimals,
   ] = await exchangeStargateAdapter.estimateWithdrawQuantityInAssetUnits(
-    parameters.wallet,
-    decimalToPip(parameters.quantityInDecimal).toString(),
-    parameters.payload,
+    decimalToPip(parameters.quantityInDecimal),
+    targetEndpointId,
   );
-
-  const estimatedWithdrawQuantityInDecimal = assetUnitsToDecimal(
+  let estimatedWithdrawQuantityInDecimal = assetUnitsToDecimal(
     estimatedWithdrawQuantityInAssetUnits,
     Number(poolDecimals),
   );
-
-  const minimumWithdrawQuantityInDecimal = assetUnitsToDecimal(
+  let minimumWithdrawQuantityInDecimal = assetUnitsToDecimal(
     minimumWithdrawQuantityInAssetUnits,
     Number(poolDecimals),
   );
+
+  const target = stargateV2TargetForLayerZeroEndpointId(
+    targetEndpointId,
+    sandbox,
+  );
+  if (!target || !getStargateV2TargetConfig(target, sandbox)) {
+    throw new Error(`Unsupported Layerzero Endpoint ID ${targetEndpointId}`);
+  }
+  if (target !== StargateV2Target.STARGATE_BERACHAIN) {
+    const stargateForwarder = KumaStargateForwarder_v1__factory.connect(
+      parameters.stargateForwarderAddress,
+      berachainProvider,
+    );
+    const [
+      estimatedForwardedQuantityInAssetUnits,
+      minimumForwardedQuantityInAssetUnits,
+      forwardedPoolDecimals,
+    ] = await stargateForwarder.loadEstimatedForwardedQuantityInAssetUnits(
+      targetEndpointId,
+      decimalToPip(estimatedWithdrawQuantityInDecimal),
+    );
+    estimatedWithdrawQuantityInDecimal = assetUnitsToDecimal(
+      estimatedForwardedQuantityInAssetUnits,
+      Number(forwardedPoolDecimals),
+    );
+    minimumWithdrawQuantityInDecimal = assetUnitsToDecimal(
+      minimumForwardedQuantityInAssetUnits,
+      Number(forwardedPoolDecimals),
+    );
+  }
 
   const willSucceed =
     BigInt(estimatedWithdrawQuantityInAssetUnits) >=
