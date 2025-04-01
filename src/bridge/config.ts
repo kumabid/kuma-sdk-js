@@ -98,6 +98,7 @@ export const StargateV2Config = {
       get isBridgeTarget() {
         return isValidBridgeTarget(this.target);
       },
+      /*
       evmChainId: 80000,
       // TODO Not yet in LZ docs
       layerZeroEndpointId: 40346,
@@ -105,6 +106,14 @@ export const StargateV2Config = {
       stargateOFTAddress: '0xb1487b8C46e68e15ed3B01cC5AA4A1E6aFEfd6d4',
       tokenDecimals: 6,
       usdcAddress: '0x015fd589F4f1A33ce4487E12714e1B15129c9329',
+      */
+      // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#sepolia
+      evmChainId: 11155111,
+      // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/testnet-contracts#sepolia
+      layerZeroEndpointId: 40161,
+      stargateOFTAddress: '0x4985b8fcEA3659FD801a5b857dA1D00e985863F0',
+      tokenDecimals: 6,
+      usdcAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',
     },
     [StargateV2Target.STARGATE_ARBITRUM]: {
       target: StargateV2Target.STARGATE_ARBITRUM,
@@ -129,7 +138,8 @@ export const StargateV2Config = {
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#sepolia
       evmChainId: 11155111,
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/testnet-contracts#sepolia
-      layerZeroEndpointId: 40161,
+      // FIXME
+      layerZeroEndpointId: 40161 as 99999,
       stargateOFTAddress: '0x4985b8fcEA3659FD801a5b857dA1D00e985863F0',
       tokenDecimals: 6,
       usdcAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',

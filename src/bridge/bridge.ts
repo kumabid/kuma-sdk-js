@@ -152,39 +152,62 @@ export async function depositViaStargateV2(
   sourceStargateTarget: StargateV2Target,
   parameters: {
     exchangeLayerZeroAdapterAddress?: string;
+    stargateForwarderAddress: string;
     minimumWithdrawQuantityMultiplierInPips: bigint;
     quantityInAssetUnits: bigint;
     wallet: string;
   },
   signer: ethers.Signer,
+  sourceProvider: ethers.Provider,
+  berachainProvider: ethers.Provider,
   sandbox: boolean,
 ): Promise<string> {
-  const { sendParam, sourceConfig } =
-    await getStargateV2DepositSendParamAndSourceConfig(
-      sourceStargateTarget,
-      parameters,
-      sandbox,
+  const [{ sendParam, sourceConfig }, { sourceGasFee, berachainGasFee }] =
+    await Promise.all(
+      sourceStargateTarget === StargateV2Target.STARGATE_BERACHAIN ?
+        [
+          getDepositFromBerachainSendParamAndSourceConfig(parameters, sandbox),
+          estimateDepositFromBerachainFees(
+            parameters,
+            berachainProvider,
+            sandbox,
+          ),
+        ]
+      : [
+          getDepositViaForwarderSendParamAndSourceConfig(
+            sourceStargateTarget,
+            parameters,
+            berachainProvider,
+            sandbox,
+          ),
+          estimateDepositViaForwarderFees(
+            sourceStargateTarget,
+            parameters,
+            sourceProvider,
+            berachainProvider,
+            sandbox,
+          ),
+        ],
     );
-  const stargate = IOFT__factory.connect(
-    sourceConfig.stargateOFTAddress,
-    signer,
-  );
-  const messagingFee = await stargate.quoteSend(sendParam, false, {
-    from: parameters.wallet,
-  });
 
+  const nativeFee = sourceGasFee + berachainGasFee;
   let gasLimit: number = StargateV2Config.settings.swapSourceGasLimit;
+  const oft = IOFT__factory.connect(
+    sourceConfig.stargateOFTAddress,
+    berachainProvider,
+  );
 
   try {
     // Estimate gas
-    const estimatedGasLimit = await stargate.send.estimateGas(
+    const estimatedGasLimit = await oft.send.estimateGas(
       sendParam,
-      { nativeFee: messagingFee.nativeFee, lzTokenFee: 0 },
+      { nativeFee, lzTokenFee: 0 },
       parameters.wallet, // Refund address - extra gas (if any) is returned to this address
       {
         from: parameters.wallet,
-        value: messagingFee.nativeFee,
-      }, // Native gas to pay for the cross chain message fee
+        // Native gas to pay for the cross chain message fee
+        value: nativeFee,
+      },
     );
     // Add 20% buffer for safety
     gasLimit = Number(
@@ -205,14 +228,14 @@ export async function depositViaStargateV2(
     }
   }
 
-  const response = await stargate.send(
+  const response = await oft.send(
     sendParam,
-    { nativeFee: messagingFee.nativeFee, lzTokenFee: 0 },
+    { nativeFee, lzTokenFee: 0 },
     parameters.wallet, // Refund address - extra gas (if any) is returned to this address
     {
       from: parameters.wallet,
       gasLimit,
-      value: messagingFee.nativeFee,
+      value: nativeFee,
     }, // Native gas to pay for the cross chain message fee
   );
 
@@ -220,42 +243,161 @@ export async function depositViaStargateV2(
 }
 
 /**
- * Estimate native gas fee needed to deposit funds cross-chain into the Exchange using Stargate
+ * Estimate native gas fee needed to deposit USDC cross-chain into the Exchange
  */
-export async function estimateStargateV2DepositGasFeeAndQuantityDeliveredInAssetUnits(
+export async function estimateDepositFees(
   sourceStargateTarget: StargateV2Target,
   parameters: {
     exchangeLayerZeroAdapterAddress?: string;
+    stargateForwarderAddress: string;
     minimumWithdrawQuantityMultiplierInPips: bigint;
     quantityInAssetUnits: bigint;
     wallet: string;
   },
-  provider: ethers.Provider,
+  sourceProvider: ethers.Provider,
+  berachainProvider: ethers.Provider,
   sandbox: boolean,
-): Promise<{ gasFee: bigint; quantityDeliveredInAssetUnits: bigint }> {
+): Promise<{
+  sourceGasFee: bigint;
+  berachainGasFee: bigint;
+  quantityDeliveredInAssetUnits: bigint;
+}> {
+  if (sourceStargateTarget === StargateV2Target.STARGATE_BERACHAIN) {
+    return estimateDepositFromBerachainFees(
+      parameters,
+      berachainProvider,
+      sandbox,
+    );
+  }
+
+  return estimateDepositViaForwarderFees(
+    sourceStargateTarget,
+    parameters,
+    sourceProvider,
+    berachainProvider,
+    sandbox,
+  );
+}
+
+export async function estimateDepositViaForwarderFees(
+  sourceStargateTarget: StargateV2Target,
+  parameters: {
+    exchangeLayerZeroAdapterAddress?: string;
+    stargateForwarderAddress: string;
+    minimumWithdrawQuantityMultiplierInPips: bigint;
+    quantityInAssetUnits: bigint;
+    wallet: string;
+  },
+  sourceProvider: ethers.Provider,
+  berachainProvider: ethers.Provider,
+  sandbox: boolean,
+): Promise<{
+  sourceGasFee: bigint;
+  berachainGasFee: bigint;
+  quantityDeliveredInAssetUnits: bigint;
+}> {
   const { sendParam, sourceConfig } =
-    await getStargateV2DepositSendParamAndSourceConfig(
+    await getDepositViaForwarderSendParamAndSourceConfig(
       sourceStargateTarget,
       parameters,
+      berachainProvider,
       sandbox,
     );
 
   const stargate = IOFT__factory.connect(
     sourceConfig.stargateOFTAddress,
-    provider,
+    sourceProvider,
   );
-  const [[gasFee], [, , receipt]] = await Promise.all([
+  const [{ nativeFee: sourceGasFee }, [, , receipt]] = await Promise.all([
     stargate.quoteSend(sendParam, false, {
       from: parameters.wallet,
     }),
     stargate.quoteOFT(sendParam),
   ]);
 
-  return { gasFee, quantityDeliveredInAssetUnits: receipt.amountReceivedLD };
+  // Once we obtain the quantity delivered after slippage to Berachain, calculate
+  // the quantity subsequently delivered to XCHAIN after any additional slippage
+  const { berachainGasFee, quantityDeliveredInAssetUnits } =
+    await estimateDepositFromBerachainFees(
+      { ...parameters, quantityInAssetUnits: receipt.amountReceivedLD },
+      berachainProvider,
+      sandbox,
+    );
+
+  return {
+    sourceGasFee,
+    berachainGasFee,
+    quantityDeliveredInAssetUnits,
+  };
 }
 
-async function getStargateV2DepositSendParamAndSourceConfig(
-  sourceStargateTarget: StargateV2Target,
+/**
+ * Estimate native gas fee needed to deposit USDC cross-chain into the Exchange
+ * from Berachain using the Kuma OFT pathway
+ */
+export async function estimateDepositFromBerachainFees(
+  parameters: {
+    exchangeLayerZeroAdapterAddress?: string;
+    minimumWithdrawQuantityMultiplierInPips: bigint;
+    quantityInAssetUnits: bigint;
+    wallet: string;
+  },
+  berachainProvider: ethers.Provider,
+  sandbox: boolean,
+): Promise<{
+  sourceGasFee: bigint;
+  berachainGasFee: bigint;
+  quantityDeliveredInAssetUnits: bigint;
+}> {
+  const { sendParam, sourceConfig } =
+    await getDepositFromBerachainSendParamAndSourceConfig(parameters, sandbox);
+
+  const oft = IOFT__factory.connect(
+    sourceConfig.stargateOFTAddress,
+    berachainProvider,
+  );
+  const [[berachainGasFee], [, , receipt]] = await Promise.all([
+    oft.quoteSend(sendParam, false, {
+      from: parameters.wallet,
+    }),
+    oft.quoteOFT(sendParam),
+  ]);
+
+  return {
+    sourceGasFee: 0n,
+    berachainGasFee,
+    quantityDeliveredInAssetUnits: receipt.amountReceivedLD,
+  };
+}
+
+function getSourceAndDestinationConfigs(
+  sourceTarget: StargateV2Target,
+  destinationTarget: StargateV2Target,
+  sandbox: boolean,
+) {
+  const sourceConfig =
+    sandbox ?
+      StargateV2Config.testnet[sourceTarget]
+    : StargateV2Config.mainnet[sourceTarget];
+  const destinationConfig =
+    sandbox ?
+      StargateV2Config.testnet[destinationTarget]
+    : StargateV2Config.mainnet[destinationTarget];
+
+  if (
+    !sourceConfig ||
+    !sourceConfig.isSupported ||
+    !destinationConfig.isSupported
+  ) {
+    throw new Error(
+      `Stargate deposits not supported from chain ${sourceConfig.target} ${sandbox ? 'testnet' : 'mainnet'} (Chain ID: ${String(sourceConfig.evmChainId)}) to chain ${destinationConfig.target} (Chain ID: ${String(destinationConfig.evmChainId)})`,
+    );
+  }
+
+  return { sourceConfig, destinationConfig };
+}
+
+async function getDepositFromBerachainSendParamAndSourceConfig(
   parameters: {
     exchangeLayerZeroAdapterAddress?: string;
     minimumWithdrawQuantityMultiplierInPips: bigint;
@@ -264,20 +406,11 @@ async function getStargateV2DepositSendParamAndSourceConfig(
   },
   sandbox: boolean,
 ) {
-  const sourceConfig =
-    sandbox ?
-      StargateV2Config.testnet[sourceStargateTarget]
-    : StargateV2Config.mainnet[sourceStargateTarget];
-  const targetConfig =
-    sandbox ?
-      StargateV2Config.testnet[StargateV2Target.XCHAIN_XCHAIN]
-    : StargateV2Config.mainnet[StargateV2Target.XCHAIN_XCHAIN];
-
-  if (!sourceConfig || !sourceConfig.isSupported || !targetConfig.isSupported) {
-    throw new Error(
-      `Stargate deposits not supported from chain ${sourceConfig.target} ${sandbox ? 'testnet' : 'mainnet'} (Chain ID: ${String(sourceConfig.evmChainId)}) to chain ${targetConfig.target} (Chain ID: ${String(targetConfig.evmChainId)})`,
-    );
-  }
+  const { sourceConfig, destinationConfig } = getSourceAndDestinationConfigs(
+    StargateV2Target.STARGATE_BERACHAIN,
+    StargateV2Target.XCHAIN_XCHAIN,
+    sandbox,
+  );
 
   const [{ stargateBridgeAdapterContractAddress }] =
     parameters.exchangeLayerZeroAdapterAddress ?
@@ -290,7 +423,7 @@ async function getStargateV2DepositSendParamAndSourceConfig(
     : await getExchangeAddressAndChainFromApi();
 
   const sendParam = {
-    dstEid: targetConfig.layerZeroEndpointId, // Destination endpoint ID
+    dstEid: destinationConfig.layerZeroEndpointId, // Destination endpoint ID
     to: ethers.zeroPadValue(stargateBridgeAdapterContractAddress, 32), // Recipient address
     amountLD: parameters.quantityInAssetUnits, // Amount to send in local decimals
     minAmountLD: multiplyPips(
@@ -299,9 +432,65 @@ async function getStargateV2DepositSendParamAndSourceConfig(
     ), // Minimum amount to send in local decimals
     extraOptions: '0x',
     composeMsg: ethers.AbiCoder.defaultAbiCoder().encode(
-      ['address'],
-      [parameters.wallet],
+      ['uint32', 'address'],
+      [sourceConfig.layerZeroEndpointId, parameters.wallet],
     ), // Additional options supplied by the caller to be used in the LayerZero message
+    oftCmd: '0x', // The OFT command to be executed, unused in default OFT implementations
+  };
+
+  return { sendParam, sourceConfig };
+}
+
+async function getDepositViaForwarderSendParamAndSourceConfig(
+  sourceStargateTarget: StargateV2Target,
+  parameters: {
+    stargateForwarderAddress: string;
+    minimumWithdrawQuantityMultiplierInPips: bigint;
+    quantityInAssetUnits: bigint;
+    wallet: string;
+  },
+  berachainProvider: ethers.Provider,
+  sandbox: boolean,
+) {
+  const { sourceConfig, destinationConfig: berachainConfig } =
+    getSourceAndDestinationConfigs(
+      sourceStargateTarget,
+      StargateV2Target.STARGATE_BERACHAIN,
+      sandbox,
+    );
+
+  // TODO Fetch stargateForwarderAddress from API
+
+  const { berachainGasFee } = await estimateDepositFromBerachainFees(
+    parameters,
+    berachainProvider,
+    sandbox,
+  );
+  // FIXME CJS dynamic import
+  // FIXME Assumes native asset is same between chains
+  const { Options } = await import('@layerzerolabs/lz-v2-utilities');
+  const extraOptions = Options.newOptions()
+    .addExecutorComposeOption(0, 350000, berachainGasFee)
+    .toBytes();
+
+  const sendParam = {
+    dstEid: berachainConfig.layerZeroEndpointId, // Destination endpoint ID
+    to: ethers.zeroPadValue(parameters.stargateForwarderAddress, 32), // Recipient address
+    amountLD: parameters.quantityInAssetUnits, // Amount to send in local decimals
+    minAmountLD: multiplyPips(
+      parameters.quantityInAssetUnits,
+      parameters.minimumWithdrawQuantityMultiplierInPips,
+    ), // Minimum amount to send in local decimals
+    extraOptions,
+    composeMsg: ethers.AbiCoder.defaultAbiCoder().encode(
+      ['uint8', 'tuple(address)'],
+      [
+        0, //  ComposeMessageType.DepositToXhain
+        [
+          parameters.wallet, // Destination wallet
+        ],
+      ],
+    ),
     oftCmd: '0x', // The OFT command to be executed, unused in default OFT implementations
   };
 
@@ -317,7 +506,6 @@ export async function estimateStargateV2WithdrawQuantity(
     stargateForwarderAddress: string;
     payload: string;
     quantityInDecimal: string;
-    wallet: string;
   },
   xchainProvider: ethers.Provider,
   berachainProvider: ethers.Provider,
@@ -341,8 +529,11 @@ export async function estimateStargateV2WithdrawQuantity(
     minimumWithdrawQuantityInAssetUnits,
     poolDecimals,
   ] = await exchangeStargateAdapter.estimateWithdrawQuantityInAssetUnits(
+    // Funds must always be withdrawn to Berachain first regardless of final target
+    (sandbox ? StargateV2Config.testnet : StargateV2Config.mainnet)[
+      StargateV2Target.STARGATE_BERACHAIN
+    ].layerZeroEndpointId,
     decimalToPip(parameters.quantityInDecimal),
-    targetEndpointId,
   );
   let estimatedWithdrawQuantityInDecimal = assetUnitsToDecimal(
     estimatedWithdrawQuantityInAssetUnits,
@@ -360,11 +551,13 @@ export async function estimateStargateV2WithdrawQuantity(
   if (!target || !getStargateV2TargetConfig(target, sandbox)) {
     throw new Error(`Unsupported Layerzero Endpoint ID ${targetEndpointId}`);
   }
+  // If the final target is not Berachain, an bridge tx is needed via the forwarder
   if (target !== StargateV2Target.STARGATE_BERACHAIN) {
     const stargateForwarder = KumaStargateForwarder_v1__factory.connect(
       parameters.stargateForwarderAddress,
       berachainProvider,
     );
+
     const [
       estimatedForwardedQuantityInAssetUnits,
       minimumForwardedQuantityInAssetUnits,

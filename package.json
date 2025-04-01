@@ -126,6 +126,7 @@
     ]
   },
   "dependencies": {
+    "@layerzerolabs/lz-v2-utilities": "^3.0.83",
     "axios": "1.6.8",
     "bignumber.js": "^9.1.2",
     "ethers": "6.9.0",
