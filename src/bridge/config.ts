@@ -107,11 +107,12 @@ export const StargateV2Config = {
       tokenDecimals: 6,
       usdcAddress: '0x015fd589F4f1A33ce4487E12714e1B15129c9329',
       */
+      // FIXME Using Sepolia for testing
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#sepolia
       evmChainId: 11155111,
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/testnet-contracts#sepolia
       layerZeroEndpointId: 40161,
-      stargateOFTAddress: '0x4985b8fcEA3659FD801a5b857dA1D00e985863F0',
+      stargateOFTAddress: '0x64DCcad9d2AE26E950061A62CD7aD3909692F354',
       tokenDecimals: 6,
       usdcAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',
     },
@@ -125,9 +126,9 @@ export const StargateV2Config = {
       evmChainId: 421614,
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/testnet-contracts#arbitrum-sepolia-testnet
       layerZeroEndpointId: 40231,
-      stargateOFTAddress: '0x3253a335E7bFfB4790Aa4C25C4250d206E9b9773',
+      stargateOFTAddress: '0x543BdA7c6cA4384FE90B1F5929bb851F52888983',
       tokenDecimals: 6,
-      usdcAddress: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+      usdcAddress: '0x3253a335E7bFfB4790Aa4C25C4250d206E9b9773',
     },
     [StargateV2Target.STARGATE_ETHEREUM]: {
       target: StargateV2Target.STARGATE_ETHEREUM,
@@ -138,7 +139,7 @@ export const StargateV2Config = {
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#sepolia
       evmChainId: 11155111,
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/testnet-contracts#sepolia
-      // FIXME
+      // FIXME Using Sepolia for testing
       layerZeroEndpointId: 40161 as 99999,
       stargateOFTAddress: '0x4985b8fcEA3659FD801a5b857dA1D00e985863F0',
       tokenDecimals: 6,
