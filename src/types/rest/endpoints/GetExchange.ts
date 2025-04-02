@@ -41,6 +41,14 @@ export interface KumaExchange {
    */
   kumaOFTAdapterContractAddress: string;
   /**
+   * Address of Kuma Reward Vault on Berachain
+   */
+  rewardVaultContractAddress: string;
+  /**
+   * Address of Bera Governance Token on Berachain
+   */
+  bgtPrice: string;
+  /**
    * [Stargate](https://stargateprotocol.gitbook.io/) bridge adapter contract address
    *
    * - Used to define the `stargateBridgeAdapterAddress` properties in withdrawals

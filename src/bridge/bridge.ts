@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { assetUnitsToDecimal, decimalToPip, multiplyPips } from '#pipmath';
 
 import { getExchangeAddressAndChainFromApi } from '#client/rest/public';
-import { ExchangeStargateV2Adapter__factory } from '#typechain-types/factories/contracts/bridge-adapters/ExchangeStargateV2Adapter.sol/ExchangeStargateV2Adapter__factory';
+import { ExchangeLayerZeroAdapter__factory } from '#typechain-types/factories/ExchangeLayerZeroAdapter__factory';
 import { IOFT__factory } from '#typechain-types/index';
 import { StargateV2Target } from '#types/enums/request';
 
@@ -323,7 +323,7 @@ export async function estimateStargateV2WithdrawQuantity(
   minimumWithdrawQuantityInDecimal: string;
   willSucceed: boolean;
 }> {
-  const exchangeStargateAdapter = ExchangeStargateV2Adapter__factory.connect(
+  const exchangeStargateAdapter = ExchangeLayerZeroAdapter__factory.connect(
     parameters.exchangeStargateV2AdapterAddress,
     provider,
   );
