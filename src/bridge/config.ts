@@ -1,4 +1,8 @@
-import { StargateV2Target, BridgeTarget } from '#types/enums/request';
+import {
+  BridgeTarget,
+  NativeToken,
+  StargateV2Target,
+} from '#types/enums/request';
 
 export const StargateV2BridgeTargetsArray = Object.values(BridgeTarget);
 export const StargateV2TargetsArray = Object.values(StargateV2Target);
@@ -21,6 +25,7 @@ export const StargateV2Config = {
   mainnet: {
     [StargateV2Target.XCHAIN_XCHAIN]: {
       target: StargateV2Target.XCHAIN_XCHAIN,
+      nativeToken: NativeToken.ETH,
       isSupported: true,
       get isBridgeTarget() {
         return isValidBridgeTarget(this.target);
@@ -34,6 +39,7 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_BERACHAIN]: {
       target: StargateV2Target.STARGATE_BERACHAIN,
+      nativeToken: NativeToken.BERA,
       isSupported: true,
       get isBridgeTarget() {
         return isValidBridgeTarget(this.target);
@@ -43,12 +49,13 @@ export const StargateV2Config = {
       layerZeroEndpointId: 30362,
       // KumaOFTAdapterUSDC
       stargateOFTAddress: '0x7145855835924a9dFa80f42749E1FF96Eed26BC1',
-      // TODO Not yet in LZ docs
+      // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/v2-supported-networks-and-assets#bera
       tokenDecimals: 6,
       usdcAddress: '0x549943e04f40284185054145c6E4e9568C1D3241',
     },
     [StargateV2Target.STARGATE_ARBITRUM]: {
       target: StargateV2Target.STARGATE_ARBITRUM,
+      nativeToken: NativeToken.ETH,
       isSupported: true,
       get isBridgeTarget() {
         return isValidBridgeTarget(this.target);
@@ -64,6 +71,7 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_ETHEREUM]: {
       target: StargateV2Target.STARGATE_ETHEREUM,
+      nativeToken: NativeToken.ETH,
       isSupported: true,
       get isBridgeTarget() {
         return isValidBridgeTarget(this.target);
@@ -81,6 +89,7 @@ export const StargateV2Config = {
   testnet: {
     [StargateV2Target.XCHAIN_XCHAIN]: {
       target: StargateV2Target.XCHAIN_XCHAIN,
+      nativeToken: NativeToken.ETH,
       isSupported: true,
       get isBridgeTarget() {
         return isValidBridgeTarget(this.target);
@@ -94,6 +103,8 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_BERACHAIN]: {
       target: StargateV2Target.STARGATE_BERACHAIN,
+      // FIXME Using Sepolia for testing
+      nativeToken: NativeToken.ETH,
       isSupported: true,
       get isBridgeTarget() {
         return isValidBridgeTarget(this.target);
@@ -107,7 +118,6 @@ export const StargateV2Config = {
       tokenDecimals: 6,
       usdcAddress: '0x015fd589F4f1A33ce4487E12714e1B15129c9329',
       */
-      // FIXME Using Sepolia for testing
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#sepolia
       evmChainId: 11155111,
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/testnet-contracts#sepolia
@@ -118,6 +128,7 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_ARBITRUM]: {
       target: StargateV2Target.STARGATE_ARBITRUM,
+      nativeToken: NativeToken.ETH,
       isSupported: true,
       get isBridgeTarget() {
         return isValidBridgeTarget(this.target);
@@ -132,6 +143,7 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_ETHEREUM]: {
       target: StargateV2Target.STARGATE_ETHEREUM,
+      nativeToken: NativeToken.ETH,
       isSupported: true,
       get isBridgeTarget() {
         return isValidBridgeTarget(this.target);

@@ -3,31 +3,39 @@ import { ethers } from 'ethers';
 
 import { multiplyPips } from '#pipmath';
 
-import { getExchangeAddressAndChainFromApi } from '#client/rest/public';
+import { StargateV2Config } from '#bridge/config';
 import { IOFT__factory } from '#typechain-types/index';
 import { StargateV2Target } from '#types/enums/request';
 
-import { StargateV2Config } from './config';
+import {
+  convertBetweenNativeTokens,
+  loadExchangeLayerZeroAddressFromApiIfNeeded,
+  loadNativeTokenPricesFromApiIfNeeded,
+  loadStargateBridgeForwarderContractAddressFromApiIfNeeded,
+} from './utils';
+
+import type { KumaGasFees } from '#index';
 
 /**
  * Deposit funds cross-chain into the Exchange using Stargate
  */
 export async function depositViaStargateV2(
-  sourceStargateTarget: StargateV2Target,
   parameters: {
     exchangeLayerZeroAdapterAddress?: string;
-    stargateForwarderAddress: string;
     minimumForwardQuantityMultiplierInPips: bigint;
+    nativeTokenPrices?: KumaGasFees['nativeTokenPrices'];
     quantityInAssetUnits: bigint;
+    sourceStargateTarget: StargateV2Target;
+    stargateBridgeForwarderContractAddress?: string;
     wallet: string;
   },
-  signer: ethers.Signer,
-  sourceProvider: ethers.Provider,
   berachainProvider: ethers.Provider,
+  sourceProvider: ethers.Provider,
+  sourceSigner: ethers.Signer,
   sandbox: boolean,
 ): Promise<string> {
   const [{ sendParam, sourceConfig }, { gasFee }] = await Promise.all(
-    sourceStargateTarget === StargateV2Target.STARGATE_BERACHAIN ?
+    parameters.sourceStargateTarget === StargateV2Target.STARGATE_BERACHAIN ?
       [
         getDepositFromBerachainSendParamAndSourceConfig(parameters, sandbox),
         estimateDepositFromBerachainFees(
@@ -38,23 +46,24 @@ export async function depositViaStargateV2(
       ]
     : [
         getDepositViaForwarderSendParamAndSourceConfig(
-          sourceStargateTarget,
           parameters,
           berachainProvider,
           sandbox,
         ),
         estimateDepositViaForwarderFees(
-          sourceStargateTarget,
           parameters,
-          sourceProvider,
           berachainProvider,
+          sourceProvider,
           sandbox,
         ),
       ],
   );
 
   let gasLimit: number = StargateV2Config.settings.swapSourceGasLimit;
-  const oft = IOFT__factory.connect(sourceConfig.stargateOFTAddress, signer);
+  const oft = IOFT__factory.connect(
+    sourceConfig.stargateOFTAddress,
+    sourceSigner,
+  );
 
   try {
     // Estimate gas
@@ -105,22 +114,23 @@ export async function depositViaStargateV2(
  * Estimate native gas fee needed to deposit USDC cross-chain into the Exchange
  */
 export async function estimateDepositFees(
-  sourceStargateTarget: StargateV2Target,
   parameters: {
     exchangeLayerZeroAdapterAddress?: string;
-    stargateForwarderAddress: string;
     minimumForwardQuantityMultiplierInPips: bigint;
+    nativeTokenPrices: KumaGasFees['nativeTokenPrices'];
     quantityInAssetUnits: bigint;
+    sourceStargateTarget: StargateV2Target;
+    stargateBridgeForwarderContractAddress?: string;
     wallet: string;
   },
-  sourceProvider: ethers.Provider,
   berachainProvider: ethers.Provider,
+  sourceProvider: ethers.Provider,
   sandbox: boolean,
 ): Promise<{
   gasFee: bigint;
   quantityDeliveredInAssetUnits: bigint;
 }> {
-  if (sourceStargateTarget === StargateV2Target.STARGATE_BERACHAIN) {
+  if (parameters.sourceStargateTarget === StargateV2Target.STARGATE_BERACHAIN) {
     return estimateDepositFromBerachainFees(
       parameters,
       berachainProvider,
@@ -129,25 +139,25 @@ export async function estimateDepositFees(
   }
 
   return estimateDepositViaForwarderFees(
-    sourceStargateTarget,
     parameters,
-    sourceProvider,
     berachainProvider,
+    sourceProvider,
     sandbox,
   );
 }
 
 async function estimateDepositViaForwarderFees(
-  sourceStargateTarget: StargateV2Target,
   parameters: {
     exchangeLayerZeroAdapterAddress?: string;
-    stargateForwarderAddress: string;
     minimumForwardQuantityMultiplierInPips: bigint;
+    nativeTokenPrices?: KumaGasFees['nativeTokenPrices'];
     quantityInAssetUnits: bigint;
+    sourceStargateTarget: StargateV2Target;
+    stargateBridgeForwarderContractAddress?: string;
     wallet: string;
   },
-  sourceProvider: ethers.Provider,
   berachainProvider: ethers.Provider,
+  sourceProvider: ethers.Provider,
   sandbox: boolean,
 ): Promise<{
   gasFee: bigint;
@@ -155,7 +165,6 @@ async function estimateDepositViaForwarderFees(
 }> {
   const { sendParam, sourceConfig } =
     await getDepositViaForwarderSendParamAndSourceConfig(
-      sourceStargateTarget,
       parameters,
       berachainProvider,
       sandbox,
@@ -266,19 +275,14 @@ async function getDepositFromBerachainSendParamAndSourceConfig(
     sandbox,
   );
 
-  const [{ stargateBridgeAdapterContractAddress }] =
-    parameters.exchangeLayerZeroAdapterAddress ?
-      [
-        {
-          stargateBridgeAdapterContractAddress:
-            parameters.exchangeLayerZeroAdapterAddress,
-        },
-      ]
-    : await getExchangeAddressAndChainFromApi();
+  const exchangeLayerZeroAdapterAddress =
+    await loadExchangeLayerZeroAddressFromApiIfNeeded(
+      parameters.exchangeLayerZeroAdapterAddress,
+    );
 
   const sendParam = {
     dstEid: destinationConfig.layerZeroEndpointId, // Destination endpoint ID
-    to: ethers.zeroPadValue(stargateBridgeAdapterContractAddress, 32), // Recipient address
+    to: ethers.zeroPadValue(exchangeLayerZeroAdapterAddress, 32), // Recipient address
     amountLD: parameters.quantityInAssetUnits, // Amount to send in local decimals
     minAmountLD: multiplyPips(
       parameters.quantityInAssetUnits,
@@ -296,11 +300,12 @@ async function getDepositFromBerachainSendParamAndSourceConfig(
 }
 
 async function getDepositViaForwarderSendParamAndSourceConfig(
-  sourceStargateTarget: StargateV2Target,
   parameters: {
-    stargateForwarderAddress: string;
     minimumForwardQuantityMultiplierInPips: bigint;
+    nativeTokenPrices?: KumaGasFees['nativeTokenPrices'];
     quantityInAssetUnits: bigint;
+    sourceStargateTarget: StargateV2Target;
+    stargateBridgeForwarderContractAddress?: string;
     wallet: string;
   },
   berachainProvider: ethers.Provider,
@@ -308,28 +313,39 @@ async function getDepositViaForwarderSendParamAndSourceConfig(
 ) {
   const { sourceConfig, destinationConfig: berachainConfig } =
     getSourceAndDestinationConfigs(
-      sourceStargateTarget,
+      parameters.sourceStargateTarget,
       StargateV2Target.STARGATE_BERACHAIN,
       sandbox,
     );
 
-  // TODO Fetch stargateForwarderAddress from API
+  // TODO Fetch stargateBridgeForwarderContractAddress from API
 
-  const { gasFee: berachainGasFee } = await estimateDepositFromBerachainFees(
-    parameters,
-    berachainProvider,
-    sandbox,
+  const [{ gasFee: berachainGasFee }, nativeTokenPrices] = await Promise.all([
+    estimateDepositFromBerachainFees(parameters, berachainProvider, sandbox),
+    loadNativeTokenPricesFromApiIfNeeded(parameters.nativeTokenPrices),
+  ]);
+
+  const additionalNativeDrop = convertBetweenNativeTokens(
+    berachainConfig.nativeToken,
+    berachainGasFee,
+    sourceConfig.nativeToken,
+    nativeTokenPrices,
   );
+
+  const stargateBridgeForwarderContractAddress =
+    await loadStargateBridgeForwarderContractAddressFromApiIfNeeded(
+      parameters.stargateBridgeForwarderContractAddress,
+    );
+
   // FIXME CJS dynamic import
-  // FIXME Convert berachainGasFee to source chain native asset
   const { Options } = await import('@layerzerolabs/lz-v2-utilities');
   const extraOptions = Options.newOptions()
-    .addExecutorComposeOption(0, 350000, berachainGasFee)
+    .addExecutorComposeOption(0, 350000, additionalNativeDrop)
     .toHex();
 
   const sendParam = {
     dstEid: berachainConfig.layerZeroEndpointId, // Destination endpoint ID
-    to: ethers.zeroPadValue(parameters.stargateForwarderAddress, 32), // Recipient address
+    to: ethers.zeroPadValue(stargateBridgeForwarderContractAddress, 32), // Recipient address
     amountLD: parameters.quantityInAssetUnits, // Amount to send in local decimals
     minAmountLD: multiplyPips(
       parameters.quantityInAssetUnits,
