@@ -1,6 +1,12 @@
 import { ethers } from 'ethers';
 
-import { decimalToPip, multiplyPips } from '#pipmath';
+import {
+  decimalToPip,
+  multiplyPips,
+  assetUnitsToPip,
+  dividePips,
+  pipToAssetUnits,
+} from '#pipmath';
 
 import {
   StargateV2Config,
@@ -122,8 +128,9 @@ export function encodeStargateV2Payload({
 
 export function convertNativeTokenToUsd(
   nativeToken: NativeToken,
-  nativeTokenQuantity: bigint,
+  nativeTokenQuantityInAssetUnits: bigint,
   nativeTokenPrices: KumaGasFees['nativeTokenPrices'],
+  nativeTokenDecimals?: number,
 ): bigint {
   const nativeTokenPrice = nativeTokenPrices[nativeToken];
   if (!nativeTokenPrice) {
@@ -131,7 +138,7 @@ export function convertNativeTokenToUsd(
   }
 
   return multiplyPips(
-    nativeTokenQuantity,
+    assetUnitsToPip(nativeTokenQuantityInAssetUnits, nativeTokenDecimals),
     decimalToPip(nativeTokenPrice),
     true,
   );
@@ -139,9 +146,10 @@ export function convertNativeTokenToUsd(
 
 export function convertBetweenNativeTokens(
   fromNativeToken: NativeToken,
-  fromNativeTokenQuantity: bigint,
+  fromNativeTokenQuantityInAssetUnits: bigint,
   toNativeToken: NativeToken,
   nativeTokenPrices: KumaGasFees['nativeTokenPrices'],
+  toNativeTokenDecimals?: number,
 ): bigint {
   const fromNativeTokenPrice = nativeTokenPrices[fromNativeToken];
   if (!fromNativeTokenPrice) {
@@ -154,14 +162,13 @@ export function convertBetweenNativeTokens(
 
   const fromNativeTokenValueInUsd = convertNativeTokenToUsd(
     fromNativeToken,
-    fromNativeTokenQuantity,
+    fromNativeTokenQuantityInAssetUnits,
     nativeTokenPrices,
   );
 
-  return multiplyPips(
-    decimalToPip(toNativeTokenPrice),
-    fromNativeTokenValueInUsd,
-    true,
+  return pipToAssetUnits(
+    dividePips(fromNativeTokenValueInUsd, decimalToPip(toNativeTokenPrice)),
+    toNativeTokenDecimals,
   );
 }
 

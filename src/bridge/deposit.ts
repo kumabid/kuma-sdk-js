@@ -253,7 +253,7 @@ function getSourceAndDestinationConfigs(
     !destinationConfig.isSupported
   ) {
     throw new Error(
-      `Stargate deposits not supported from chain ${sourceConfig.target} ${sandbox ? 'testnet' : 'mainnet'} (Chain ID: ${String(sourceConfig.evmChainId)}) to chain ${destinationConfig.target} (Chain ID: ${String(destinationConfig.evmChainId)})`,
+      `Stargate deposits not supported from chain ${sourceTarget} ${sandbox ? 'testnet' : 'mainnet'} (Chain ID: ${String(sourceConfig.evmChainId)}) to chain ${destinationConfig.target} (Chain ID: ${String(destinationConfig.evmChainId)})`,
     );
   }
 
@@ -317,8 +317,6 @@ async function getDepositViaForwarderSendParamAndSourceConfig(
       StargateV2Target.STARGATE_BERACHAIN,
       sandbox,
     );
-
-  // TODO Fetch stargateBridgeForwarderContractAddress from API
 
   const [{ gasFee: berachainGasFee }, nativeTokenPrices] = await Promise.all([
     estimateDepositFromBerachainFees(parameters, berachainProvider, sandbox),
