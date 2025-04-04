@@ -28,11 +28,12 @@ export interface ExchangeLayerZeroAdapter_v2Interface extends Interface {
     nameOrSignature:
       | 'PIP_PRICE_MULTIPLIER'
       | 'adminWallet'
-      | 'custodian'
+      | 'berachainEndpointId'
       | 'estimateWithdrawQuantityInAssetUnits'
+      | 'exchange'
       | 'isDepositEnabled'
       | 'isWithdrawEnabled'
-      | 'loadGasFeesInAssetUnits'
+      | 'loadBerachainWithdrawalGasFeesInAssetUnits'
       | 'lzCompose'
       | 'lzEndpoint'
       | 'minimumWithdrawQuantityMultiplier'
@@ -45,7 +46,9 @@ export interface ExchangeLayerZeroAdapter_v2Interface extends Interface {
       | 'setDepositEnabled'
       | 'setMinimumWithdrawQuantityMultiplier'
       | 'setOwner'
+      | 'setStargateForwarder'
       | 'setWithdrawEnabled'
+      | 'stargateForwarder'
       | 'withdrawNativeAsset'
       | 'withdrawQuoteAsset',
   ): FunctionFragment;
@@ -65,11 +68,15 @@ export interface ExchangeLayerZeroAdapter_v2Interface extends Interface {
     functionFragment: 'adminWallet',
     values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: 'custodian', values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: 'berachainEndpointId',
+    values?: undefined,
+  ): string;
   encodeFunctionData(
     functionFragment: 'estimateWithdrawQuantityInAssetUnits',
     values: [BigNumberish, BigNumberish],
   ): string;
+  encodeFunctionData(functionFragment: 'exchange', values?: undefined): string;
   encodeFunctionData(
     functionFragment: 'isDepositEnabled',
     values?: undefined,
@@ -79,8 +86,8 @@ export interface ExchangeLayerZeroAdapter_v2Interface extends Interface {
     values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: 'loadGasFeesInAssetUnits',
-    values: [BigNumberish[]],
+    functionFragment: 'loadBerachainWithdrawalGasFeesInAssetUnits',
+    values?: undefined,
   ): string;
   encodeFunctionData(
     functionFragment: 'lzCompose',
@@ -128,8 +135,16 @@ export interface ExchangeLayerZeroAdapter_v2Interface extends Interface {
     values: [AddressLike],
   ): string;
   encodeFunctionData(
+    functionFragment: 'setStargateForwarder',
+    values: [AddressLike],
+  ): string;
+  encodeFunctionData(
     functionFragment: 'setWithdrawEnabled',
     values: [boolean],
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'stargateForwarder',
+    values?: undefined,
   ): string;
   encodeFunctionData(
     functionFragment: 'withdrawNativeAsset',
@@ -148,11 +163,15 @@ export interface ExchangeLayerZeroAdapter_v2Interface extends Interface {
     functionFragment: 'adminWallet',
     data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: 'custodian', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'berachainEndpointId',
+    data: BytesLike,
+  ): Result;
   decodeFunctionResult(
     functionFragment: 'estimateWithdrawQuantityInAssetUnits',
     data: BytesLike,
   ): Result;
+  decodeFunctionResult(functionFragment: 'exchange', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'isDepositEnabled',
     data: BytesLike,
@@ -162,7 +181,7 @@ export interface ExchangeLayerZeroAdapter_v2Interface extends Interface {
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'loadGasFeesInAssetUnits',
+    functionFragment: 'loadBerachainWithdrawalGasFeesInAssetUnits',
     data: BytesLike,
   ): Result;
   decodeFunctionResult(functionFragment: 'lzCompose', data: BytesLike): Result;
@@ -196,7 +215,15 @@ export interface ExchangeLayerZeroAdapter_v2Interface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: 'setOwner', data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: 'setStargateForwarder',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
     functionFragment: 'setWithdrawEnabled',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'stargateForwarder',
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
@@ -328,7 +355,7 @@ export interface ExchangeLayerZeroAdapter_v2 extends BaseContract {
 
   adminWallet: TypedContractMethod<[], [string], 'view'>;
 
-  custodian: TypedContractMethod<[], [string], 'view'>;
+  berachainEndpointId: TypedContractMethod<[], [bigint], 'view'>;
 
   estimateWithdrawQuantityInAssetUnits: TypedContractMethod<
     [destinationEndpointId: BigNumberish, quantity: BigNumberish],
@@ -342,13 +369,20 @@ export interface ExchangeLayerZeroAdapter_v2 extends BaseContract {
     'view'
   >;
 
+  exchange: TypedContractMethod<[], [string], 'view'>;
+
   isDepositEnabled: TypedContractMethod<[], [boolean], 'view'>;
 
   isWithdrawEnabled: TypedContractMethod<[], [boolean], 'view'>;
 
-  loadGasFeesInAssetUnits: TypedContractMethod<
-    [destinationEndpointIds: BigNumberish[]],
-    [bigint[]],
+  loadBerachainWithdrawalGasFeesInAssetUnits: TypedContractMethod<
+    [],
+    [
+      [bigint, bigint] & {
+        gasFeeWithoutForwardInAssetUnits: bigint;
+        gasFeeWithForwardInAssetUnits: bigint;
+      },
+    ],
     'view'
   >;
 
@@ -394,11 +428,19 @@ export interface ExchangeLayerZeroAdapter_v2 extends BaseContract {
 
   setOwner: TypedContractMethod<[newOwner: AddressLike], [void], 'nonpayable'>;
 
+  setStargateForwarder: TypedContractMethod<
+    [stargateForwarder_: AddressLike],
+    [void],
+    'nonpayable'
+  >;
+
   setWithdrawEnabled: TypedContractMethod<
     [isEnabled: boolean],
     [void],
     'nonpayable'
   >;
+
+  stargateForwarder: TypedContractMethod<[], [string], 'view'>;
 
   withdrawNativeAsset: TypedContractMethod<
     [destinationContractOrWallet: AddressLike, quantity: BigNumberish],
@@ -427,8 +469,8 @@ export interface ExchangeLayerZeroAdapter_v2 extends BaseContract {
     nameOrSignature: 'adminWallet',
   ): TypedContractMethod<[], [string], 'view'>;
   getFunction(
-    nameOrSignature: 'custodian',
-  ): TypedContractMethod<[], [string], 'view'>;
+    nameOrSignature: 'berachainEndpointId',
+  ): TypedContractMethod<[], [bigint], 'view'>;
   getFunction(
     nameOrSignature: 'estimateWithdrawQuantityInAssetUnits',
   ): TypedContractMethod<
@@ -443,16 +485,24 @@ export interface ExchangeLayerZeroAdapter_v2 extends BaseContract {
     'view'
   >;
   getFunction(
+    nameOrSignature: 'exchange',
+  ): TypedContractMethod<[], [string], 'view'>;
+  getFunction(
     nameOrSignature: 'isDepositEnabled',
   ): TypedContractMethod<[], [boolean], 'view'>;
   getFunction(
     nameOrSignature: 'isWithdrawEnabled',
   ): TypedContractMethod<[], [boolean], 'view'>;
   getFunction(
-    nameOrSignature: 'loadGasFeesInAssetUnits',
+    nameOrSignature: 'loadBerachainWithdrawalGasFeesInAssetUnits',
   ): TypedContractMethod<
-    [destinationEndpointIds: BigNumberish[]],
-    [bigint[]],
+    [],
+    [
+      [bigint, bigint] & {
+        gasFeeWithoutForwardInAssetUnits: bigint;
+        gasFeeWithForwardInAssetUnits: bigint;
+      },
+    ],
     'view'
   >;
   getFunction(
@@ -506,8 +556,18 @@ export interface ExchangeLayerZeroAdapter_v2 extends BaseContract {
     nameOrSignature: 'setOwner',
   ): TypedContractMethod<[newOwner: AddressLike], [void], 'nonpayable'>;
   getFunction(
+    nameOrSignature: 'setStargateForwarder',
+  ): TypedContractMethod<
+    [stargateForwarder_: AddressLike],
+    [void],
+    'nonpayable'
+  >;
+  getFunction(
     nameOrSignature: 'setWithdrawEnabled',
   ): TypedContractMethod<[isEnabled: boolean], [void], 'nonpayable'>;
+  getFunction(
+    nameOrSignature: 'stargateForwarder',
+  ): TypedContractMethod<[], [string], 'view'>;
   getFunction(
     nameOrSignature: 'withdrawNativeAsset',
   ): TypedContractMethod<

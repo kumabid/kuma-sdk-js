@@ -12,19 +12,24 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: 'uint32',
+        name: 'berachainEndpointId_',
+        type: 'uint32',
+      },
+      {
         internalType: 'address',
-        name: 'custodian_',
+        name: 'exchange_',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'lzEndpoint_',
         type: 'address',
       },
       {
         internalType: 'uint64',
         name: 'minimumWithdrawQuantityMultiplier_',
         type: 'uint64',
-      },
-      {
-        internalType: 'address',
-        name: 'lzEndpoint_',
-        type: 'address',
       },
       {
         internalType: 'address',
@@ -155,12 +160,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: 'custodian',
+    name: 'berachainEndpointId',
     outputs: [
       {
-        internalType: 'contract ICustodian',
+        internalType: 'uint32',
         name: '',
-        type: 'address',
+        type: 'uint32',
       },
     ],
     stateMutability: 'view',
@@ -202,6 +207,19 @@ const _abi = [
   },
   {
     inputs: [],
+    name: 'exchange',
+    outputs: [
+      {
+        internalType: 'contract IExchange',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'isDepositEnabled',
     outputs: [
       {
@@ -227,19 +245,18 @@ const _abi = [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint32[]',
-        name: 'destinationEndpointIds',
-        type: 'uint32[]',
-      },
-    ],
-    name: 'loadGasFeesInAssetUnits',
+    inputs: [],
+    name: 'loadBerachainWithdrawalGasFeesInAssetUnits',
     outputs: [
       {
-        internalType: 'uint256[]',
-        name: 'gasFeesInAssetUnits',
-        type: 'uint256[]',
+        internalType: 'uint256',
+        name: 'gasFeeWithoutForwardInAssetUnits',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'gasFeeWithForwardInAssetUnits',
+        type: 'uint256',
       },
     ],
     stateMutability: 'view',
@@ -412,6 +429,19 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: 'address',
+        name: 'stargateForwarder_',
+        type: 'address',
+      },
+    ],
+    name: 'setStargateForwarder',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         internalType: 'bool',
         name: 'isEnabled',
         type: 'bool',
@@ -420,6 +450,19 @@ const _abi = [
     name: 'setWithdrawEnabled',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'stargateForwarder',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
