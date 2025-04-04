@@ -49,8 +49,8 @@ export async function estimateStargateV2WithdrawQuantity(
     payload: string;
     quantityInDecimal: string;
   },
-  xchainProvider: ethers.Provider,
   berachainProvider: ethers.Provider,
+  xchainProvider: ethers.Provider,
   sandbox: boolean,
 ): Promise<{
   estimatedWithdrawQuantityInDecimal: string;
