@@ -19,7 +19,6 @@ const config = tseslint.config(
       '**/dist/**',
       '.DS_Store',
       '.eslintcache',
-      '**/typechain-types/**',
       '**/debug/**',
     ],
   },

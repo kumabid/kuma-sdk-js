@@ -16,6 +16,22 @@ export const assetUnitsToDecimal = function assetUnitsToDecimal(
   return bn.shiftedBy(decimals * -1).toFixed(exchangeDecimals);
 };
 
+export const assetUnitsToPip = function assetUnitsToPip(
+  assetUnits: bigint,
+  assetUnitDecimals = 18,
+): bigint {
+  const bn = new BigNumber(assetUnits.toString());
+  return BigInt(bn.shiftedBy(exchangeDecimals - assetUnitDecimals).toFixed(0));
+};
+
+export const pipToAssetUnits = function pipToAssetUnits(
+  pips: bigint,
+  assetUnitDecimals = 18,
+): bigint {
+  const bn = new BigNumber(pips.toString());
+  return BigInt(bn.shiftedBy(assetUnitDecimals - exchangeDecimals).toFixed(0));
+};
+
 export const decimalToPip = function decimalToPip(decimal: string): bigint {
   const bn = new BigNumber(decimal);
   return BigInt(

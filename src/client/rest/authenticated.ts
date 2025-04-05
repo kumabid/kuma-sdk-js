@@ -23,7 +23,7 @@ import {
   sanitizeSearchParams,
 } from '#utils';
 
-import { getEncodedWithdrawalPayloadForBridgeTarget } from '#bridge/bridge';
+import { getEncodedWithdrawalPayloadForBridgeTarget } from '#bridge/withdraw';
 import { RestPublicClient } from '#client/rest/public';
 import { BridgeTarget } from '#types/enums/request';
 
