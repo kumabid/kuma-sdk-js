@@ -9,6 +9,7 @@ import { StargateV2Target } from '#types/enums/request';
 
 import {
   convertBetweenNativeTokens,
+  getStargateV2TargetConfig,
   loadExchangeLayerZeroAddressFromApiIfNeeded,
   loadNativeTokenPricesFromApiIfNeeded,
   loadStargateBridgeForwarderContractAddressFromApiIfNeeded,
@@ -238,24 +239,11 @@ function getSourceAndDestinationConfigs(
   destinationTarget: StargateV2Target,
   sandbox: boolean,
 ) {
-  const sourceConfig =
-    sandbox ?
-      StargateV2Config.testnet[sourceTarget]
-    : StargateV2Config.mainnet[sourceTarget];
-  const destinationConfig =
-    sandbox ?
-      StargateV2Config.testnet[destinationTarget]
-    : StargateV2Config.mainnet[destinationTarget];
-
-  if (
-    !sourceConfig ||
-    !sourceConfig.isSupported ||
-    !destinationConfig.isSupported
-  ) {
-    throw new Error(
-      `Stargate deposits not supported from chain ${sourceTarget} ${sandbox ? 'testnet' : 'mainnet'} (Chain ID: ${String(sourceConfig.evmChainId)}) to chain ${destinationConfig.target} (Chain ID: ${String(destinationConfig.evmChainId)})`,
-    );
-  }
+  const sourceConfig = getStargateV2TargetConfig(sourceTarget, sandbox);
+  const destinationConfig = getStargateV2TargetConfig(
+    destinationTarget,
+    sandbox,
+  );
 
   return { sourceConfig, destinationConfig };
 }

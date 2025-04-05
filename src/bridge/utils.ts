@@ -73,11 +73,13 @@ export function getStargateV2TargetConfig<
 >(stargateTarget: T, sandbox: S) {
   const targetConfig =
     sandbox ?
-      StargateV2Config.testnet[stargateTarget]
+      StargateV2Config.testnet[
+        stargateTarget as keyof typeof StargateV2Config.testnet
+      ]
     : StargateV2Config.mainnet[stargateTarget];
   if (!targetConfig) {
     throw new Error(
-      `No config found for ${stargateTarget} ${sandbox ? 'testnet' : 'mainnet'}`,
+      `Unsupported Stargate target ${stargateTarget} ${sandbox ? 'testnet' : 'mainnet'}`,
     );
   }
 

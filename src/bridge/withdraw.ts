@@ -23,16 +23,7 @@ export function getEncodedWithdrawalPayloadForBridgeTarget(
   bridgeTarget: BridgeTarget,
   sandbox = false,
 ): EncodedStargateV2Payload {
-  const targetConfig =
-    sandbox ?
-      StargateV2Config.testnet[bridgeTarget]
-    : StargateV2Config.mainnet[bridgeTarget];
-
-  if (!targetConfig || !targetConfig.isSupported) {
-    throw new Error(
-      `Stargate withdrawals not supported to chain ${targetConfig.target} ${sandbox ? 'testnet' : 'mainnet'} (Chain ID: ${String(targetConfig.evmChainId)})`,
-    );
-  }
+  const targetConfig = getStargateV2TargetConfig(bridgeTarget, sandbox);
 
   return encodeStargateV2Payload({
     layerZeroEndpointId: targetConfig.layerZeroEndpointId,
@@ -61,6 +52,7 @@ export async function estimateStargateV2WithdrawQuantity(
     parameters.payload,
   );
 
+  console.log(parameters.exchangeLayerZeroAdapterAddress);
   const exchangeStargateAdapter = ExchangeLayerZeroAdapter_v2__factory.connect(
     parameters.exchangeLayerZeroAdapterAddress,
     xchainProvider,
