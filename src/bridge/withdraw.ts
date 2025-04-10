@@ -52,7 +52,6 @@ export async function estimateStargateV2WithdrawQuantity(
     parameters.payload,
   );
 
-  console.log(parameters.exchangeLayerZeroAdapterAddress);
   const exchangeStargateAdapter = ExchangeLayerZeroAdapter_v2__factory.connect(
     parameters.exchangeLayerZeroAdapterAddress,
     xchainProvider,
