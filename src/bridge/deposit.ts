@@ -30,8 +30,12 @@ export async function depositViaStargateV2(
     stargateBridgeForwarderContractAddress?: string;
     wallet: string;
   },
-  berachainProvider: ethers.Provider,
-  sourceProvider: ethers.Provider,
+  providers: {
+    // If the source chain is Berachain then both these params should be for
+    // the same provider
+    berachain: ethers.Provider;
+    sourceChain: ethers.Provider;
+  },
   sourceSigner: ethers.Signer,
   sandbox: boolean,
 ): Promise<string> {
@@ -39,24 +43,15 @@ export async function depositViaStargateV2(
     parameters.sourceStargateTarget === StargateV2Target.STARGATE_BERACHAIN ?
       [
         getDepositFromBerachainSendParamAndSourceConfig(parameters, sandbox),
-        estimateDepositFromBerachainFees(
-          parameters,
-          berachainProvider,
-          sandbox,
-        ),
+        estimateDepositFromBerachainFees(parameters, providers, sandbox),
       ]
     : [
         getDepositViaForwarderSendParamAndSourceConfig(
           parameters,
-          berachainProvider,
+          providers,
           sandbox,
         ),
-        estimateDepositViaForwarderFees(
-          parameters,
-          berachainProvider,
-          sourceProvider,
-          sandbox,
-        ),
+        estimateDepositViaForwarderFees(parameters, providers, sandbox),
       ],
   );
 
@@ -124,27 +119,22 @@ export async function estimateDepositFees(
     stargateBridgeForwarderContractAddress?: string;
     wallet: string;
   },
-  berachainProvider: ethers.Provider,
-  sourceProvider: ethers.Provider,
+  providers: {
+    // If the source chain is Berachain then both these params should be for
+    // the same provider
+    berachain: ethers.Provider;
+    sourceChain: ethers.Provider;
+  },
   sandbox: boolean,
 ): Promise<{
   gasFee: bigint;
   quantityDeliveredInAssetUnits: bigint;
 }> {
   if (parameters.sourceStargateTarget === StargateV2Target.STARGATE_BERACHAIN) {
-    return estimateDepositFromBerachainFees(
-      parameters,
-      berachainProvider,
-      sandbox,
-    );
+    return estimateDepositFromBerachainFees(parameters, providers, sandbox);
   }
 
-  return estimateDepositViaForwarderFees(
-    parameters,
-    berachainProvider,
-    sourceProvider,
-    sandbox,
-  );
+  return estimateDepositViaForwarderFees(parameters, providers, sandbox);
 }
 
 async function estimateDepositViaForwarderFees(
@@ -157,8 +147,10 @@ async function estimateDepositViaForwarderFees(
     stargateBridgeForwarderContractAddress?: string;
     wallet: string;
   },
-  berachainProvider: ethers.Provider,
-  sourceProvider: ethers.Provider,
+  providers: {
+    berachain: ethers.Provider;
+    sourceChain: ethers.Provider;
+  },
   sandbox: boolean,
 ): Promise<{
   gasFee: bigint;
@@ -167,13 +159,13 @@ async function estimateDepositViaForwarderFees(
   const { sendParam, sourceConfig } =
     await getDepositViaForwarderSendParamAndSourceConfig(
       parameters,
-      berachainProvider,
+      providers,
       sandbox,
     );
 
   const stargate = IOFT__factory.connect(
     sourceConfig.stargateOFTAddress,
-    sourceProvider,
+    providers.sourceChain,
   );
   const [{ nativeFee: gasFee }, [, , receipt]] = await Promise.all([
     stargate.quoteSend(sendParam, false, {
@@ -187,7 +179,7 @@ async function estimateDepositViaForwarderFees(
   const { quantityDeliveredInAssetUnits } =
     await estimateDepositFromBerachainFees(
       { ...parameters, quantityInAssetUnits: receipt.amountReceivedLD },
-      berachainProvider,
+      providers,
       sandbox,
     );
 
@@ -208,7 +200,9 @@ async function estimateDepositFromBerachainFees(
     quantityInAssetUnits: bigint;
     wallet: string;
   },
-  berachainProvider: ethers.Provider,
+  providers: {
+    berachain: ethers.Provider;
+  },
   sandbox: boolean,
 ): Promise<{
   gasFee: bigint;
@@ -219,7 +213,7 @@ async function estimateDepositFromBerachainFees(
 
   const oft = IOFT__factory.connect(
     sourceConfig.stargateOFTAddress,
-    berachainProvider,
+    providers.berachain,
   );
   const [[gasFee], [, , receipt]] = await Promise.all([
     oft.quoteSend(sendParam, false, {
@@ -296,7 +290,9 @@ async function getDepositViaForwarderSendParamAndSourceConfig(
     stargateBridgeForwarderContractAddress?: string;
     wallet: string;
   },
-  berachainProvider: ethers.Provider,
+  providers: {
+    berachain: ethers.Provider;
+  },
   sandbox: boolean,
 ) {
   const { sourceConfig, destinationConfig: berachainConfig } =
@@ -307,7 +303,7 @@ async function getDepositViaForwarderSendParamAndSourceConfig(
     );
 
   const [{ gasFee: berachainGasFee }, nativeTokenPrices] = await Promise.all([
-    estimateDepositFromBerachainFees(parameters, berachainProvider, sandbox),
+    estimateDepositFromBerachainFees(parameters, providers, sandbox),
     loadNativeTokenPricesFromApiIfNeeded(parameters.nativeTokenPrices),
   ]);
 
