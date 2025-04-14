@@ -166,7 +166,8 @@ export const StargateV2Config = {
       evmChainId: 11155111,
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/testnet-contracts#sepolia
       layerZeroEndpointId: 40161,
-      stargateOFTAddress: '0x64DCcad9d2AE26E950061A62CD7aD3909692F354',
+      // KumaOFTAdapterUSDC
+      stargateOFTAddress: '0x21F1caDDBED3Cd50e6B30644459BFB80c367076c',
       tokenDecimals: 6,
       usdcAddress: '0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590',
     },
