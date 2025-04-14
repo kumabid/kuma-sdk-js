@@ -40,8 +40,11 @@ export async function estimateStargateV2WithdrawQuantity(
     payload: string;
     quantityInDecimal: string;
   },
-  berachainProvider: ethers.Provider,
-  xchainProvider: ethers.Provider,
+
+  providers: {
+    berachain: ethers.Provider;
+    xchain: ethers.Provider;
+  },
   sandbox: boolean,
 ): Promise<{
   estimatedWithdrawQuantityInDecimal: string;
@@ -54,7 +57,7 @@ export async function estimateStargateV2WithdrawQuantity(
 
   const exchangeStargateAdapter = ExchangeLayerZeroAdapter_v2__factory.connect(
     parameters.exchangeLayerZeroAdapterAddress,
-    xchainProvider,
+    providers.xchain,
   );
 
   const [
@@ -88,7 +91,7 @@ export async function estimateStargateV2WithdrawQuantity(
   if (target !== StargateV2Target.STARGATE_BERACHAIN) {
     const stargateForwarder = KumaStargateForwarder_v1__factory.connect(
       parameters.stargateForwarderAddress,
-      berachainProvider,
+      providers.berachain,
     );
 
     const [
