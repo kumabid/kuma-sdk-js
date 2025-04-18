@@ -56,7 +56,7 @@ export const StargateV2Config = {
       stargateOFTAddress: '0xe8CDF27AcD73a434D661C84887215F7598e7d0d3',
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/v2-supported-networks-and-assets#arbitrum
       tokenDecimals: 6,
-      usdcAddress: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+      usdcAddress: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
     },
     [StargateV2Target.STARGATE_AURORA]: {
       target: StargateV2Target.STARGATE_AURORA,
@@ -69,7 +69,7 @@ export const StargateV2Config = {
       stargateOFTAddress: '0x81F6138153d473E8c5EcebD3DC8Cd4903506B075',
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/v2-supported-networks-and-assets#aurora
       tokenDecimals: 6,
-      usdcAddress: '0x368ebb46aca6b8d0787c96b2b20bd3cc3f2c45f7',
+      usdcAddress: '0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7',
     },
     [StargateV2Target.STARGATE_BASE]: {
       target: StargateV2Target.STARGATE_BASE,
@@ -81,7 +81,7 @@ export const StargateV2Config = {
       stargateOFTAddress: '0x27a16dc786820B16E5c9028b75B99F6f604b5d26',
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/v2-supported-networks-and-assets#base
       tokenDecimals: 6,
-      usdcAddress: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+      usdcAddress: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
     },
     [StargateV2Target.STARGATE_ETHEREUM]: {
       target: StargateV2Target.STARGATE_ETHEREUM,
@@ -93,7 +93,7 @@ export const StargateV2Config = {
       stargateOFTAddress: '0xc026395860Db2d07ee33e05fE50ed7bD583189C7',
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/v2-supported-networks-and-assets#ethereum
       tokenDecimals: 6,
-      usdcAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+      usdcAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
     },
     [StargateV2Target.STARGATE_OPTIMISM]: {
       target: StargateV2Target.STARGATE_OPTIMISM,
@@ -105,7 +105,7 @@ export const StargateV2Config = {
       stargateOFTAddress: '0xcE8CcA271Ebc0533920C83d39F417ED6A0abB7D0',
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/v2-supported-networks-and-assets#optimism
       tokenDecimals: 6,
-      usdcAddress: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+      usdcAddress: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
     },
     [StargateV2Target.STARGATE_RARI]: {
       target: StargateV2Target.STARGATE_RARI,
@@ -129,7 +129,7 @@ export const StargateV2Config = {
       stargateOFTAddress: '0x3Fc69CC4A842838bCDC9499178740226062b14E4',
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/v2-supported-networks-and-assets#scroll
       tokenDecimals: 6,
-      usdcAddress: '0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4',
+      usdcAddress: '0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4',
     },
     [StargateV2Target.STARGATE_TAIKO]: {
       target: StargateV2Target.STARGATE_TAIKO,
