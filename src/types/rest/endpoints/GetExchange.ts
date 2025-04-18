@@ -54,6 +54,10 @@ export interface KumaExchange {
    * - Used to define the `stargateBridgeAdapterAddress` properties in withdrawals
    */
   stargateBridgeAdapterContractAddress: string;
+  /**
+   * Address of Stargate Forwarder on Berachain
+   */
+  stargateBridgeForwarderContractAddress: string;
   /** Total open interest across all markets in USD */
   totalOpenInterest: string;
   /** Total exchange trading volume for the trailing 24 hours in USD */
