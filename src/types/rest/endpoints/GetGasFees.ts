@@ -1,4 +1,4 @@
-import type { BridgeTarget, NativeToken } from '@kumabid/kuma-sdk/types';
+import type { BridgeTarget } from '@kumabid/kuma-sdk/types';
 
 /**
  * Estimated gas fees by bridge and target chain
@@ -10,9 +10,6 @@ import type { BridgeTarget, NativeToken } from '@kumabid/kuma-sdk/types';
  * @category Kuma Interfaces
  */
 export interface KumaGasFees {
-  nativeTokenPrices: {
-    [K in NativeToken]?: string;
-  };
   withdrawal: {
     [K in BridgeTarget]?: string;
   };

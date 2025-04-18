@@ -8,14 +8,10 @@ import { IOFT__factory } from '#typechain-types/index';
 import { StargateV2Target } from '#types/enums/request';
 
 import {
-  convertBetweenNativeTokens,
   getStargateV2TargetConfig,
   loadExchangeLayerZeroAddressFromApiIfNeeded,
-  loadNativeTokenPricesFromApiIfNeeded,
   loadStargateBridgeForwarderContractAddressFromApiIfNeeded,
 } from './utils';
-
-import type { KumaGasFees } from '#index';
 
 /**
  * Deposit funds cross-chain into the Exchange using Stargate
@@ -24,7 +20,6 @@ export async function depositViaStargateV2(
   parameters: {
     exchangeLayerZeroAdapterAddress?: string;
     minimumForwardQuantityMultiplierInPips: bigint;
-    nativeTokenPrices?: KumaGasFees['nativeTokenPrices'];
     quantityInAssetUnits: bigint;
     sourceStargateTarget: StargateV2Target;
     stargateBridgeForwarderContractAddress?: string;
@@ -113,7 +108,6 @@ export async function estimateDepositFees(
   parameters: {
     exchangeLayerZeroAdapterAddress?: string;
     minimumForwardQuantityMultiplierInPips: bigint;
-    nativeTokenPrices: KumaGasFees['nativeTokenPrices'];
     quantityInAssetUnits: bigint;
     sourceStargateTarget: StargateV2Target;
     stargateBridgeForwarderContractAddress?: string;
@@ -141,7 +135,6 @@ async function estimateDepositViaForwarderFees(
   parameters: {
     exchangeLayerZeroAdapterAddress?: string;
     minimumForwardQuantityMultiplierInPips: bigint;
-    nativeTokenPrices?: KumaGasFees['nativeTokenPrices'];
     quantityInAssetUnits: bigint;
     sourceStargateTarget: StargateV2Target;
     stargateBridgeForwarderContractAddress?: string;
@@ -284,7 +277,6 @@ async function getDepositFromBerachainSendParamAndSourceConfig(
 async function getDepositViaForwarderSendParamAndSourceConfig(
   parameters: {
     minimumForwardQuantityMultiplierInPips: bigint;
-    nativeTokenPrices?: KumaGasFees['nativeTokenPrices'];
     quantityInAssetUnits: bigint;
     sourceStargateTarget: StargateV2Target;
     stargateBridgeForwarderContractAddress?: string;
@@ -302,22 +294,14 @@ async function getDepositViaForwarderSendParamAndSourceConfig(
       sandbox,
     );
 
-  const [{ gasFee: berachainGasFee }, nativeTokenPrices] = await Promise.all([
-    estimateDepositFromBerachainFees(parameters, providers, sandbox),
-    loadNativeTokenPricesFromApiIfNeeded(parameters.nativeTokenPrices),
-  ]);
-
-  const estimatedAdditionalNativeDrop = convertBetweenNativeTokens(
-    berachainConfig.nativeToken,
-    berachainGasFee,
-    sourceConfig.nativeToken,
-    nativeTokenPrices,
+  const { gasFee: berachainGasFee } = await estimateDepositFromBerachainFees(
+    parameters,
+    providers,
+    sandbox,
   );
-  // Add 50% buffer for safety
-  const additionalNativeDrop = new BigNumber(
-    estimatedAdditionalNativeDrop.toString(),
-  )
-    .times(new BigNumber(1.5))
+  // Add 20% buffer for safety
+  const additionalNativeDrop = new BigNumber(berachainGasFee.toString())
+    .times(new BigNumber(1.2))
     .toFixed(0);
 
   const stargateBridgeForwarderContractAddress =
@@ -328,7 +312,8 @@ async function getDepositViaForwarderSendParamAndSourceConfig(
   // FIXME CJS dynamic import
   const { Options } = await import('@layerzerolabs/lz-v2-utilities');
   const extraOptions = Options.newOptions()
-    .addExecutorComposeOption(0, 350000, additionalNativeDrop)
+    // Native drop is specified in BERA wei
+    .addExecutorComposeOption(0, 450000, additionalNativeDrop)
     .toHex();
 
   const sendParam = {
