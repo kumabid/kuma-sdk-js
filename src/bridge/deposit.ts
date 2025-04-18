@@ -307,12 +307,18 @@ async function getDepositViaForwarderSendParamAndSourceConfig(
     loadNativeTokenPricesFromApiIfNeeded(parameters.nativeTokenPrices),
   ]);
 
-  const additionalNativeDrop = convertBetweenNativeTokens(
+  const estimatedAdditionalNativeDrop = convertBetweenNativeTokens(
     berachainConfig.nativeToken,
     berachainGasFee,
     sourceConfig.nativeToken,
     nativeTokenPrices,
   );
+  // Add 50% buffer for safety
+  const additionalNativeDrop = new BigNumber(
+    estimatedAdditionalNativeDrop.toString(),
+  )
+    .times(new BigNumber(1.5))
+    .toFixed(0);
 
   const stargateBridgeForwarderContractAddress =
     await loadStargateBridgeForwarderContractAddressFromApiIfNeeded(
