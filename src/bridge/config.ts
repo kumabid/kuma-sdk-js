@@ -1,8 +1,4 @@
-import {
-  BridgeTarget,
-  NativeToken,
-  StargateV2Target,
-} from '#types/enums/request';
+import { BridgeTarget, StargateV2Target } from '#types/enums/request';
 
 export const StargateV2BridgeTargetsArray = Object.values(BridgeTarget);
 export const StargateV2TargetsArray = Object.values(StargateV2Target);
@@ -25,7 +21,6 @@ export const StargateV2Config = {
   mainnet: {
     [StargateV2Target.XCHAIN_XCHAIN]: {
       target: StargateV2Target.XCHAIN_XCHAIN,
-      nativeToken: NativeToken.ETH,
       evmChainId: 94524,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#xchain
       layerZeroEndpointId: 30291,
@@ -36,7 +31,6 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_BERACHAIN]: {
       target: StargateV2Target.STARGATE_BERACHAIN,
-      nativeToken: NativeToken.BERA,
       evmChainId: 80094,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#bera
       layerZeroEndpointId: 30362,
@@ -48,7 +42,6 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_ARBITRUM]: {
       target: StargateV2Target.STARGATE_ARBITRUM,
-      nativeToken: NativeToken.ETH,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#arbitrum
       evmChainId: 42161,
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/mainnet-contracts#arbitrum
@@ -60,7 +53,6 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_AURORA]: {
       target: StargateV2Target.STARGATE_AURORA,
-      nativeToken: NativeToken.ETH,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#aurora
       evmChainId: 1313161554,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#aurora
@@ -73,7 +65,6 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_BASE]: {
       target: StargateV2Target.STARGATE_BASE,
-      nativeToken: NativeToken.ETH,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#base
       evmChainId: 8453,
       layerZeroEndpointId: 30184,
@@ -85,7 +76,6 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_ETHEREUM]: {
       target: StargateV2Target.STARGATE_ETHEREUM,
-      nativeToken: NativeToken.ETH,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#ethereum
       evmChainId: 1,
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/mainnet-contracts#ethereum
@@ -97,7 +87,6 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_OPTIMISM]: {
       target: StargateV2Target.STARGATE_OPTIMISM,
-      nativeToken: NativeToken.ETH,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#optimism
       evmChainId: 10,
       layerZeroEndpointId: 30111,
@@ -109,7 +98,6 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_RARI]: {
       target: StargateV2Target.STARGATE_RARI,
-      nativeToken: NativeToken.ETH,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#rarible
       evmChainId: 1380012617,
       layerZeroEndpointId: 30235,
@@ -121,7 +109,6 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_SCROLL]: {
       target: StargateV2Target.STARGATE_SCROLL,
-      nativeToken: NativeToken.ETH,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#scroll
       evmChainId: 534352,
       layerZeroEndpointId: 30214,
@@ -133,7 +120,6 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_TAIKO]: {
       target: StargateV2Target.STARGATE_TAIKO,
-      nativeToken: NativeToken.ETH,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#taiko
       evmChainId: 167000,
       layerZeroEndpointId: 30290,
@@ -147,7 +133,6 @@ export const StargateV2Config = {
   testnet: {
     [StargateV2Target.XCHAIN_XCHAIN]: {
       target: StargateV2Target.XCHAIN_XCHAIN,
-      nativeToken: NativeToken.ETH,
       isSupported: true,
       evmChainId: 64002,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#xchain-testnet
@@ -161,7 +146,6 @@ export const StargateV2Config = {
       target: StargateV2Target.STARGATE_BERACHAIN,
       // TODO There is currently no testnet for Berachain so we are using
       // Sepolia as a substitute for testing purposes
-      nativeToken: NativeToken.ETH,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#sepolia
       evmChainId: 11155111,
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/testnet-contracts#sepolia
@@ -173,7 +157,6 @@ export const StargateV2Config = {
     },
     [StargateV2Target.STARGATE_ARBITRUM]: {
       target: StargateV2Target.STARGATE_ARBITRUM,
-      nativeToken: NativeToken.ETH,
       // https://docs.layerzero.network/v2/developers/evm/technical-reference/deployed-contracts#arbitrum-sepolia
       evmChainId: 421614,
       // https://stargateprotocol.gitbook.io/stargate/v2-developer-docs/technical-reference/testnet-contracts#arbitrum-sepolia-testnet

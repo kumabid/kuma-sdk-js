@@ -625,18 +625,6 @@ export type StargateV2Target =
   (typeof StargateV2Target)[keyof typeof StargateV2Target];
 
 /**
- * Supported native assets
- *
- * @enum
- */
-export const NativeToken = {
-  BERA: 'bera',
-  ETH: 'eth',
-} as const;
-
-export type NativeToken = (typeof NativeToken)[keyof typeof NativeToken];
-
-/**
  * An enumeration providing all possible events that the {@link OrderBookRealTimeClient} can emit.
  *
  * @enum

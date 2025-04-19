@@ -1,28 +1,16 @@
 import { ethers } from 'ethers';
 
 import {
-  decimalToPip,
-  multiplyPips,
-  assetUnitsToPip,
-  dividePips,
-  pipToAssetUnits,
-} from '#pipmath';
-
-import {
   StargateV2Config,
   StargateV2ConfigByLayerZeroEndpointId,
 } from '#bridge/config';
-import {
-  loadExchangeResponseFromApiIfNeeded,
-  loadGasFeesResponseFromApiIfNeeded,
-} from '#client/rest/public';
+import { loadExchangeResponseFromApiIfNeeded } from '#client/rest/public';
 
-import type { KumaGasFees } from '#index';
 import type {
   DecodedStargateV2Payload,
   EncodedStargateV2Payload,
 } from '#types/bridge';
-import type { NativeToken, StargateV2Target } from '#types/enums/request';
+import type { StargateV2Target } from '#types/enums/request';
 
 export const StargateV2MainnetLayerZeroEndpointIds = Object.values(
   StargateV2ConfigByLayerZeroEndpointId.mainnet,
@@ -128,52 +116,6 @@ export function encodeStargateV2Payload({
   );
 }
 
-export function convertNativeTokenToUsd(
-  nativeToken: NativeToken,
-  nativeTokenQuantityInAssetUnits: bigint,
-  nativeTokenPrices: KumaGasFees['nativeTokenPrices'],
-  nativeTokenDecimals?: number,
-): bigint {
-  const nativeTokenPrice = nativeTokenPrices[nativeToken];
-  if (!nativeTokenPrice) {
-    throw new Error(`Missing price for ${nativeToken}`);
-  }
-
-  return multiplyPips(
-    assetUnitsToPip(nativeTokenQuantityInAssetUnits, nativeTokenDecimals),
-    decimalToPip(nativeTokenPrice),
-    true,
-  );
-}
-
-export function convertBetweenNativeTokens(
-  fromNativeToken: NativeToken,
-  fromNativeTokenQuantityInAssetUnits: bigint,
-  toNativeToken: NativeToken,
-  nativeTokenPrices: KumaGasFees['nativeTokenPrices'],
-  toNativeTokenDecimals?: number,
-): bigint {
-  const fromNativeTokenPrice = nativeTokenPrices[fromNativeToken];
-  if (!fromNativeTokenPrice) {
-    throw new Error(`Missing price for ${fromNativeToken}`);
-  }
-  const toNativeTokenPrice = nativeTokenPrices[toNativeToken];
-  if (!toNativeTokenPrice) {
-    throw new Error(`Missing price for ${toNativeToken}`);
-  }
-
-  const fromNativeTokenValueInUsd = convertNativeTokenToUsd(
-    fromNativeToken,
-    fromNativeTokenQuantityInAssetUnits,
-    nativeTokenPrices,
-  );
-
-  return pipToAssetUnits(
-    dividePips(fromNativeTokenValueInUsd, decimalToPip(toNativeTokenPrice)),
-    toNativeTokenDecimals,
-  );
-}
-
 export async function loadExchangeLayerZeroAddressFromApiIfNeeded(
   exchangeLayerZeroAdapterAddress?: string,
 ): Promise<string> {
@@ -194,15 +136,4 @@ export async function loadStargateBridgeForwarderContractAddressFromApiIfNeeded(
 
   const [exchangeResponse] = await loadExchangeResponseFromApiIfNeeded();
   return exchangeResponse.stargateBridgeForwarderContractAddress;
-}
-
-export async function loadNativeTokenPricesFromApiIfNeeded(
-  nativeTokenPrices?: KumaGasFees['nativeTokenPrices'],
-): Promise<KumaGasFees['nativeTokenPrices']> {
-  if (nativeTokenPrices) {
-    return nativeTokenPrices;
-  }
-
-  const gasFeesResponse = await loadGasFeesResponseFromApiIfNeeded();
-  return gasFeesResponse.nativeTokenPrices;
 }

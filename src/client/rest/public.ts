@@ -605,28 +605,3 @@ export async function loadExchangeResponseFromApiIfNeeded(
 
   return [exchange, client] as const;
 }
-
-const GAS_FEES_RESPONSE_CACHE_DURATION_MS = 10_000;
-
-let cachedGasFeesResponse: kuma.RestResponseGetGasFees | undefined;
-let gasFeesResponseCachedAt = 0;
-
-export async function loadGasFeesResponseFromApiIfNeeded(
-  opts?: RestPublicClientOptions,
-) {
-  const client = new RestPublicClient(opts);
-  const now = Date.now();
-
-  const cachedValueIsStale =
-    now - gasFeesResponseCachedAt > GAS_FEES_RESPONSE_CACHE_DURATION_MS;
-
-  const gasFees =
-    !cachedGasFeesResponse || cachedValueIsStale ?
-      await client.getGasFees()
-    : cachedGasFeesResponse;
-
-  cachedGasFeesResponse = gasFees;
-  gasFeesResponseCachedAt = cachedValueIsStale ? now : gasFeesResponseCachedAt;
-
-  return gasFees;
-}
