@@ -49,11 +49,17 @@ export interface KumaExchange {
    */
   bgtPrice: string;
   /**
-   * [Stargate](https://stargateprotocol.gitbook.io/) bridge adapter contract address
+   * [Stargate](https://stargateprotocol.gitbook.io/) bridge adapter V1 contract address
    *
    * - Used to define the `stargateBridgeAdapterAddress` properties in withdrawals
    */
   stargateBridgeAdapterContractAddress: string;
+  /**
+   * [Stargate](https://stargateprotocol.gitbook.io/) bridge adapter V2 contract address
+   *
+   * - Used to define the `stargateBridgeAdapterAddress` properties in withdrawals
+   */
+  stargateBridgeAdapterV2ContractAddress: string;
   /**
    * Address of Stargate Forwarder on Berachain
    */

@@ -50,7 +50,7 @@ export async function depositViaStargateV2(
       ],
   );
 
-  let gasLimit: number = StargateV2Config.settings.swapSourceGasLimit;
+  let gasLimit: number = StargateV2Config.settings.depositSourceChainGasLimit;
   const oft = IOFT__factory.connect(
     sourceConfig.stargateOFTAddress,
     sourceSigner,
@@ -313,7 +313,11 @@ async function getDepositViaForwarderSendParamAndSourceConfig(
   const { Options } = await import('@layerzerolabs/lz-v2-utilities');
   const extraOptions = Options.newOptions()
     // Native drop is specified in BERA wei
-    .addExecutorComposeOption(0, 450000, additionalNativeDrop)
+    .addExecutorComposeOption(
+      0,
+      StargateV2Config.settings.stargateBridgeForwarderGasLimit,
+      additionalNativeDrop,
+    )
     .toHex();
 
   const sendParam = {
