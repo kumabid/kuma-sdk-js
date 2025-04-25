@@ -585,7 +585,7 @@ const EXCHANGE_RESPONSE_CACHE_DURATION_MS = 300_000;
 let cachedExchangeResponse: kuma.RestResponseGetExchange | undefined;
 let exchangeResponseCachedAt = 0;
 
-export async function getExchangeAddressAndChainFromApi(
+export async function loadExchangeResponseFromApiIfNeeded(
   opts?: RestPublicClientOptions,
 ) {
   const client = new RestPublicClient(opts);

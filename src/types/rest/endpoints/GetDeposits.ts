@@ -66,10 +66,15 @@ export interface KumaDeposit {
    */
   time: number;
   /**
-   * Transaction id of the bridge transaction delivering funds to XCHAIN; also
+   * Transaction id of the bridge transaction initiated by the user; also
    * queryable for bridge details on https://layerzeroscan.com/
    */
   bridgeTxId?: string;
+  /**
+   * Transaction id of the bridge transaction delivering funds to XCHAIN; also
+   * queryable for bridge details on https://layerzeroscan.com/
+   */
+  forwarderTxId?: string;
   /**
    * Transaction id of the deposit transaction on XCHAIN
    */
