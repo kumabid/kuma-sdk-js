@@ -1,6 +1,6 @@
 {
   "name": "@kumabid/kuma-sdk",
-  "version": "1.2.0-beta.6",
+  "version": "1.2.0-alpha.9",
   "description": "Kuma SDK for Javascript in the browser and Node.js",
   "repository": "git@github.com:kumabid/kuma-sdk-js.git",
   "license": "MIT",
@@ -129,7 +129,7 @@
     "@layerzerolabs/lz-v2-utilities": "^3.0.83",
     "axios": "1.6.8",
     "bignumber.js": "^9.1.2",
-    "ethers": "6.9.0",
+    "ethers": "6.13.5",
     "isomorphic-ws": "^5.0.0",
     "tslib": "^2.7.0",
     "uuid": "^9.0.1",
