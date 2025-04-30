@@ -79,6 +79,117 @@ export type MarketStructOutput = [
   overridableFields: OverridableMarketFieldsStructOutput;
 };
 
+export type WithdrawalFromManagedAccountByQuantityStruct = {
+  nonce: BigNumberish;
+  managerWallet: AddressLike;
+  depositorWallet: AddressLike;
+  quantity: BigNumberish;
+  minimumQuantity: BigNumberish;
+  maxShares: BigNumberish;
+  maximumGasFee: BigNumberish;
+  managedAccount: AddressLike;
+  managedAccountPayload: BytesLike;
+  bridgeAdapter: AddressLike;
+  bridgeAdapterPayload: BytesLike;
+  gasFee: BigNumberish;
+  grossQuantity: BigNumberish;
+  walletSignature: BytesLike;
+};
+
+export type WithdrawalFromManagedAccountByQuantityStructOutput = [
+  nonce: bigint,
+  managerWallet: string,
+  depositorWallet: string,
+  quantity: bigint,
+  minimumQuantity: bigint,
+  maxShares: bigint,
+  maximumGasFee: bigint,
+  managedAccount: string,
+  managedAccountPayload: string,
+  bridgeAdapter: string,
+  bridgeAdapterPayload: string,
+  gasFee: bigint,
+  grossQuantity: bigint,
+  walletSignature: string,
+] & {
+  nonce: bigint;
+  managerWallet: string;
+  depositorWallet: string;
+  quantity: bigint;
+  minimumQuantity: bigint;
+  maxShares: bigint;
+  maximumGasFee: bigint;
+  managedAccount: string;
+  managedAccountPayload: string;
+  bridgeAdapter: string;
+  bridgeAdapterPayload: string;
+  gasFee: bigint;
+  grossQuantity: bigint;
+  walletSignature: string;
+};
+
+export type WithdrawalFromManagedAccountBySharesStruct = {
+  nonce: BigNumberish;
+  managerWallet: AddressLike;
+  depositorWallet: AddressLike;
+  shares: BigNumberish;
+  minimumQuantity: BigNumberish;
+  maximumGasFee: BigNumberish;
+  managedAccount: AddressLike;
+  managedAccountPayload: BytesLike;
+  bridgeAdapter: AddressLike;
+  bridgeAdapterPayload: BytesLike;
+  gasFee: BigNumberish;
+  grossQuantity: BigNumberish;
+  walletSignature: BytesLike;
+};
+
+export type WithdrawalFromManagedAccountBySharesStructOutput = [
+  nonce: bigint,
+  managerWallet: string,
+  depositorWallet: string,
+  shares: bigint,
+  minimumQuantity: bigint,
+  maximumGasFee: bigint,
+  managedAccount: string,
+  managedAccountPayload: string,
+  bridgeAdapter: string,
+  bridgeAdapterPayload: string,
+  gasFee: bigint,
+  grossQuantity: bigint,
+  walletSignature: string,
+] & {
+  nonce: bigint;
+  managerWallet: string;
+  depositorWallet: string;
+  shares: bigint;
+  minimumQuantity: bigint;
+  maximumGasFee: bigint;
+  managedAccount: string;
+  managedAccountPayload: string;
+  bridgeAdapter: string;
+  bridgeAdapterPayload: string;
+  gasFee: bigint;
+  grossQuantity: bigint;
+  walletSignature: string;
+};
+
+export type WithdrawalFromManagedAccountStruct = {
+  withdrawalType: BigNumberish;
+  withdrawalByQuantity: WithdrawalFromManagedAccountByQuantityStruct;
+  withdrawalByShares: WithdrawalFromManagedAccountBySharesStruct;
+};
+
+export type WithdrawalFromManagedAccountStructOutput = [
+  withdrawalType: bigint,
+  withdrawalByQuantity: WithdrawalFromManagedAccountByQuantityStructOutput,
+  withdrawalByShares: WithdrawalFromManagedAccountBySharesStructOutput,
+] & {
+  withdrawalType: bigint;
+  withdrawalByQuantity: WithdrawalFromManagedAccountByQuantityStructOutput;
+  withdrawalByShares: WithdrawalFromManagedAccountBySharesStructOutput;
+};
+
 export type AcquisitionDeleverageArgumentsStruct = {
   baseAssetSymbol: string;
   counterpartyWallet: AddressLike;
@@ -224,22 +335,6 @@ export type OrderStructOutput = [
   walletSignature: string;
 };
 
-export type ExecuteTradeArgumentsStruct = {
-  trade: TradeStruct;
-  buy: OrderStruct;
-  sell: OrderStruct;
-};
-
-export type ExecuteTradeArgumentsStructOutput = [
-  trade: TradeStructOutput,
-  buy: OrderStructOutput,
-  sell: OrderStructOutput,
-] & {
-  trade: TradeStructOutput;
-  buy: OrderStructOutput;
-  sell: OrderStructOutput;
-};
-
 export type PositionBelowMinimumLiquidationArgumentsStruct = {
   baseAssetSymbol: string;
   liquidatingWallet: AddressLike;
@@ -293,6 +388,7 @@ export type WalletLiquidationArgumentsStructOutput = [
 
 export type BalanceStruct = {
   isMigrated: boolean;
+  managedAccount: AddressLike;
   balance: BigNumberish;
   costBasis: BigNumberish;
   lastUpdateTimestampInMs: BigNumberish;
@@ -300,11 +396,13 @@ export type BalanceStruct = {
 
 export type BalanceStructOutput = [
   isMigrated: boolean,
+  managedAccount: string,
   balance: bigint,
   costBasis: bigint,
   lastUpdateTimestampInMs: bigint,
 ] & {
   isMigrated: boolean;
+  managedAccount: string;
   balance: bigint;
   costBasis: bigint;
   lastUpdateTimestampInMs: bigint;
@@ -319,6 +417,22 @@ export type NonceInvalidationStructOutput = [
   timestampInMs: bigint,
   effectiveBlockTimestamp: bigint,
 ] & { timestampInMs: bigint; effectiveBlockTimestamp: bigint };
+
+export type WalletExitStruct = {
+  exists: boolean;
+  effectiveBlockTimestamp: BigNumberish;
+  deleveragePriceStrategy: BigNumberish;
+};
+
+export type WalletExitStructOutput = [
+  exists: boolean,
+  effectiveBlockTimestamp: bigint,
+  deleveragePriceStrategy: bigint,
+] & {
+  exists: boolean;
+  effectiveBlockTimestamp: bigint;
+  deleveragePriceStrategy: bigint;
+};
 
 export type IndexPricePayloadStruct = {
   indexPriceAdapter: AddressLike;
@@ -393,9 +507,11 @@ export interface Exchange_v1Interface extends Interface {
       | 'addMarket'
       | 'adminWallet'
       | 'applyOutstandingWalletFundingForMarket'
+      | 'applyPendingDepositForManagedAccount'
       | 'applyPendingDepositsForWallet'
-      | 'baseAssetSymbolsWithOpenPositionsByWallet'
+      | 'associateManagerWalletWithManagedAccount'
       | 'bridgeAdapters'
+      | 'cancelWithdrawalFromManagedAccount'
       | 'chainPropagationPeriodInS'
       | 'clearWalletExit'
       | 'custodian'
@@ -407,10 +523,14 @@ export interface Exchange_v1Interface extends Interface {
       | 'deleverageInsuranceFundClosure'
       | 'deposit'
       | 'depositIndex'
+      | 'depositToManagedAccount'
       | 'dispatcherWallet'
+      | 'domainSeparatorV4'
+      | 'eip712Domain'
       | 'executeTrade'
       | 'exitFundPositionOpenedAtBlockTimestamp'
       | 'exitFundWallet'
+      | 'exitManagedAccountManagerWallet'
       | 'exitWallet'
       | 'feeWallet'
       | 'fundingMultipliersByBaseAssetSymbol'
@@ -438,10 +558,10 @@ export interface Exchange_v1Interface extends Interface {
       | 'loadTotalInitialMarginRequirementFromOraclePrices'
       | 'loadTotalMaintenanceMarginRequirementFromIndexPrices'
       | 'loadTotalMaintenanceMarginRequirementFromOraclePrices'
-      | 'marketBaseAssetSymbols'
+      | 'loadWalletExitStatus'
+      | 'managedAccounts'
       | 'marketOverridesByBaseAssetSymbolAndWallet'
       | 'migrateQuoteTokenAddress'
-      | 'nonceInvalidationsByWallet'
       | 'oraclePriceAdapter'
       | 'ownerWallet'
       | 'pendingDepositQuantityByWallet'
@@ -464,6 +584,7 @@ export interface Exchange_v1Interface extends Interface {
       | 'setFeeWallet'
       | 'setIndexPriceAdapters'
       | 'setInsuranceFundWallet'
+      | 'setManagedAccounts'
       | 'setMarketOverrides'
       | 'setOraclePriceAdapter'
       | 'setOwner'
@@ -471,10 +592,10 @@ export interface Exchange_v1Interface extends Interface {
       | 'skim'
       | 'transfer'
       | 'unsetMarketOverridesForWallet'
-      | 'walletExits'
       | 'withdraw'
       | 'withdrawExit'
-      | 'withdrawExitAdmin',
+      | 'withdrawExitAdmin'
+      | 'withdrawFromManagedAccount',
   ): FunctionFragment;
 
   getEvent(
@@ -489,6 +610,7 @@ export interface Exchange_v1Interface extends Interface {
       | 'DepositsDisabled'
       | 'DepositsEnabled'
       | 'DispatcherChanged'
+      | 'EIP712DomainChanged'
       | 'ExitFundWalletChanged'
       | 'FeeWalletChanged'
       | 'FundingRatePublished'
@@ -532,16 +654,24 @@ export interface Exchange_v1Interface extends Interface {
     values: [AddressLike, string],
   ): string;
   encodeFunctionData(
+    functionFragment: 'applyPendingDepositForManagedAccount',
+    values: [BigNumberish, BigNumberish, AddressLike],
+  ): string;
+  encodeFunctionData(
     functionFragment: 'applyPendingDepositsForWallet',
     values: [BigNumberish, AddressLike],
   ): string;
   encodeFunctionData(
-    functionFragment: 'baseAssetSymbolsWithOpenPositionsByWallet',
-    values: [AddressLike, BigNumberish],
+    functionFragment: 'associateManagerWalletWithManagedAccount',
+    values: [AddressLike],
   ): string;
   encodeFunctionData(
     functionFragment: 'bridgeAdapters',
     values: [BigNumberish],
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'cancelWithdrawalFromManagedAccount',
+    values: [WithdrawalFromManagedAccountStruct],
   ): string;
   encodeFunctionData(
     functionFragment: 'chainPropagationPeriodInS',
@@ -585,12 +715,24 @@ export interface Exchange_v1Interface extends Interface {
     values?: undefined,
   ): string;
   encodeFunctionData(
+    functionFragment: 'depositToManagedAccount',
+    values: [BigNumberish, AddressLike, AddressLike, BytesLike, AddressLike],
+  ): string;
+  encodeFunctionData(
     functionFragment: 'dispatcherWallet',
     values?: undefined,
   ): string;
   encodeFunctionData(
+    functionFragment: 'domainSeparatorV4',
+    values?: undefined,
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'eip712Domain',
+    values?: undefined,
+  ): string;
+  encodeFunctionData(
     functionFragment: 'executeTrade',
-    values: [ExecuteTradeArgumentsStruct],
+    values: [TradeStruct, OrderStruct, OrderStruct],
   ): string;
   encodeFunctionData(
     functionFragment: 'exitFundPositionOpenedAtBlockTimestamp',
@@ -599,6 +741,10 @@ export interface Exchange_v1Interface extends Interface {
   encodeFunctionData(
     functionFragment: 'exitFundWallet',
     values?: undefined,
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'exitManagedAccountManagerWallet',
+    values: [AddressLike],
   ): string;
   encodeFunctionData(
     functionFragment: 'exitWallet',
@@ -706,7 +852,11 @@ export interface Exchange_v1Interface extends Interface {
     values: [AddressLike],
   ): string;
   encodeFunctionData(
-    functionFragment: 'marketBaseAssetSymbols',
+    functionFragment: 'loadWalletExitStatus',
+    values: [AddressLike],
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'managedAccounts',
     values: [BigNumberish],
   ): string;
   encodeFunctionData(
@@ -716,10 +866,6 @@ export interface Exchange_v1Interface extends Interface {
   encodeFunctionData(
     functionFragment: 'migrateQuoteTokenAddress',
     values?: undefined,
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'nonceInvalidationsByWallet',
-    values: [AddressLike, BigNumberish],
   ): string;
   encodeFunctionData(
     functionFragment: 'oraclePriceAdapter',
@@ -775,7 +921,7 @@ export interface Exchange_v1Interface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: 'setCustodian',
-    values: [AddressLike, AddressLike[]],
+    values: [AddressLike],
   ): string;
   encodeFunctionData(
     functionFragment: 'setDelegateKeyExpirationPeriod',
@@ -810,6 +956,10 @@ export interface Exchange_v1Interface extends Interface {
     values: [AddressLike],
   ): string;
   encodeFunctionData(
+    functionFragment: 'setManagedAccounts',
+    values: [AddressLike[]],
+  ): string;
+  encodeFunctionData(
     functionFragment: 'setMarketOverrides',
     values: [string, OverridableMarketFieldsStruct, AddressLike],
   ): string;
@@ -835,10 +985,6 @@ export interface Exchange_v1Interface extends Interface {
     values: [string, AddressLike],
   ): string;
   encodeFunctionData(
-    functionFragment: 'walletExits',
-    values: [AddressLike],
-  ): string;
-  encodeFunctionData(
     functionFragment: 'withdraw',
     values: [WithdrawalStruct],
   ): string;
@@ -849,6 +995,10 @@ export interface Exchange_v1Interface extends Interface {
   encodeFunctionData(
     functionFragment: 'withdrawExitAdmin',
     values: [AddressLike],
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'withdrawFromManagedAccount',
+    values: [WithdrawalFromManagedAccountStruct],
   ): string;
 
   decodeFunctionResult(
@@ -865,15 +1015,23 @@ export interface Exchange_v1Interface extends Interface {
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
+    functionFragment: 'applyPendingDepositForManagedAccount',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
     functionFragment: 'applyPendingDepositsForWallet',
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'baseAssetSymbolsWithOpenPositionsByWallet',
+    functionFragment: 'associateManagerWalletWithManagedAccount',
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
     functionFragment: 'bridgeAdapters',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'cancelWithdrawalFromManagedAccount',
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
@@ -915,7 +1073,19 @@ export interface Exchange_v1Interface extends Interface {
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
+    functionFragment: 'depositToManagedAccount',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
     functionFragment: 'dispatcherWallet',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'domainSeparatorV4',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'eip712Domain',
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
@@ -928,6 +1098,10 @@ export interface Exchange_v1Interface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: 'exitFundWallet',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'exitManagedAccountManagerWallet',
     data: BytesLike,
   ): Result;
   decodeFunctionResult(functionFragment: 'exitWallet', data: BytesLike): Result;
@@ -1030,7 +1204,11 @@ export interface Exchange_v1Interface extends Interface {
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'marketBaseAssetSymbols',
+    functionFragment: 'loadWalletExitStatus',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'managedAccounts',
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
@@ -1039,10 +1217,6 @@ export interface Exchange_v1Interface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: 'migrateQuoteTokenAddress',
-    data: BytesLike,
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'nonceInvalidationsByWallet',
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
@@ -1131,6 +1305,10 @@ export interface Exchange_v1Interface extends Interface {
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
+    functionFragment: 'setManagedAccounts',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
     functionFragment: 'setMarketOverrides',
     data: BytesLike,
   ): Result;
@@ -1149,10 +1327,6 @@ export interface Exchange_v1Interface extends Interface {
     functionFragment: 'unsetMarketOverridesForWallet',
     data: BytesLike,
   ): Result;
-  decodeFunctionResult(
-    functionFragment: 'walletExits',
-    data: BytesLike,
-  ): Result;
   decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'withdrawExit',
@@ -1160,6 +1334,10 @@ export interface Exchange_v1Interface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: 'withdrawExitAdmin',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'withdrawFromManagedAccount',
     data: BytesLike,
   ): Result;
 }
@@ -1312,20 +1490,23 @@ export namespace DepositedEvent {
   export type InputTuple = [
     index: BigNumberish,
     sourceWallet: AddressLike,
-    destinationWallet: AddressLike,
+    depositorWallet: AddressLike,
     quantity: BigNumberish,
+    isAssociatedWithManagedAccount: boolean,
   ];
   export type OutputTuple = [
     index: bigint,
     sourceWallet: string,
-    destinationWallet: string,
+    depositorWallet: string,
     quantity: bigint,
+    isAssociatedWithManagedAccount: boolean,
   ];
   export interface OutputObject {
     index: bigint;
     sourceWallet: string;
-    destinationWallet: string;
+    depositorWallet: string;
     quantity: bigint;
+    isAssociatedWithManagedAccount: boolean;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -1360,6 +1541,16 @@ export namespace DispatcherChangedEvent {
     previousValue: string;
     newValue: string;
   }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace EIP712DomainChangedEvent {
+  export type InputTuple = [];
+  export type OutputTuple = [];
+  export interface OutputObject {}
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
   export type Log = TypedEventLog<Event>;
@@ -1632,16 +1823,19 @@ export namespace PendingDepositAppliedEvent {
     wallet: AddressLike,
     quantity: BigNumberish,
     newExchangeBalance: BigNumberish,
+    isAssociatedWithManagedAccount: boolean,
   ];
   export type OutputTuple = [
     wallet: string,
     quantity: bigint,
     newExchangeBalance: bigint,
+    isAssociatedWithManagedAccount: boolean,
   ];
   export interface OutputObject {
     wallet: string;
     quantity: bigint;
     newExchangeBalance: bigint;
+    isAssociatedWithManagedAccount: boolean;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -1775,11 +1969,17 @@ export namespace WalletExitedEvent {
   export type InputTuple = [
     wallet: AddressLike,
     effectiveBlockTimestamp: BigNumberish,
+    isAssociatedWithManagedAccount: boolean,
   ];
-  export type OutputTuple = [wallet: string, effectiveBlockTimestamp: bigint];
+  export type OutputTuple = [
+    wallet: string,
+    effectiveBlockTimestamp: bigint,
+    isAssociatedWithManagedAccount: boolean,
+  ];
   export interface OutputObject {
     wallet: string;
     effectiveBlockTimestamp: bigint;
+    isAssociatedWithManagedAccount: boolean;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -1792,16 +1992,19 @@ export namespace WithdrawnEvent {
     wallet: AddressLike,
     quantity: BigNumberish,
     newExchangeBalance: BigNumberish,
+    isAssociatedWithManagedAccount: boolean,
   ];
   export type OutputTuple = [
     wallet: string,
     quantity: bigint,
     newExchangeBalance: bigint,
+    isAssociatedWithManagedAccount: boolean,
   ];
   export interface OutputObject {
     wallet: string;
     quantity: bigint;
     newExchangeBalance: bigint;
+    isAssociatedWithManagedAccount: boolean;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -1872,19 +2075,35 @@ export interface Exchange_v1 extends BaseContract {
     'nonpayable'
   >;
 
+  applyPendingDepositForManagedAccount: TypedContractMethod<
+    [
+      depositIndex_: BigNumberish,
+      quantity: BigNumberish,
+      managerWallet: AddressLike,
+    ],
+    [void],
+    'nonpayable'
+  >;
+
   applyPendingDepositsForWallet: TypedContractMethod<
     [quantity: BigNumberish, wallet: AddressLike],
     [void],
     'nonpayable'
   >;
 
-  baseAssetSymbolsWithOpenPositionsByWallet: TypedContractMethod<
-    [arg0: AddressLike, arg1: BigNumberish],
-    [string],
-    'view'
+  associateManagerWalletWithManagedAccount: TypedContractMethod<
+    [managerWallet: AddressLike],
+    [void],
+    'nonpayable'
   >;
 
   bridgeAdapters: TypedContractMethod<[arg0: BigNumberish], [string], 'view'>;
+
+  cancelWithdrawalFromManagedAccount: TypedContractMethod<
+    [withdrawal: WithdrawalFromManagedAccountStruct],
+    [void],
+    'nonpayable'
+  >;
 
   chainPropagationPeriodInS: TypedContractMethod<[], [bigint], 'view'>;
 
@@ -1925,17 +2144,47 @@ export interface Exchange_v1 extends BaseContract {
   >;
 
   deposit: TypedContractMethod<
-    [quantityInAssetUnits: BigNumberish, destinationWallet: AddressLike],
+    [quantityInAssetUnits: BigNumberish, depositorWallet: AddressLike],
     [void],
     'nonpayable'
   >;
 
   depositIndex: TypedContractMethod<[], [bigint], 'view'>;
 
+  depositToManagedAccount: TypedContractMethod<
+    [
+      quantityInAssetUnits: BigNumberish,
+      depositorWallet: AddressLike,
+      managedAccount: AddressLike,
+      managedAccountPayload: BytesLike,
+      managerWallet: AddressLike,
+    ],
+    [void],
+    'nonpayable'
+  >;
+
   dispatcherWallet: TypedContractMethod<[], [string], 'view'>;
 
+  domainSeparatorV4: TypedContractMethod<[], [string], 'view'>;
+
+  eip712Domain: TypedContractMethod<
+    [],
+    [
+      [string, string, string, bigint, string, string, bigint[]] & {
+        fields: string;
+        name: string;
+        version: string;
+        chainId: bigint;
+        verifyingContract: string;
+        salt: string;
+        extensions: bigint[];
+      },
+    ],
+    'view'
+  >;
+
   executeTrade: TypedContractMethod<
-    [tradeArguments: ExecuteTradeArgumentsStruct],
+    [trade: TradeStruct, buy: OrderStruct, sell: OrderStruct],
     [void],
     'nonpayable'
   >;
@@ -1947,6 +2196,12 @@ export interface Exchange_v1 extends BaseContract {
   >;
 
   exitFundWallet: TypedContractMethod<[], [string], 'view'>;
+
+  exitManagedAccountManagerWallet: TypedContractMethod<
+    [managerWallet: AddressLike],
+    [void],
+    'nonpayable'
+  >;
 
   exitWallet: TypedContractMethod<[], [void], 'nonpayable'>;
 
@@ -2099,11 +2354,13 @@ export interface Exchange_v1 extends BaseContract {
     'view'
   >;
 
-  marketBaseAssetSymbols: TypedContractMethod<
-    [arg0: BigNumberish],
-    [string],
+  loadWalletExitStatus: TypedContractMethod<
+    [wallet: AddressLike],
+    [WalletExitStructOutput],
     'view'
   >;
+
+  managedAccounts: TypedContractMethod<[arg0: BigNumberish], [string], 'view'>;
 
   marketOverridesByBaseAssetSymbolAndWallet: TypedContractMethod<
     [arg0: string, arg1: AddressLike],
@@ -2117,17 +2374,6 @@ export interface Exchange_v1 extends BaseContract {
   >;
 
   migrateQuoteTokenAddress: TypedContractMethod<[], [void], 'nonpayable'>;
-
-  nonceInvalidationsByWallet: TypedContractMethod<
-    [arg0: AddressLike, arg1: BigNumberish],
-    [
-      [bigint, bigint] & {
-        timestampInMs: bigint;
-        effectiveBlockTimestamp: bigint;
-      },
-    ],
-    'view'
-  >;
 
   oraclePriceAdapter: TypedContractMethod<[], [string], 'view'>;
 
@@ -2180,7 +2426,7 @@ export interface Exchange_v1 extends BaseContract {
   >;
 
   setCustodian: TypedContractMethod<
-    [newCustodian: AddressLike, newBridgeAdapters: AddressLike[]],
+    [newCustodian: AddressLike],
     [void],
     'nonpayable'
   >;
@@ -2229,6 +2475,12 @@ export interface Exchange_v1 extends BaseContract {
     'nonpayable'
   >;
 
+  setManagedAccounts: TypedContractMethod<
+    [newManagedAccounts: AddressLike[]],
+    [void],
+    'nonpayable'
+  >;
+
   setMarketOverrides: TypedContractMethod<
     [
       baseAssetSymbol: string,
@@ -2267,18 +2519,6 @@ export interface Exchange_v1 extends BaseContract {
     'nonpayable'
   >;
 
-  walletExits: TypedContractMethod<
-    [arg0: AddressLike],
-    [
-      [boolean, bigint, bigint] & {
-        exists: boolean;
-        effectiveBlockTimestamp: bigint;
-        deleveragePriceStrategy: bigint;
-      },
-    ],
-    'view'
-  >;
-
   withdraw: TypedContractMethod<
     [withdrawal: WithdrawalStruct],
     [void],
@@ -2293,6 +2533,12 @@ export interface Exchange_v1 extends BaseContract {
 
   withdrawExitAdmin: TypedContractMethod<
     [wallet: AddressLike],
+    [void],
+    'nonpayable'
+  >;
+
+  withdrawFromManagedAccount: TypedContractMethod<
+    [withdrawal: WithdrawalFromManagedAccountStruct],
     [void],
     'nonpayable'
   >;
@@ -2318,6 +2564,17 @@ export interface Exchange_v1 extends BaseContract {
     'nonpayable'
   >;
   getFunction(
+    nameOrSignature: 'applyPendingDepositForManagedAccount',
+  ): TypedContractMethod<
+    [
+      depositIndex_: BigNumberish,
+      quantity: BigNumberish,
+      managerWallet: AddressLike,
+    ],
+    [void],
+    'nonpayable'
+  >;
+  getFunction(
     nameOrSignature: 'applyPendingDepositsForWallet',
   ): TypedContractMethod<
     [quantity: BigNumberish, wallet: AddressLike],
@@ -2325,15 +2582,18 @@ export interface Exchange_v1 extends BaseContract {
     'nonpayable'
   >;
   getFunction(
-    nameOrSignature: 'baseAssetSymbolsWithOpenPositionsByWallet',
-  ): TypedContractMethod<
-    [arg0: AddressLike, arg1: BigNumberish],
-    [string],
-    'view'
-  >;
+    nameOrSignature: 'associateManagerWalletWithManagedAccount',
+  ): TypedContractMethod<[managerWallet: AddressLike], [void], 'nonpayable'>;
   getFunction(
     nameOrSignature: 'bridgeAdapters',
   ): TypedContractMethod<[arg0: BigNumberish], [string], 'view'>;
+  getFunction(
+    nameOrSignature: 'cancelWithdrawalFromManagedAccount',
+  ): TypedContractMethod<
+    [withdrawal: WithdrawalFromManagedAccountStruct],
+    [void],
+    'nonpayable'
+  >;
   getFunction(
     nameOrSignature: 'chainPropagationPeriodInS',
   ): TypedContractMethod<[], [bigint], 'view'>;
@@ -2380,7 +2640,7 @@ export interface Exchange_v1 extends BaseContract {
   getFunction(
     nameOrSignature: 'deposit',
   ): TypedContractMethod<
-    [quantityInAssetUnits: BigNumberish, destinationWallet: AddressLike],
+    [quantityInAssetUnits: BigNumberish, depositorWallet: AddressLike],
     [void],
     'nonpayable'
   >;
@@ -2388,12 +2648,43 @@ export interface Exchange_v1 extends BaseContract {
     nameOrSignature: 'depositIndex',
   ): TypedContractMethod<[], [bigint], 'view'>;
   getFunction(
+    nameOrSignature: 'depositToManagedAccount',
+  ): TypedContractMethod<
+    [
+      quantityInAssetUnits: BigNumberish,
+      depositorWallet: AddressLike,
+      managedAccount: AddressLike,
+      managedAccountPayload: BytesLike,
+      managerWallet: AddressLike,
+    ],
+    [void],
+    'nonpayable'
+  >;
+  getFunction(
     nameOrSignature: 'dispatcherWallet',
   ): TypedContractMethod<[], [string], 'view'>;
   getFunction(
+    nameOrSignature: 'domainSeparatorV4',
+  ): TypedContractMethod<[], [string], 'view'>;
+  getFunction(nameOrSignature: 'eip712Domain'): TypedContractMethod<
+    [],
+    [
+      [string, string, string, bigint, string, string, bigint[]] & {
+        fields: string;
+        name: string;
+        version: string;
+        chainId: bigint;
+        verifyingContract: string;
+        salt: string;
+        extensions: bigint[];
+      },
+    ],
+    'view'
+  >;
+  getFunction(
     nameOrSignature: 'executeTrade',
   ): TypedContractMethod<
-    [tradeArguments: ExecuteTradeArgumentsStruct],
+    [trade: TradeStruct, buy: OrderStruct, sell: OrderStruct],
     [void],
     'nonpayable'
   >;
@@ -2403,6 +2694,9 @@ export interface Exchange_v1 extends BaseContract {
   getFunction(
     nameOrSignature: 'exitFundWallet',
   ): TypedContractMethod<[], [string], 'view'>;
+  getFunction(
+    nameOrSignature: 'exitManagedAccountManagerWallet',
+  ): TypedContractMethod<[managerWallet: AddressLike], [void], 'nonpayable'>;
   getFunction(
     nameOrSignature: 'exitWallet',
   ): TypedContractMethod<[], [void], 'nonpayable'>;
@@ -2530,7 +2824,14 @@ export interface Exchange_v1 extends BaseContract {
     nameOrSignature: 'loadTotalMaintenanceMarginRequirementFromOraclePrices',
   ): TypedContractMethod<[wallet: AddressLike], [bigint], 'view'>;
   getFunction(
-    nameOrSignature: 'marketBaseAssetSymbols',
+    nameOrSignature: 'loadWalletExitStatus',
+  ): TypedContractMethod<
+    [wallet: AddressLike],
+    [WalletExitStructOutput],
+    'view'
+  >;
+  getFunction(
+    nameOrSignature: 'managedAccounts',
   ): TypedContractMethod<[arg0: BigNumberish], [string], 'view'>;
   getFunction(
     nameOrSignature: 'marketOverridesByBaseAssetSymbolAndWallet',
@@ -2547,18 +2848,6 @@ export interface Exchange_v1 extends BaseContract {
   getFunction(
     nameOrSignature: 'migrateQuoteTokenAddress',
   ): TypedContractMethod<[], [void], 'nonpayable'>;
-  getFunction(
-    nameOrSignature: 'nonceInvalidationsByWallet',
-  ): TypedContractMethod<
-    [arg0: AddressLike, arg1: BigNumberish],
-    [
-      [bigint, bigint] & {
-        timestampInMs: bigint;
-        effectiveBlockTimestamp: bigint;
-      },
-    ],
-    'view'
-  >;
   getFunction(
     nameOrSignature: 'oraclePriceAdapter',
   ): TypedContractMethod<[], [string], 'view'>;
@@ -2616,11 +2905,7 @@ export interface Exchange_v1 extends BaseContract {
   >;
   getFunction(
     nameOrSignature: 'setCustodian',
-  ): TypedContractMethod<
-    [newCustodian: AddressLike, newBridgeAdapters: AddressLike[]],
-    [void],
-    'nonpayable'
-  >;
+  ): TypedContractMethod<[newCustodian: AddressLike], [void], 'nonpayable'>;
   getFunction(
     nameOrSignature: 'setDelegateKeyExpirationPeriod',
   ): TypedContractMethod<
@@ -2666,6 +2951,13 @@ export interface Exchange_v1 extends BaseContract {
     'nonpayable'
   >;
   getFunction(
+    nameOrSignature: 'setManagedAccounts',
+  ): TypedContractMethod<
+    [newManagedAccounts: AddressLike[]],
+    [void],
+    'nonpayable'
+  >;
+  getFunction(
     nameOrSignature: 'setMarketOverrides',
   ): TypedContractMethod<
     [
@@ -2706,17 +2998,6 @@ export interface Exchange_v1 extends BaseContract {
     [void],
     'nonpayable'
   >;
-  getFunction(nameOrSignature: 'walletExits'): TypedContractMethod<
-    [arg0: AddressLike],
-    [
-      [boolean, bigint, bigint] & {
-        exists: boolean;
-        effectiveBlockTimestamp: bigint;
-        deleveragePriceStrategy: bigint;
-      },
-    ],
-    'view'
-  >;
   getFunction(
     nameOrSignature: 'withdraw',
   ): TypedContractMethod<[withdrawal: WithdrawalStruct], [void], 'nonpayable'>;
@@ -2726,6 +3007,13 @@ export interface Exchange_v1 extends BaseContract {
   getFunction(
     nameOrSignature: 'withdrawExitAdmin',
   ): TypedContractMethod<[wallet: AddressLike], [void], 'nonpayable'>;
+  getFunction(
+    nameOrSignature: 'withdrawFromManagedAccount',
+  ): TypedContractMethod<
+    [withdrawal: WithdrawalFromManagedAccountStruct],
+    [void],
+    'nonpayable'
+  >;
 
   getEvent(
     key: 'ChainPropagationPeriodChanged',
@@ -2796,6 +3084,13 @@ export interface Exchange_v1 extends BaseContract {
     DispatcherChangedEvent.InputTuple,
     DispatcherChangedEvent.OutputTuple,
     DispatcherChangedEvent.OutputObject
+  >;
+  getEvent(
+    key: 'EIP712DomainChanged',
+  ): TypedContractEvent<
+    EIP712DomainChangedEvent.InputTuple,
+    EIP712DomainChangedEvent.OutputTuple,
+    EIP712DomainChangedEvent.OutputObject
   >;
   getEvent(
     key: 'ExitFundWalletChanged',
@@ -3033,7 +3328,7 @@ export interface Exchange_v1 extends BaseContract {
       DeleveragedInsuranceFundClosureEvent.OutputObject
     >;
 
-    'Deposited(uint64,address,address,uint64)': TypedContractEvent<
+    'Deposited(uint64,address,address,uint64,bool)': TypedContractEvent<
       DepositedEvent.InputTuple,
       DepositedEvent.OutputTuple,
       DepositedEvent.OutputObject
@@ -3075,6 +3370,17 @@ export interface Exchange_v1 extends BaseContract {
       DispatcherChangedEvent.InputTuple,
       DispatcherChangedEvent.OutputTuple,
       DispatcherChangedEvent.OutputObject
+    >;
+
+    'EIP712DomainChanged()': TypedContractEvent<
+      EIP712DomainChangedEvent.InputTuple,
+      EIP712DomainChangedEvent.OutputTuple,
+      EIP712DomainChangedEvent.OutputObject
+    >;
+    EIP712DomainChanged: TypedContractEvent<
+      EIP712DomainChangedEvent.InputTuple,
+      EIP712DomainChangedEvent.OutputTuple,
+      EIP712DomainChangedEvent.OutputObject
     >;
 
     'ExitFundWalletChanged(address,address)': TypedContractEvent<
@@ -3242,7 +3548,7 @@ export interface Exchange_v1 extends BaseContract {
       OrderNonceInvalidatedEvent.OutputObject
     >;
 
-    'PendingDepositApplied(address,uint64,int64)': TypedContractEvent<
+    'PendingDepositApplied(address,uint64,int64,bool)': TypedContractEvent<
       PendingDepositAppliedEvent.InputTuple,
       PendingDepositAppliedEvent.OutputTuple,
       PendingDepositAppliedEvent.OutputObject
@@ -3319,7 +3625,7 @@ export interface Exchange_v1 extends BaseContract {
       WalletExitWithdrawnEvent.OutputObject
     >;
 
-    'WalletExited(address,uint256)': TypedContractEvent<
+    'WalletExited(address,uint256,bool)': TypedContractEvent<
       WalletExitedEvent.InputTuple,
       WalletExitedEvent.OutputTuple,
       WalletExitedEvent.OutputObject
@@ -3330,7 +3636,7 @@ export interface Exchange_v1 extends BaseContract {
       WalletExitedEvent.OutputObject
     >;
 
-    'Withdrawn(address,uint64,int64)': TypedContractEvent<
+    'Withdrawn(address,uint64,int64,bool)': TypedContractEvent<
       WithdrawnEvent.InputTuple,
       WithdrawnEvent.OutputTuple,
       WithdrawnEvent.OutputObject
