@@ -5,12 +5,12 @@ import * as constants from '#constants';
 import { assertNonceIsValid } from '#utils';
 
 import {
+  ManagedAccountWithdrawalType,
   OrderTypeSigEnum,
   OrderSideSigEnum,
   OrderTimeInForceSigEnum,
   OrderSelfTradePreventionSigEnum,
   OrderTriggerTypeSigEnum,
-  ManagedAccountWithdrawalType,
 } from '#types/enums/signature';
 
 import { pipToDecimal } from './pipmath';
